@@ -9,13 +9,13 @@ const App = () => {
     const getData = async () => {
       const results = await axios.get('http://dev.thrillist.com:3002/api');
       const data = results.data.flat();
-      setData(data)
+      setData(data);
     };
 
     getData();
   }, []);
 
-  return <>{data ? <Table data={data} /> : <p>Loading...</p>}</>;
+  return <div className="">{data ? <Table data={data} /> : <p>Loading...</p>}</div>;
 };
 
 export default App;

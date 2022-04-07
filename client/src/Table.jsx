@@ -23,8 +23,8 @@ const Table = ({ data }) => {
 
   return (
     // apply the table props
-    <table {...getTableProps()}>
-      <thead>
+    <table {...getTableProps()} className="w-full">
+      <thead className="my-8 bg-slate-300 uppercase">
         {
           // Loop over the header rows
           headerGroups.map((headerGroup) => (
