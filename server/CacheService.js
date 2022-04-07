@@ -18,7 +18,7 @@ class Cache {
 
   set(key, val) {
     console.log('setting cache');
-    return this.cache.set(key, val, 10000);
+    return this.cache.set(key, val, 20000);
   }
 
   del(keys) {
