@@ -8,7 +8,7 @@ const Company = ({ name, setActiveCompany }) => {
     }
 
     return (
-        <p className="font-bold" onClick={handleClick}>{name}</p>
+        <p className="font-bold group-hover:underline" onClick={handleClick}>{name}</p>
     )
 }
 

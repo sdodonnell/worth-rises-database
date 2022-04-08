@@ -85,7 +85,7 @@ const Table = ({ data }) => {
         page={page}
         prepareRow={prepareRow}
       />
-      <section className="flex justify-between items-center px-4 py-2 bg-slate-300">
+      <section className="flex justify-between items-center w-11/12 px-4 py-2 m-auto bg-slate-300 sticky bottom-0">
         <Pagination
           previousPage={previousPage}
           nextPage={nextPage}

@@ -2,7 +2,7 @@ import React from 'react';
 
 const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow }) => {
   return (
-    <table {...getTableProps()} className="w-full">
+    <table {...getTableProps()} className="w-11/12 m-auto">
       <thead className="text-xs font-light bg-slate-300 uppercase text-left">
         {
           // Loop over the header rows
@@ -13,7 +13,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                 // Loop over the headers in each row
                 headerGroup.headers.map((column) => (
                   // Apply the header cell props
-                  <th {...column.getHeaderProps()} className="py-2">
+                  <th {...column.getHeaderProps()} className="py-2 px-1">
                     {
                       // Render the header
                       column.render('Header')
@@ -34,13 +34,16 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
             prepareRow(row);
             return (
               // Apply the row props
-              <tr {...row.getRowProps()} className="odd:bg-slate-100 hover:scale-105 transition-transform">
+              <tr
+                {...row.getRowProps()}
+                className="group odd:bg-slate-100 hover:scale-105 hover:cursor-pointer transition-transform duration-200"
+              >
                 {
                   // Loop over the rows cells
                   row.cells.map((cell) => {
                     // Apply the cell props
                     return (
-                      <td {...cell.getCellProps()}>
+                      <td {...cell.getCellProps()} className="p-1">
                         {
                           // Render the cell contents
                           cell.render('Cell')
