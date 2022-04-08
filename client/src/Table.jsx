@@ -5,7 +5,7 @@ import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 
 const Table = ({ data }) => {
-  const tableData = useMemo(() => data.map((el) => el.fields), []);
+  const tableData = useMemo(() => data, []);
   const columns = useMemo(
     () => [
       {

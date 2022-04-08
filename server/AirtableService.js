@@ -9,22 +9,26 @@ class AirtableService {
 
   parsePrimarySector(records) {
     records.forEach((record) => {
-      const sectorId = record.fields?.['Primary Sector']?.[0];
+      const sectorId = record?.['Primary Sector']?.[0];
 
       if (!sectorId) return;
 
       if (sectorId in this.primarySectors) {
-        record.fields['Primary Sector'] = this.primarySectors[sectorId];
+        record['Primary Sector'] = this.primarySectors[sectorId];
       } else {
         this.base('Primary Sector').find(sectorId, (err, rec) => {
           const sectorName = rec?.fields?.Name;
           if (!err && sectorName) {
-            record.fields['Primary Sector'] = sectorName;
+            record['Primary Sector'] = sectorName;
             this.primarySectors[sectorId] = sectorName;
           }
         });
       }
     });
+  }
+
+  cleanRecords(records) {
+    return records.map(record => record.fields);
   }
 
   getAllEntries() {
@@ -48,11 +52,14 @@ class AirtableService {
         .eachPage(
           (records, fetchNextPage) => {
             try {
+              // Remove unnecessary fields from records objects
+              const cleanedRecords = this.cleanRecords(records);
+
               // 'Primary Sector' is a reference to another table, so these cells need to be cross-referenced
-              this.parsePrimarySector(records);
+              this.parsePrimarySector(cleanedRecords);
 
               // This function (`page`) will get called for each page of records.
-              results.push(records);
+              results.push(cleanedRecords);
             } catch (e) {
               console.log(e);
             }
