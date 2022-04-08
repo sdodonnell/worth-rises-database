@@ -1,10 +1,30 @@
 import Airtable from 'airtable';
-import CacheService from './CacheService.js';
-
 class AirtableService {
   constructor(cache) {
     this.base = new Airtable({ apiKey: process.env.API_KEY }).base('appNAH2NzKzc4R9Fe');
     this.cache = cache;
+
+    this.primarySectors = {};
+  }
+
+  parsePrimarySector(records) {
+    records.forEach((record) => {
+      const sectorId = record.fields?.['Primary Sector']?.[0];
+
+      if (!sectorId) return;
+
+      if (sectorId in this.primarySectors) {
+        record.fields['Primary Sector'] = this.primarySectors[sectorId];
+      } else {
+        this.base('Primary Sector').find(sectorId, (err, rec) => {
+          const sectorName = rec?.fields?.Name;
+          if (!err && sectorName) {
+            record.fields['Primary Sector'] = sectorName;
+            this.primarySectors[sectorId] = sectorName;
+          }
+        });
+      }
+    });
   }
 
   getAllEntries() {
@@ -19,7 +39,6 @@ class AirtableService {
 
   checkAirtable() {
     const results = [];
-    let pageNum = 1;
 
     return new Promise((resolve, reject) => {
       this.base('Sheet1')
@@ -29,6 +48,9 @@ class AirtableService {
         .eachPage(
           (records, fetchNextPage) => {
             try {
+              // 'Primary Sector' is a reference to another table, so these cells need to be cross-referenced
+              this.parsePrimarySector(records);
+
               // This function (`page`) will get called for each page of records.
               results.push(records);
             } catch (e) {
