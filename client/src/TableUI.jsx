@@ -3,7 +3,7 @@ import React from 'react';
 const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow }) => {
   return (
     <table {...getTableProps()} className="w-full">
-      <thead className="my-8 bg-slate-300 uppercase">
+      <thead className="text-xs font-light bg-slate-300 uppercase text-left">
         {
           // Loop over the header rows
           headerGroups.map((headerGroup) => (
@@ -13,7 +13,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                 // Loop over the headers in each row
                 headerGroup.headers.map((column) => (
                   // Apply the header cell props
-                  <th {...column.getHeaderProps()}>
+                  <th {...column.getHeaderProps()} className="py-2">
                     {
                       // Render the header
                       column.render('Header')

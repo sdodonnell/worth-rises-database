@@ -18,15 +18,17 @@ const DownloadButton = ({ rows }) => {
   };
 
   return (
-    <CSVLink
-      className="border p-2"
-      data={getData()}
-      asyncOnClick={true}
-      onClick={getUsers}
-      filename="worth-rises-database.csv"
-    >
-      Download CSV
-    </CSVLink>
+    <div>
+      <CSVLink
+        className="border p-2"
+        data={getData()}
+        asyncOnClick={true}
+        onClick={getUsers}
+        filename="worth-rises-database.csv"
+      >
+        Download CSV
+      </CSVLink>
+    </div>
   );
 };
 

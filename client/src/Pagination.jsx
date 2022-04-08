@@ -11,7 +11,7 @@ const Pagination = ({
   isNextPage,
 }) => {
   return (
-    <div className="pagination">
+    <div className="h-fit">
       <button onClick={() => previousPage()} disabled={!isPreviousPage}>
         {'<'}
       </button>

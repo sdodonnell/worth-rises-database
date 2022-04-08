@@ -13,8 +13,37 @@ const Table = ({ data }) => {
         accessor: 'Company',
       },
       {
-        Header: 'Headquarters',
+        Header: 'State',
         accessor: 'Headquarters',
+      },
+      {
+        Header: 'Primary Sector',
+        accessor: 'Primary Sector',
+      },
+      {
+        Header: 'Active?',
+        accessor: 'Active Brand (Y/N)',
+        Cell: ({ value }) => value === 'Y' ? '✓' : '✗'
+      },
+      {
+        Header: 'Year Founded',
+        accessor: 'Founded',
+        Cell: ({ value }) => value ? String(value) : '--'
+      },
+      {
+        Header: '# Employees',
+        accessor: 'Employees',
+        Cell: ({ value }) => value ? Number(value) : '--'
+      },
+      {
+        Header: 'Prison Industry Revenue Only?',
+        accessor: 'Prison Industry Revenue Only (Y/N)'
+      },
+      {
+        Header: 'Parent Public Exposure',
+        accessor: 'Parent Public Exposure',
+        // These values are prepended with identifiers like "Tier 1 - ", so slice these off
+        Cell: ({ value }) => value.split('-').slice(1).join('-')
       },
     ],
     []
@@ -50,17 +79,19 @@ const Table = ({ data }) => {
         page={page}
         prepareRow={prepareRow}
       />
-      <Pagination
-        previousPage={previousPage}
-        nextPage={nextPage}
-        setPageSize={setPageSize}
-        pageIndex={pageIndex}
-        pageCount={pageCount}
-        pageSize={pageSize}
-        isPreviousPage={canPreviousPage}
-        isNextPage={canNextPage}
-      />
-      <DownloadButton rows={rows} />
+      <section className="flex justify-between items-center px-4 py-2 bg-slate-300">
+        <Pagination
+          previousPage={previousPage}
+          nextPage={nextPage}
+          setPageSize={setPageSize}
+          pageIndex={pageIndex}
+          pageCount={pageCount}
+          pageSize={pageSize}
+          isPreviousPage={canPreviousPage}
+          isNextPage={canNextPage}
+        />
+        <DownloadButton rows={rows} />
+      </section>
     </>
   );
 };
