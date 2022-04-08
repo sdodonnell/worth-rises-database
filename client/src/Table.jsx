@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useTable, usePagination } from 'react-table';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
+import DownloadButton from './DownloadButton';
 
 const Table = ({ data }) => {
   const tableData = useMemo(() => data.map((el) => el.fields), []);
@@ -29,6 +30,7 @@ const Table = ({ data }) => {
     getTableBodyProps,
     headerGroups,
     page,
+    rows,
     prepareRow,
     canPreviousPage,
     canNextPage,
@@ -58,6 +60,7 @@ const Table = ({ data }) => {
         isPreviousPage={canPreviousPage}
         isNextPage={canNextPage}
       />
+      <DownloadButton rows={rows} />
     </>
   );
 };
