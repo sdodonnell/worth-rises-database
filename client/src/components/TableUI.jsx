@@ -1,6 +1,10 @@
 import React from 'react';
 
-const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow }) => {
+const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, setActiveCompany }) => {
+  const handleClick = values => {
+    setActiveCompany(values);
+}
+
   return (
     <table {...getTableProps()} className="w-11/12 m-auto">
       <thead className="text-xs font-light bg-slate-300 uppercase text-left">
@@ -36,6 +40,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
               // Apply the row props
               <tr
                 {...row.getRowProps()}
+                onClick={() => handleClick(row.values)}
                 className="group odd:bg-slate-100 hover:scale-105 hover:cursor-pointer transition-transform duration-200"
               >
                 {

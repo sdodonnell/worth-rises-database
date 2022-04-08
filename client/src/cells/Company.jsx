@@ -1,14 +1,8 @@
 import React from "react";
 
-const Company = ({ name, setActiveCompany }) => {
-    const handleClick = (e) => {
-        e.preventDefault();
-
-        setActiveCompany(name);
-    }
-
+const Company = ({ name }) => {
     return (
-        <p className="font-bold group-hover:underline" onClick={handleClick}>{name}</p>
+        <p className="font-bold group-hover:underline">{name}</p>
     )
 }
 

@@ -13,7 +13,7 @@ const Table = ({ data }) => {
       {
         Header: 'Company',
         accessor: 'Company',
-        Cell: ({ value }) => <Company name={value} setActiveCompany={setActiveCompany} />,
+        Cell: ({ value }) => <Company name={value} />,
       },
       {
         Header: 'State',
@@ -84,6 +84,7 @@ const Table = ({ data }) => {
         getTableBodyProps={getTableBodyProps}
         page={page}
         prepareRow={prepareRow}
+        setActiveCompany={setActiveCompany}
       />
       <section className="flex justify-between items-center w-11/12 px-4 py-2 m-auto bg-slate-300 sticky bottom-0">
         <Pagination
@@ -98,7 +99,7 @@ const Table = ({ data }) => {
         />
         <DownloadButton rows={rows} />
       </section>
-      {activeCompany && <Modal name={activeCompany} setActiveCompany={setActiveCompany} />}
+      {activeCompany && <Modal data={activeCompany} setActiveCompany={setActiveCompany} />}
     </>
   );
 };
