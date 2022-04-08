@@ -34,7 +34,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
             prepareRow(row);
             return (
               // Apply the row props
-              <tr {...row.getRowProps()}>
+              <tr {...row.getRowProps()} className="odd:bg-slate-100 hover:scale-105 transition-transform">
                 {
                   // Loop over the rows cells
                   row.cells.map((cell) => {

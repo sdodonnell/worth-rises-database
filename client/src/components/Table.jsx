@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
+import Company from '../cells/Company';
+import Modal from './Modal';
 
 const Table = ({ data }) => {
   const tableData = useMemo(() => data, []);
@@ -11,6 +13,7 @@ const Table = ({ data }) => {
       {
         Header: 'Company',
         accessor: 'Company',
+        Cell: ({ value }) => <Company name={value} setActiveCompany={setActiveCompany} />,
       },
       {
         Header: 'State',
@@ -23,27 +26,28 @@ const Table = ({ data }) => {
       {
         Header: 'Active?',
         accessor: 'Active Brand (Y/N)',
-        Cell: ({ value }) => value === 'Y' ? '✓' : '✗'
+        Cell: ({ value }) => value === 'Y' && '✓',
       },
       {
         Header: 'Year Founded',
         accessor: 'Founded',
-        Cell: ({ value }) => value ? String(value) : '--'
+        Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
         Header: '# Employees',
         accessor: 'Employees',
-        Cell: ({ value }) => value ? Number(value) : '--'
+        Cell: ({ value }) => (value ? Number(value) : '--'),
       },
       {
         Header: 'Prison Industry Revenue Only?',
-        accessor: 'Prison Industry Revenue Only (Y/N)'
+        accessor: 'Prison Industry Revenue Only(Y/N)',
+        Cell: ({ value }) => value && '✓',
       },
       {
         Header: 'Parent Public Exposure',
         accessor: 'Parent Public Exposure',
         // These values are prepended with identifiers like "Tier 1 - ", so slice these off
-        Cell: ({ value }) => value.split('-').slice(1).join('-')
+        Cell: ({ value }) => value.split('-').slice(1).join('-'),
       },
     ],
     []
@@ -53,6 +57,8 @@ const Table = ({ data }) => {
     { columns, data: tableData, initialState: { pageSize: 25, pageIndex: 0 } },
     usePagination
   );
+
+  const [activeCompany, setActiveCompany] = useState(null);
 
   const {
     getTableProps,
@@ -92,6 +98,7 @@ const Table = ({ data }) => {
         />
         <DownloadButton rows={rows} />
       </section>
+      {activeCompany && <Modal name={activeCompany} setActiveCompany={setActiveCompany} />}
     </>
   );
 };
