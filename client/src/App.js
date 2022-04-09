@@ -7,7 +7,7 @@ const App = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const results = await axios.get('/api');
+      const results = await axios.get('http://dev.thrillist.com:3002/api');
       const data = results.data.flat();
       setData(data);
     };

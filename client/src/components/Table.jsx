@@ -4,7 +4,7 @@ import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 import Company from '../cells/Company';
-import Modal from './Modal';
+import CompanyProfile from './CompanyProfile';
 
 const Table = ({ data }) => {
   const tableData = useMemo(() => data, []);
@@ -13,48 +13,65 @@ const Table = ({ data }) => {
       {
         Header: 'Company',
         accessor: 'Company',
+        id: 'company',
         Cell: ({ value }) => <Company name={value} />,
       },
       {
         Header: 'State',
         accessor: 'Headquarters',
+        id: 'state',
       },
       {
         Header: 'Primary Sector',
         accessor: 'Primary Sector',
+        id: 'primarySector',
       },
       {
         Header: 'Active?',
         accessor: 'Active Brand (Y/N)',
+        id: 'active',
         Cell: ({ value }) => value === 'Y' && '✓',
       },
       {
         Header: 'Year Founded',
         accessor: 'Founded',
+        id: 'yearFounded',
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
         Header: '# Employees',
         accessor: 'Employees',
+        id: 'employees',
         Cell: ({ value }) => (value ? Number(value) : '--'),
       },
       {
         Header: 'Prison Industry Revenue Only?',
         accessor: 'Prison Industry Revenue Only(Y/N)',
+        id: 'revenueOnly',
         Cell: ({ value }) => value && '✓',
       },
       {
         Header: 'Parent Public Exposure',
         accessor: 'Parent Public Exposure',
+        id: 'exposure',
         // These values are prepended with identifiers like "Tier 1 - ", so slice these off
         Cell: ({ value }) => value.split('-').slice(1).join('-'),
+      },
+      // Hidden columns; only necessary for company profile
+      {
+        accessor: 'Lead Executive',
+        id: 'executive',
+      },
+      {
+        accessor: 'Parent Company',
+        id: 'parent',
       },
     ],
     []
   );
 
   const tableInstance = useTable(
-    { columns, data: tableData, initialState: { pageSize: 25, pageIndex: 0 } },
+    { columns, data: tableData, initialState: { pageSize: 25, pageIndex: 0, hiddenColumns: ['executive', 'parent'] } },
     usePagination
   );
 
@@ -99,7 +116,7 @@ const Table = ({ data }) => {
         />
         <DownloadButton rows={rows} />
       </section>
-      {activeCompany && <Modal data={activeCompany} setActiveCompany={setActiveCompany} />}
+      {activeCompany && <CompanyProfile data={activeCompany} setActiveCompany={setActiveCompany} />}
     </>
   );
 };
