@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, useGlobalFilter } from 'react-table';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 import Company from '../cells/Company';
 import CompanyProfile from './CompanyProfile';
+import Search from './Search';
+import Filters from './Filters';
 
 const Table = ({ data }) => {
   const tableData = useMemo(() => data, []);
@@ -72,6 +74,7 @@ const Table = ({ data }) => {
 
   const tableInstance = useTable(
     { columns, data: tableData, initialState: { pageSize: 25, pageIndex: 0, hiddenColumns: ['executive', 'parent'] } },
+    useGlobalFilter,
     usePagination
   );
 
@@ -90,7 +93,8 @@ const Table = ({ data }) => {
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    setGlobalFilter,
+    state: { pageIndex, pageSize, globalFilter },
   } = tableInstance;
 
   return (
@@ -103,6 +107,7 @@ const Table = ({ data }) => {
         prepareRow={prepareRow}
         setActiveCompany={setActiveCompany}
       />
+      <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} />
       <section className="flex justify-between items-center w-11/12 px-4 py-2 m-auto bg-slate-300 sticky bottom-0">
         <Pagination
           previousPage={previousPage}
