@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useTable, usePagination, useGlobalFilter } from 'react-table';
+import { useTable, usePagination, useGlobalFilter, useFilters } from 'react-table';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
@@ -75,6 +75,7 @@ const Table = ({ data }) => {
   const tableInstance = useTable(
     { columns, data: tableData, initialState: { pageSize: 25, pageIndex: 0, hiddenColumns: ['executive', 'parent'] } },
     useGlobalFilter,
+    useFilters,
     usePagination
   );
 
@@ -94,6 +95,7 @@ const Table = ({ data }) => {
     previousPage,
     setPageSize,
     setGlobalFilter,
+    setAllFilters,
     state: { pageIndex, pageSize, globalFilter },
   } = tableInstance;
 
@@ -107,7 +109,7 @@ const Table = ({ data }) => {
         prepareRow={prepareRow}
         setActiveCompany={setActiveCompany}
       />
-      <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} />
+      <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} setAllFilters={setAllFilters} />
       <section className="flex justify-between items-center w-11/12 px-4 py-2 m-auto bg-slate-300 sticky bottom-0">
         <Pagination
           previousPage={previousPage}
