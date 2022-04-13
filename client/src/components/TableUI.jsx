@@ -1,36 +1,37 @@
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, setActiveCompany }) => {
-  const handleClick = values => {
+  const handleClick = (values) => {
     setActiveCompany(values);
-}
+  };
 
   return (
-    <table {...getTableProps()} className="w-11/12 m-auto">
-      <thead className="text-xs font-light bg-slate-300 uppercase text-left">
+    <Table {...getTableProps()}>
+      <Thead>
         {
           // Loop over the header rows
           headerGroups.map((headerGroup) => (
             // Apply the header row props
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <Tr {...headerGroup.getHeaderGroupProps()}>
               {
                 // Loop over the headers in each row
                 headerGroup.headers.map((column) => (
                   // Apply the header cell props
-                  <th {...column.getHeaderProps()} className="py-2 px-1">
+                  <Th {...column.getHeaderProps()}>
                     {
                       // Render the header
                       column.render('Header')
                     }
-                  </th>
+                  </Th>
                 ))
               }
-            </tr>
+            </Tr>
           ))
         }
-      </thead>
+      </Thead>
       {/* Apply the table body props */}
-      <tbody {...getTableBodyProps()}>
+      <Tbody {...getTableBodyProps()}>
         {
           // Loop over the table rows
           page.map((row) => {
@@ -38,31 +39,27 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
             prepareRow(row);
             return (
               // Apply the row props
-              <tr
-                {...row.getRowProps()}
-                onClick={() => handleClick(row.values)}
-                className="group odd:bg-slate-100 hover:scale-105 hover:cursor-pointer transition-transform duration-200"
-              >
+              <Tr {...row.getRowProps()} _hover={{ bgColor: 'purple.50' }}>
                 {
                   // Loop over the rows cells
                   row.cells.map((cell) => {
                     // Apply the cell props
                     return (
-                      <td {...cell.getCellProps()} className="p-1">
+                      <Td {...cell.getCellProps()}>
                         {
                           // Render the cell contents
                           cell.render('Cell')
                         }
-                      </td>
+                      </Td>
                     );
                   })
                 }
-              </tr>
+              </Tr>
             );
           })
         }
-      </tbody>
-    </table>
+      </Tbody>
+    </Table>
   );
 };
 

@@ -1,3 +1,4 @@
+import { Button } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { CSVLink } from 'react-csv';
 
@@ -18,9 +19,8 @@ const DownloadButton = ({ rows }) => {
   };
 
   return (
-    <div>
+    <Button>
       <CSVLink
-        className="border p-2"
         data={getData()}
         asyncOnClick={true}
         onClick={getUsers}
@@ -28,7 +28,7 @@ const DownloadButton = ({ rows }) => {
       >
         Download CSV
       </CSVLink>
-    </div>
+    </Button>
   );
 };
 

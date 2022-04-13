@@ -7,6 +7,8 @@ import Company from '../cells/Company';
 import CompanyProfile from './CompanyProfile';
 import Search from './Search';
 import Filters from './Filters';
+import { Flex } from '@chakra-ui/react';
+import SectorTag from './SectorTag';
 
 const Table = ({ data }) => {
   const tableData = useMemo(() => data, []);
@@ -27,6 +29,8 @@ const Table = ({ data }) => {
         Header: 'Primary Sector',
         accessor: 'Primary Sector',
         id: 'primarySector',
+        Cell: ({ value }) => <SectorTag sector={value} />,
+        width: 230
       },
       {
         Header: 'Active?',
@@ -101,6 +105,10 @@ const Table = ({ data }) => {
 
   return (
     <>
+      <Flex p="10px" gap="1rem" bgColor="purple.100">
+        <Search setSearchTerm={setGlobalFilter} searchTerm={globalFilter} />
+        <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} setAllFilters={setAllFilters} />
+      </Flex>
       <TableUI
         getTableProps={getTableProps}
         headerGroups={headerGroups}
@@ -109,8 +117,16 @@ const Table = ({ data }) => {
         prepareRow={prepareRow}
         setActiveCompany={setActiveCompany}
       />
-      <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} setAllFilters={setAllFilters} />
-      <section className="flex justify-between items-center w-11/12 px-4 py-2 m-auto bg-slate-300 sticky bottom-0">
+      <Flex
+        justify="space-between"
+        align="center"
+        p="1rem"
+        bgColor="purple.100"
+        color="white"
+        h="50"
+        pos="sticky"
+        bottom="0"
+      >
         <Pagination
           previousPage={previousPage}
           nextPage={nextPage}
@@ -122,7 +138,7 @@ const Table = ({ data }) => {
           isNextPage={canNextPage}
         />
         <DownloadButton rows={rows} />
-      </section>
+      </Flex>
       {activeCompany && <CompanyProfile data={activeCompany} setActiveCompany={setActiveCompany} />}
     </>
   );

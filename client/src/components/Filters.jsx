@@ -1,33 +1,52 @@
 import React, { useRef, useState } from 'react';
-import Search from './Search';
+import {
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Switch,
+  useDisclosure,
+} from '@chakra-ui/react';
 
-const Filters = ({ setGlobalFilter, globalFilter, setAllFilters }) => {
-  const [searchTerm, setSearchTerm] = useState(globalFilter);
-  const [active, setActive] = useState(false);
-
-  const filterForm = useRef();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // const formData = new FormData(filterForm.current);
-    // const filters = Array.from(formData.entries()).map((pair) => ({
-    //   id: pair[0],
-    //   value: pair[1],
-    // }));
-
-    setGlobalFilter(searchTerm);
-    // setAllFilters(filters);
-  };
+const Filters = ({ setAllFilters }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <div className="w-96 h-full absolute top-0 left-0 bg-slate-400 z-10">
-      <h1>Company Search Filters</h1>
-      <Search setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
-      <form className="flex flex-col items-start" ref={filterForm} onSubmit={handleSubmit}>
-        <input type="submit" value="Set filters" />
-      </form>
-    </div>
+    <>
+      <Button onClick={onOpen}>Set Filters</Button>
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerCloseButton />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">Company Search Filters</DrawerHeader>
+          <DrawerBody>
+            <FormControl>
+              <FormLabel htmlFor="active">Include Active Brands?</FormLabel>
+              <Switch id="active" />
+              <FormLabel htmlFor="exposure">Parent Public Exposure</FormLabel>
+              <Select id="exposure" placeholder="Select parent public exposure">
+                <option>Tier 1a - Publicly Traded - Targeted Correctional Exposure</option>
+                <option>Tier 1b - Publicly Traded - Other</option>
+                <option>Tier 2 - Investment Firm-Owned</option>
+                <option>Tier 3 - Large Privately-Owned, requires outside financing</option>
+                <option>Tier 4 - Small Privately-Owned</option>
+              </Select>{' '}
+            </FormControl>
+          </DrawerBody>
+          <DrawerFooter>
+            <Button colorScheme="blue">Save</Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 };
 
