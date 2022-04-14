@@ -1,11 +1,7 @@
 import { Skeleton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, setActiveCompany, isLoading }) => {
-  const handleClick = (values) => {
-    setActiveCompany(values);
-  };
-
+const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, isLoading }) => {
   return (
     <Table {...getTableProps()}>
       <Thead>

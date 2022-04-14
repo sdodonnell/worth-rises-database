@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters } from 'react-table';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 import Company from '../cells/Company';
-import CompanyProfile from './CompanyProfile';
 import Search from './Search';
 import Filters from './Filters';
 import { Flex } from '@chakra-ui/react';
@@ -18,7 +17,7 @@ const Table = ({ data, isLoading }) => {
         Header: 'Company',
         accessor: 'Company',
         id: 'company',
-        Cell: ({ value }) => <Company name={value || '--'} />,
+        Cell: ({ value, row: { values } }) => <Company name={value || '--'} values={values} />,
       },
       {
         Header: 'State',
@@ -31,13 +30,13 @@ const Table = ({ data, isLoading }) => {
         accessor: 'Primary Sector',
         id: 'primarySector',
         Cell: ({ value }) => <SectorTag sector={value} />,
-        minWidth: 230
+        minWidth: 230,
       },
       {
         Header: 'Active?',
         accessor: 'Active Brand (Y/N)',
         id: 'active',
-        Cell: ({ value }) => value === 'Y' ? '✓' : '--',
+        Cell: ({ value }) => (value === 'Y' ? '✓' : '--'),
       },
       {
         Header: 'Year Founded',
@@ -55,14 +54,14 @@ const Table = ({ data, isLoading }) => {
         Header: 'Prison Industry Revenue Only?',
         accessor: 'Prison Industry Revenue Only(Y/N)',
         id: 'revenueOnly',
-        Cell: ({ value }) => value ? '✓' : '--',
+        Cell: ({ value }) => (value ? '✓' : '--'),
       },
       {
         Header: 'Parent Public Exposure',
         accessor: 'Parent Public Exposure',
         id: 'exposure',
         // These values are prepended with identifiers like "Tier 1 - ", so slice these off
-        Cell: ({ value }) => value ? value.split('-').slice(1).join('-') : '--',
+        Cell: ({ value }) => (value ? value.split('-').slice(1).join('-') : '--'),
       },
       // Hidden columns; only necessary for company profile
       {
@@ -83,8 +82,6 @@ const Table = ({ data, isLoading }) => {
     useFilters,
     usePagination
   );
-
-  const [activeCompany, setActiveCompany] = useState(null);
 
   const {
     getTableProps,
@@ -116,7 +113,6 @@ const Table = ({ data, isLoading }) => {
         getTableBodyProps={getTableBodyProps}
         page={page}
         prepareRow={prepareRow}
-        setActiveCompany={setActiveCompany}
         isLoading={isLoading}
       />
       <Flex
@@ -141,7 +137,6 @@ const Table = ({ data, isLoading }) => {
         />
         <DownloadButton rows={rows} />
       </Flex>
-      {activeCompany && <CompanyProfile data={activeCompany} setActiveCompany={setActiveCompany} />}
     </>
   );
 };
