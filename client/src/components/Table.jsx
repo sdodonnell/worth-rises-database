@@ -10,20 +10,21 @@ import Filters from './Filters';
 import { Flex } from '@chakra-ui/react';
 import SectorTag from './SectorTag';
 
-const Table = ({ data }) => {
-  const tableData = useMemo(() => data, []);
+const Table = ({ data, isLoading }) => {
+  const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
       {
         Header: 'Company',
         accessor: 'Company',
         id: 'company',
-        Cell: ({ value }) => <Company name={value} />,
+        Cell: ({ value }) => <Company name={value || '--'} />,
       },
       {
         Header: 'State',
         accessor: 'Headquarters',
         id: 'state',
+        Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
         Header: 'Primary Sector',
@@ -36,7 +37,7 @@ const Table = ({ data }) => {
         Header: 'Active?',
         accessor: 'Active Brand (Y/N)',
         id: 'active',
-        Cell: ({ value }) => value === 'Y' && '✓',
+        Cell: ({ value }) => value === 'Y' ? '✓' : '--',
       },
       {
         Header: 'Year Founded',
@@ -54,14 +55,14 @@ const Table = ({ data }) => {
         Header: 'Prison Industry Revenue Only?',
         accessor: 'Prison Industry Revenue Only(Y/N)',
         id: 'revenueOnly',
-        Cell: ({ value }) => value && '✓',
+        Cell: ({ value }) => value ? '✓' : '--',
       },
       {
         Header: 'Parent Public Exposure',
         accessor: 'Parent Public Exposure',
         id: 'exposure',
         // These values are prepended with identifiers like "Tier 1 - ", so slice these off
-        Cell: ({ value }) => value.split('-').slice(1).join('-'),
+        Cell: ({ value }) => value ? value.split('-').slice(1).join('-') : '--',
       },
       // Hidden columns; only necessary for company profile
       {
@@ -116,6 +117,7 @@ const Table = ({ data }) => {
         page={page}
         prepareRow={prepareRow}
         setActiveCompany={setActiveCompany}
+        isLoading={isLoading}
       />
       <Flex
         justify="space-between"

@@ -1,7 +1,7 @@
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Skeleton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, setActiveCompany }) => {
+const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, setActiveCompany, isLoading }) => {
   const handleClick = (values) => {
     setActiveCompany(values);
   };
@@ -46,10 +46,12 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                     // Apply the cell props
                     return (
                       <Td {...cell.getCellProps()}>
-                        {
-                          // Render the cell contents
-                          cell.render('Cell')
-                        }
+                        <Skeleton isLoaded={!isLoading}>
+                          {
+                            // Render the cell contents
+                            cell.render('Cell')
+                          }
+                        </Skeleton>
                       </Td>
                     );
                   })

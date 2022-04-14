@@ -32,13 +32,15 @@ class AirtableService {
   }
 
   getAllEntries() {
-    let value = this.cache.get('myKey');
+    // let value = this.cache.get('myKey');
 
-    if (!value) {
-      value = this.checkAirtable();
-    }
+    // if (!value) {
+    //   value = this.checkAirtable();
+    // }
 
-    return value;
+    // return value;
+
+    return this.checkAirtable();
   }
 
   checkAirtable() {
