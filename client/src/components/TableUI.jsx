@@ -45,7 +45,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                   row.cells.map((cell) => {
                     // Apply the cell props
                     return (
-                      <Td {...cell.getCellProps()}>
+                      <Td {...cell.getCellProps()} w={cell.column.minWidth || null}>
                         <Skeleton isLoaded={!isLoading}>
                           {
                             // Render the cell contents

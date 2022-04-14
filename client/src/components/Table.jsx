@@ -31,7 +31,7 @@ const Table = ({ data, isLoading }) => {
         accessor: 'Primary Sector',
         id: 'primarySector',
         Cell: ({ value }) => <SectorTag sector={value} />,
-        width: 230
+        minWidth: 230
       },
       {
         Header: 'Active?',

@@ -28,19 +28,17 @@ class AirtableService {
   }
 
   cleanRecords(records) {
-    return records.map(record => record.fields);
+    return records.map((record) => record.fields);
   }
 
   getAllEntries() {
-    // let value = this.cache.get('myKey');
+    let value = this.cache.get('myKey');
 
-    // if (!value) {
-    //   value = this.checkAirtable();
-    // }
+    if (!value) {
+      value = this.checkAirtable();
+    }
 
-    // return value;
-
-    return this.checkAirtable();
+    return value;
   }
 
   checkAirtable() {
