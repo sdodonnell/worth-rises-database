@@ -4,7 +4,7 @@ import React from 'react';
 const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, isLoading }) => {
   return (
     <Table {...getTableProps()}>
-      <Thead>
+      <Thead pos="sticky" top="0" bgColor="white" boxShadow="sm">
         {
           // Loop over the header rows
           headerGroups.map((headerGroup) => (

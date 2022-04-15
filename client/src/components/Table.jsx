@@ -63,7 +63,7 @@ const Table = ({ data, isLoading }) => {
         // These values are prepended with identifiers like "Tier 1 - ", so slice these off
         Cell: ({ value }) => (value ? value.split('-').slice(1).join('-') : '--'),
       },
-      // Hidden columns; only necessary for company profile
+      // Hidden columns; only necessary for company profile modal
       {
         accessor: 'Lead Executive',
         id: 'executive',
@@ -72,12 +72,24 @@ const Table = ({ data, isLoading }) => {
         accessor: 'Parent Company',
         id: 'parent',
       },
+      {
+        accessor: 'Harm Score',
+        id: 'harmScore',
+      },
+      {
+        accessor: 'Annual Revenues (Mn) - original',
+        id: 'revenues',
+      },
     ],
     []
   );
 
   const tableInstance = useTable(
-    { columns, data: tableData, initialState: { pageSize: 25, pageIndex: 0, hiddenColumns: ['executive', 'parent'] } },
+    {
+      columns,
+      data: tableData,
+      initialState: { pageSize: 50, pageIndex: 0, hiddenColumns: ['executive', 'parent', 'harmScore', 'revenues'] },
+    },
     useGlobalFilter,
     useFilters,
     usePagination
@@ -103,7 +115,7 @@ const Table = ({ data, isLoading }) => {
 
   return (
     <>
-      <Flex p="10px" gap="1rem" bgColor="purple.100">
+      <Flex p="10px" gap="1rem" bgColor="purple.100" justify="space-between" w="full">
         <Search setSearchTerm={setGlobalFilter} searchTerm={globalFilter} />
         <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} setAllFilters={setAllFilters} />
       </Flex>

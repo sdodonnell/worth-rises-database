@@ -1,4 +1,15 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import React from 'react';
 
 const Company = ({ name, values }) => {
@@ -15,6 +26,8 @@ const Company = ({ name, values }) => {
     exposure = '--',
     executive = '--',
     parent = '--',
+    revenues,
+    harmScore = 'Not calculated',
   } = values;
 
   return (
@@ -22,29 +35,47 @@ const Company = ({ name, values }) => {
       <Text fontWeight="bold" _hover={{ textDecor: 'underline', cursor: 'pointer' }} onClick={onOpen}>
         {name}
       </Text>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="5xl">
         <ModalOverlay />
         <ModalCloseButton />
         <ModalContent>
-          <ModalHeader>{company}</ModalHeader>
+          <ModalHeader>
+            <Heading size="md">{company}</Heading>
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          <div>
-            <h3>Year Founded</h3>
-            <h2>{yearFounded}</h2>
-          </div>
-          <div>
-            <h3>Number of Employees</h3>
-            <h2>{employees}</h2>
-          </div>
-          <div>
-            <h3>Lead Executive</h3>
-            <h2>{executive}</h2>
-          </div>
-          <div>
-            <h3>Parent Company</h3>
-            <h2>{parent}</h2>
-          </div>
+            <Box>
+              <Heading size="sm">Location</Heading>
+              <Text>{state}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Harm Score</Heading>
+              <Text>{harmScore}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Primary Sector</Heading>
+              <Text>{primarySector}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Parent Public Exposure</Heading>
+              <Text>{exposure}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Year Founded</Heading>
+              <Text>{yearFounded}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Number of Employees</Heading>
+              <Text>{employees}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Lead Executive</Heading>
+              <Text>{executive}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Parent Company</Heading>
+              <Text>{parent}</Text>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>
