@@ -3,19 +3,33 @@ import axios from 'axios';
 import Table from './components/Table';
 
 const App = () => {
-  const [data, setData] = useState(null);
+  const initialDataState = new Array(25).fill({});
+
+  const [data, setData] = useState(initialDataState);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [isCacheMiss, setIsCacheMiss] = useState(false);
 
   useEffect(() => {
+    const timeout = setTimeout(() => setIsCacheMiss(true), 1500);
+
     const getData = async () => {
-      const results = await axios.get('http://dev.thrillist.com:3002/api');
-      const data = results.data.flat();
-      setData(data);
+      try {
+        const results = await axios.get('http://dev.thrillist.com:3002/api');
+        clearTimeout(timeout);
+        const data = results.data.flat();
+        setData(data);
+        setIsLoading(false);
+      } catch (e) {
+        console.log(e);
+        setIsError(true);
+      }
     };
 
     getData();
   }, []);
 
-  return <div className="">{data ? <Table data={data} /> : <p>Loading...</p>}</div>;
+  return <Table data={data} isLoading={isLoading} isError={isError} isCacheMiss={isCacheMiss} />;
 };
 
 export default App;

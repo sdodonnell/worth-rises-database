@@ -28,7 +28,7 @@ class AirtableService {
   }
 
   cleanRecords(records) {
-    return records.map(record => record.fields);
+    return records.map((record) => record.fields);
   }
 
   getAllEntries() {
