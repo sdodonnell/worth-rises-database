@@ -1,7 +1,11 @@
 import { Skeleton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, isLoading }) => {
+const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, isLoading, isError }) => {
+  // if (isError) {
+  //   return null;
+  // }
+
   return (
     <Table {...getTableProps()}>
       <Thead pos="sticky" top="0" bgColor="white" boxShadow="sm">
@@ -42,7 +46,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                     // Apply the cell props
                     return (
                       <Td {...cell.getCellProps()} w={cell.column.minWidth || null}>
-                        <Skeleton isLoaded={!isLoading}>
+                        <Skeleton isLoaded={!isLoading} speed={isError ? 0 : 0.8}>
                           {
                             // Render the cell contents
                             cell.render('Cell')

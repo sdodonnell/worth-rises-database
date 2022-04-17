@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters } from 'react-table';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
@@ -6,10 +6,10 @@ import DownloadButton from './DownloadButton';
 import Company from '../cells/Company';
 import Search from './Search';
 import Filters from './Filters';
-import { Flex } from '@chakra-ui/react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Flex, Modal, useToast } from '@chakra-ui/react';
 import SectorTag from './SectorTag';
 
-const Table = ({ data, isLoading }) => {
+const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
@@ -113,6 +113,34 @@ const Table = ({ data, isLoading }) => {
     state: { pageIndex, pageSize, globalFilter },
   } = tableInstance;
 
+  const toast = useToast();
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: 'Could not connect to database!',
+        description: "Please try again or contact info@worthrises.org.",
+        status: 'error',
+        duration: 9000,
+        position: 'top'
+      })
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (isLoading && isCacheMiss) {
+      toast({
+        title: 'Loading database!',
+        description: "This may take a minute.",
+        status: 'info',
+        duration: null,
+        position: 'top'
+      })
+    } else {
+      toast.closeAll();
+    }
+  }, [isCacheMiss, isLoading]);
+
   return (
     <>
       <Flex p="10px" gap="1rem" bgColor="purple.100" justify="space-between" w="full">
@@ -126,6 +154,7 @@ const Table = ({ data, isLoading }) => {
         page={page}
         prepareRow={prepareRow}
         isLoading={isLoading}
+        isError={isError}
       />
       <Flex
         justify="space-between"
