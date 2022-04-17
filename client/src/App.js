@@ -22,6 +22,7 @@ const App = () => {
         setIsLoading(false);
       } catch (e) {
         console.log(e);
+        clearTimeout(timeout);
         setIsError(true);
       }
     };
