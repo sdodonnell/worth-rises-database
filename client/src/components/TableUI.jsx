@@ -1,4 +1,5 @@
 import { Skeleton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import React from 'react';
 
 const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, isLoading, isError }) => {
@@ -18,11 +19,13 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                 // Loop over the headers in each row
                 headerGroup.headers.map((column) => (
                   // Apply the header cell props
-                  <Th {...column.getHeaderProps()}>
+                  <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {
                       // Render the header
                       column.render('Header')
                     }
+                    <ChevronUpIcon w={3} h={3} opacity={column.isSorted ? 0.5 : 1}/>
+                    <ChevronDownIcon w={3} h={3} opacity={column.isSortedDesc ? 0.5 : 1}/>
                   </Th>
                 ))
               }

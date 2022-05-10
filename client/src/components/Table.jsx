@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useTable, usePagination, useGlobalFilter, useFilters } from 'react-table';
+import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
@@ -92,6 +92,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     },
     useGlobalFilter,
     useFilters,
+    useSortBy,
     usePagination
   );
 
