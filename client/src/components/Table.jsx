@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
+import { Flex, useToast } from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 import Company from '../cells/Company';
 import Search from './Search';
 import Filters from './Filters';
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Flex, Modal, useToast } from '@chakra-ui/react';
 import SectorTag from './SectorTag';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
@@ -20,9 +20,27 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value, row: { values } }) => <Company name={value || '--'} values={values} />,
       },
       {
-        Header: 'State',
-        accessor: 'Headquarters',
-        id: 'state',
+        Header: 'Active?',
+        accessor: 'Active Brand (Y/N)',
+        id: 'active',
+        Cell: ({ value }) => (value === 'Y' ? '✓' : ''),
+      },
+      {
+        Header: 'Owner/Major Investor',
+        accessor: 'Owner/Major Investor',
+        id: 'owner',
+        Cell: ({ value }) => (value ? String(value) : '--'),
+      },
+      {
+        Header: 'Parent Company',
+        accessor: 'Parent Company',
+        id: 'parent',
+        Cell: ({ value }) => (value ? String(value) : '--'),
+      },
+      {
+        Header: 'Stock Ticker',
+        accessor: 'Parent Stock Ticker',
+        id: 'stock',
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
@@ -33,11 +51,34 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         minWidth: 230,
       },
       {
-        Header: 'Active?',
-        accessor: 'Active Brand (Y/N)',
-        id: 'active',
-        Cell: ({ value }) => (value === 'Y' ? '✓' : '--'),
+        Header: 'Sub-sector',
+        accessor: 'Primary Sub-sector',
+        id: 'subsector',
       },
+      {
+        Header: 'Harm Score',
+        accessor: 'Harm Score',
+        id: 'harmScore',
+      },
+      {
+        Header: 'Involved in Immigration Detention',
+        accessor: 'Immigration Detention Involvement',
+        id: 'detention',
+        Cell: ({ value }) => (value ? '✓' : ''),
+      },
+      {
+        Header: 'Involved in Prison Labor',
+        accessor: 'Supports Prison Labor',
+        id: 'labor',
+        Cell: ({ value }) => (value ? '✓' : ''),
+      },
+      {
+        Header: 'Divestment',
+        accessor: 'Divestment (Y/N)',
+        id: 'divestment',
+        Cell: ({ value }) => (value ? '✓' : ''),
+      },
+      // Hidden columns; only necessary for company profile modal
       {
         Header: 'Year Founded',
         accessor: 'Founded',
@@ -63,22 +104,17 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         // These values are prepended with identifiers like "Tier 1 - ", so slice these off
         Cell: ({ value }) => (value ? value.split('-').slice(1).join('-') : '--'),
       },
-      // Hidden columns; only necessary for company profile modal
       {
         accessor: 'Lead Executive',
         id: 'executive',
       },
       {
-        accessor: 'Parent Company',
-        id: 'parent',
-      },
-      {
-        accessor: 'Harm Score',
-        id: 'harmScore',
-      },
-      {
         accessor: 'Annual Revenues (Mn) - original',
         id: 'revenues',
+      },
+      {
+        accessor: 'Headquarters',
+        id: 'state',
       },
     ],
     []
@@ -88,7 +124,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     {
       columns,
       data: tableData,
-      initialState: { pageSize: 50, pageIndex: 0, hiddenColumns: ['executive', 'parent', 'harmScore', 'revenues'] },
+      initialState: {
+        pageSize: 50,
+        pageIndex: 0,
+        hiddenColumns: ['executive', 'harmScore', 'revenues', 'state', 'yearFounded', 'employees', 'exposure'],
+      },
     },
     useGlobalFilter,
     useFilters,
@@ -120,11 +160,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     if (isError) {
       toast({
         title: 'Could not connect to database!',
-        description: "Please try again or contact info@worthrises.org.",
+        description: 'Please try again or contact info@worthrises.org.',
         status: 'error',
         duration: 9000,
-        position: 'top'
-      })
+        position: 'top',
+      });
     }
   }, [isError]);
 
@@ -132,11 +172,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     if (isLoading && isCacheMiss) {
       toast({
         title: 'Loading database!',
-        description: "This may take a minute.",
+        description: 'This may take a minute.',
         status: 'info',
         duration: null,
-        position: 'top'
-      })
+        position: 'top',
+      });
     } else {
       toast.closeAll();
     }
