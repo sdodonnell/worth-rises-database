@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
-import { Flex, useToast } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, useToast } from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
@@ -183,43 +183,42 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   }, [isCacheMiss, isLoading]);
 
   return (
-    <>
-      <Flex p="10px" gap="1rem" bgColor="purple.100" justify="space-between" w="full">
-        <Search setSearchTerm={setGlobalFilter} searchTerm={globalFilter} />
+    <Grid h="full" w="full" templateRows="60px calc(100vh - 110px) 50px" templateColumns="300px auto">
+      <GridItem rowSpan={3}>
         <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} setAllFilters={setAllFilters} />
-      </Flex>
-      <TableUI
-        getTableProps={getTableProps}
-        headerGroups={headerGroups}
-        getTableBodyProps={getTableBodyProps}
-        page={page}
-        prepareRow={prepareRow}
-        isLoading={isLoading}
-        isError={isError}
-      />
-      <Flex
-        justify="space-between"
-        align="center"
-        p="1rem"
-        bgColor="purple.100"
-        color="white"
-        h="50"
-        pos="sticky"
-        bottom="0"
-      >
-        <Pagination
-          previousPage={previousPage}
-          nextPage={nextPage}
-          setPageSize={setPageSize}
-          pageIndex={pageIndex}
-          pageCount={pageCount}
-          pageSize={pageSize}
-          isPreviousPage={canPreviousPage}
-          isNextPage={canNextPage}
+      </GridItem>
+      <GridItem>
+        <Flex p="10px" gap="1rem" bgColor="purple.100" justify="space-between" w="full">
+          <Search setSearchTerm={setGlobalFilter} searchTerm={globalFilter} />
+        </Flex>
+      </GridItem>
+      <GridItem overflow="scroll">
+        <TableUI
+          getTableProps={getTableProps}
+          headerGroups={headerGroups}
+          getTableBodyProps={getTableBodyProps}
+          page={page}
+          prepareRow={prepareRow}
+          isLoading={isLoading}
+          isError={isError}
         />
-        <DownloadButton rows={rows} />
-      </Flex>
-    </>
+      </GridItem>
+      <GridItem>
+        <Flex justify="space-between" align="center" p="1rem" bgColor="purple.100" color="white" h="50">
+          <Pagination
+            previousPage={previousPage}
+            nextPage={nextPage}
+            setPageSize={setPageSize}
+            pageIndex={pageIndex}
+            pageCount={pageCount}
+            pageSize={pageSize}
+            isPreviousPage={canPreviousPage}
+            isNextPage={canNextPage}
+          />
+          <DownloadButton rows={rows} />
+        </Flex>
+      </GridItem>
+    </Grid>
   );
 };
 
