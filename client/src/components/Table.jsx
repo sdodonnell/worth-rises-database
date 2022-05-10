@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
-import { Box, Flex, Grid, GridItem, useToast } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, Image, useToast } from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
@@ -184,13 +184,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
 
   return (
     <Grid h="full" w="full" templateRows="60px calc(100vh - 110px) 50px" templateColumns="300px auto">
-      <GridItem rowSpan={3}>
-        <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} setAllFilters={setAllFilters} />
-      </GridItem>
-      <GridItem>
-        <Flex p="10px" gap="1rem" bgColor="purple.100" justify="space-between" w="full">
+      <GridItem colSpan={3}>
+        <Flex p="10px" gap="2rem" bgColor="purple.500" w="full" >
+          <Image src="logo.png" h="40px" /> 
           <Search setSearchTerm={setGlobalFilter} searchTerm={globalFilter} />
         </Flex>
+      </GridItem>
+      <GridItem borderRight="1px" borderColor="purple.400">
+        <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} setAllFilters={setAllFilters} />
       </GridItem>
       <GridItem overflow="scroll">
         <TableUI
@@ -203,7 +204,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           isError={isError}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={3}>
         <Flex justify="space-between" align="center" p="1rem" bgColor="purple.100" color="white" h="50">
           <Pagination
             previousPage={previousPage}

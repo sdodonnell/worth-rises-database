@@ -44,11 +44,27 @@ const Company = ({ name, values }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+          <Box>
+              <Heading size="sm">Active Brand?</Heading>
+              <Text>{active}</Text>
+            </Box>
             <Box>
-              <Heading size="sm">Location</Heading>
+              <Heading size="sm">Headquarters</Heading>
               <Text>{state}</Text>
             </Box>
             <Box>
+            <Box>
+              <Heading size="sm">Number of Employees</Heading>
+              <Text>{Number(employees).toLocaleString('en-US') || '--'}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Year Founded</Heading>
+              <Text>{yearFounded}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Lead Executive</Heading>
+              <Text>{executive}</Text>
+            </Box>
               <Heading size="sm">Harm Score</Heading>
               <Text>{harmScore}</Text>
             </Box>
@@ -59,18 +75,6 @@ const Company = ({ name, values }) => {
             <Box>
               <Heading size="sm">Parent Public Exposure</Heading>
               <Text>{exposure}</Text>
-            </Box>
-            <Box>
-              <Heading size="sm">Year Founded</Heading>
-              <Text>{yearFounded}</Text>
-            </Box>
-            <Box>
-              <Heading size="sm">Number of Employees</Heading>
-              <Text>{employees}</Text>
-            </Box>
-            <Box>
-              <Heading size="sm">Lead Executive</Heading>
-              <Text>{executive}</Text>
             </Box>
             <Box>
               <Heading size="sm">Parent Company</Heading>
