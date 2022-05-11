@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
-import { Box, Flex, Grid, GridItem, Image, useToast } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, Image, Link, useToast } from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
@@ -183,10 +183,12 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   }, [isCacheMiss, isLoading]);
 
   return (
-    <Grid h="full" w="full" templateRows="60px calc(100vh - 110px) 50px" templateColumns="300px auto">
+    <Grid h="full" w="full" templateRows="60px calc(100vh - 110px) 50px" templateColumns="300px 1fr">
       <GridItem colSpan={3}>
-        <Flex p="10px" gap="2rem" bgColor="purple.500" w="full" >
-          <Image src="logo.png" h="40px" /> 
+        <Flex p="10px" gap="2rem" bgColor="purple.500" w="full">
+          <Link href="https://worthrises.org" isExternal>
+            <Image src="logo.png" h="40px" /> 
+          </Link>
           <Search setSearchTerm={setGlobalFilter} searchTerm={globalFilter} />
         </Flex>
       </GridItem>

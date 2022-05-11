@@ -1,11 +1,36 @@
 @font-face {
     font-family: "Source Sans Pro";
     font-weight: normal;
-    src: url("/public/fonts/SourceSansPro-Regular.ttf");
+    src: url("/public/fonts/SourceSansPro/SourceSansPro-Regular.ttf");
 }
 
 @font-face {
     font-family: "Source Sans Pro";
     font-weight: 400 700;
-    src: url("/public/fonts/SourceSansPro-Bold.ttf");
+    src: url("/public/fonts/SourceSansPro/SourceSansPro-Bold.ttf");
 }
+
+@font-face {
+    font-family: "Avenir";
+    font-weight: normal;
+    src: url("/public/fonts/Avenir/AvenirNextLTPro-Regular.otf");
+}
+
+@font-face {
+    font-family: "Avenir";
+    font-weight: 400 700;
+    src: url("/public/fonts/Avenir/AvenirNextLTPro-Bold.otf");
+}
+
+@font-face {
+    font-family: "Helvetica Neue";
+    font-weight: normal;
+    src: url("/public/fonts/Helvetica-Neue/HelveticaNeueLTPro-Roman.otf");
+}
+
+@font-face {
+    font-family: "Helvetica Neue";
+    font-weight: 400 700;
+    src: url("/public/fonts/Helvetica-Neue/HelveticaNeueLTPro-Bd.otf");
+}
+

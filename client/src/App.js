@@ -15,7 +15,7 @@ const App = () => {
 
     const getData = async () => {
       try {
-        const results = await axios.get('/api');
+        const results = await axios.get('http://dev.thrillist.com:3002/api');
         clearTimeout(timeout);
         const data = results.data.flat();
         setData(data);
