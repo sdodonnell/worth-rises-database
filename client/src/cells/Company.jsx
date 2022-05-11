@@ -65,7 +65,7 @@ const Company = ({ name, values }) => {
           <ModalCloseButton />
           <ModalBody>
             <Grid templateRows="auto 1fr 1fr 1fr" templateColumns="1fr 1fr 1fr 1fr" gap="18px">
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 {website && (
                   <Box>
                     <Heading size="sm">Website</Heading>
@@ -75,19 +75,19 @@ const Company = ({ name, values }) => {
                   </Box>
                 )}
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
                   <Heading size="sm">Year Founded</Heading>
                   <Text>{yearFounded}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
                   <Heading size="sm">Active Brand?</Heading>
                   <Text>{active}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
                   <Heading size="sm">
                     Harm Score (3-15){' '}
@@ -98,7 +98,7 @@ const Company = ({ name, values }) => {
                   <Text>{harmScore}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
                   <Heading size="sm">Headquarters</Heading>
                   <Text>{state}</Text>
@@ -106,7 +106,7 @@ const Company = ({ name, values }) => {
                   <Text>{Number(employees).toLocaleString('en-US') || '--'}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
                   <Heading size="sm">Last Acquired</Heading>
                   <Text>{acquired}</Text>
@@ -118,7 +118,7 @@ const Company = ({ name, values }) => {
                   <Text>{parent}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
                   <Heading size="sm">Primary Sector</Heading>
                   <Text>{primarySector}</Text>
@@ -128,7 +128,7 @@ const Company = ({ name, values }) => {
                   <Text>{stock}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
 
                   <Heading size="sm">Annual Revenues (Mn)</Heading>
@@ -141,7 +141,7 @@ const Company = ({ name, values }) => {
                   <Text>{financials}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
                   <Heading size="sm">
                     Political Spending{' '}
@@ -152,7 +152,7 @@ const Company = ({ name, values }) => {
                   <Text>{politicalSpending}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
                   <Heading size="sm">Immigration Detention</Heading>
                   <Text>{detention  ? 'Y' : 'N'}</Text>
@@ -166,7 +166,7 @@ const Company = ({ name, values }) => {
                   <Text>{divestment  ? 'Y' : 'N'}</Text>
                 </Box>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="1px">
+              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 {notes && (
                   <Box>
                     <Heading size="sm">Notes</Heading>
