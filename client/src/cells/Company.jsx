@@ -27,6 +27,9 @@ const Company = ({ name, values }) => {
     executive = '--',
     parent = '--',
     revenues,
+    labor,
+    divestment,
+    detention,
     harmScore = 'Not calculated',
   } = values;
 
@@ -65,7 +68,7 @@ const Company = ({ name, values }) => {
               <Heading size="sm">Lead Executive</Heading>
               <Text>{executive}</Text>
             </Box>
-              <Heading size="sm">Harm Score</Heading>
+              <Heading size="sm">Harm Score (3-15)</Heading>
               <Text>{harmScore}</Text>
             </Box>
             <Box>
@@ -79,6 +82,26 @@ const Company = ({ name, values }) => {
             <Box>
               <Heading size="sm">Parent Company</Heading>
               <Text>{parent}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Supports Prison Labor</Heading>
+              <Text>{labor ? 'Y' : 'N'}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Divestment (Y/N)</Heading>
+              <Text>{divestment}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Immigration Detention Involvement</Heading>
+              <Text>{detention ? 'Y' : 'N'}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Annual Revenues (Mn)</Heading>
+              <Text>{revenues}</Text>
+            </Box>
+            <Box>
+              <Heading size="sm">Prison Industry Revenue Only</Heading>
+              <Text>{revenueOnly}</Text>
             </Box>
           </ModalBody>
         </ModalContent>
