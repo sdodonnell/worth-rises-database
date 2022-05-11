@@ -59,6 +59,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Harm Score',
         accessor: 'Harm Score',
         id: 'harmScore',
+        filter: 'between'
       },
       {
         Header: 'Involved in Immigration Detention',

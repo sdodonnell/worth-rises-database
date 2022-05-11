@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  filter,
   Flex,
   FormControl,
   FormLabel,
@@ -23,9 +24,27 @@ const Filters = ({ setAllFilters }) => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    // onClose();
+    const { primarySector, subsector, minHarmScore, maxHarmScore, detentionInvolvement, laborInvolvement, divestment } =
+      data;
+
+    const filters = [
+      { id: 'primarySector', value: primarySector },
+      { id: 'subsector', value: subsector },
+      { id: 'detentionInvolvement', value: detentionInvolvement },
+      { id: 'laborInvolvement', value: laborInvolvement },
+      { id: 'divestment', value: divestment },
+    ];
+
+    if (minHarmScore && maxHarmScore) {
+      filters.push({ id: 'harmScore', value: [Number(minHarmScore), Number(maxHarmScore)] });
+    }
+
+    setAllFilters(filters);
   };
+
+  const resetFilters = () => {
+    setAllFilters([]);
+  }
 
   return (
     <Flex direction="column" p="10px" gap={5}>
@@ -34,7 +53,9 @@ const Filters = ({ setAllFilters }) => {
         <FormControl>
           <Flex direction="column" gap="12px">
             <Box>
-              <FormLabel htmlFor="primarySector"><Heading size="sm">Sector</Heading></FormLabel>
+              <FormLabel htmlFor="primarySector">
+                <Heading size="sm">Sector</Heading>
+              </FormLabel>
               <Select id="primarySector" placeholder="Select sector" {...register('primarySector')}>
                 <option>Community Corrections</option>
                 <option>Construction &amp; Maintenance</option>
@@ -54,7 +75,9 @@ const Filters = ({ setAllFilters }) => {
               </Select>
             </Box>
             <Box>
-              <FormLabel htmlFor="subsector"><Heading size="sm">Sub-sector</Heading></FormLabel>
+              <FormLabel htmlFor="subsector">
+                <Heading size="sm">Sub-sector</Heading>
+              </FormLabel>
               <Select id="subsector" placeholder="Select sub-sector" {...register('subsector')}>
                 <option>Ambulance Services</option>
                 <option>Agency Payment Processing</option>
@@ -109,23 +132,22 @@ const Filters = ({ setAllFilters }) => {
             </Box>
             <Box>
               <Heading size="sm">
-                Harm Score{' '}
+                Harm Score (3-13){' '}
                 <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
                   <InfoOutlineIcon />
                 </Tooltip>
               </Heading>
               <Flex>
                 <Box>
-                  <FormLabel htmlFor="maxHarmScore">Maximum</FormLabel>
+                  <FormLabel htmlFor="minHarmScore">Minimum</FormLabel>
                   <NumberInput
-                    id="maxHarmScore"
+                    id="minHarmScore"
                     maxWidth="60px"
                     size="sm"
                     step={1}
-                    defaultValue={7}
                     min={3}
                     max={15}
-                    {...register('maxHarmScore')}
+                    {...register('minHarmScore')}
                   >
                     <NumberInputField />
                     <NumberInputStepper>
@@ -135,16 +157,15 @@ const Filters = ({ setAllFilters }) => {
                   </NumberInput>
                 </Box>
                 <Box>
-                  <FormLabel htmlFor="minHarmScore">Minimum</FormLabel>
+                  <FormLabel htmlFor="maxHarmScore">Maximum</FormLabel>
                   <NumberInput
-                    id="minHarmScore"
+                    id="maxHarmScore"
                     maxWidth="60px"
                     size="sm"
                     step={1}
-                    defaultValue={3}
                     min={3}
                     max={15}
-                    {...register('minHarmScore')}
+                    {...register('maxHarmScore')}
                   >
                     <NumberInputField />
                     <NumberInputStepper>
@@ -157,10 +178,10 @@ const Filters = ({ setAllFilters }) => {
             </Box>
             <Box>
               <Stack spacing={3} direction="column">
-                <Checkbox id="detention" {...register('detention')}>
+                <Checkbox id="detention" {...register('detentionInvolvement')}>
                   Involved in Immigration Detention
                 </Checkbox>
-                <Checkbox id="labor" {...register('labor')}>
+                <Checkbox id="labor" {...register('laborInvolvement')}>
                   Involved in Prison Labor
                 </Checkbox>
                 <Checkbox id="divestment" {...register('divestment')}>
@@ -173,6 +194,9 @@ const Filters = ({ setAllFilters }) => {
       </form>
       <Button colorScheme="blue" type="submit" form="filter-form">
         Save
+      </Button>
+      <Button colorScheme="blue" variant="outline" onClick={resetFilters}>
+        Reset Filters
       </Button>
     </Flex>
   );
