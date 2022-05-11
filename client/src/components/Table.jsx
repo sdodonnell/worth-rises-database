@@ -63,13 +63,13 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       {
         Header: 'Involved in Immigration Detention',
         accessor: 'Immigration Detention Involvement',
-        id: 'detention',
+        id: 'detentionInvolvement',
         Cell: ({ value }) => (value ? '✓' : ''),
       },
       {
         Header: 'Involved in Prison Labor',
         accessor: 'Supports Prison Labor',
-        id: 'labor',
+        id: 'laborInvolvement',
         Cell: ({ value }) => (value ? '✓' : ''),
       },
       {
@@ -80,29 +80,24 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       // Hidden columns; only necessary for company profile modal
       {
-        Header: 'Year Founded',
         accessor: 'Founded',
         id: 'yearFounded',
-        Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
-        Header: '# Employees',
+        accessor: 'Last Acquired',
+        id: 'acquired',
+      },
+      {
         accessor: 'Employees',
         id: 'employees',
-        Cell: ({ value }) => (value ? Number(value) : '--'),
       },
       {
-        Header: 'Prison Industry Revenue Only?',
         accessor: 'Prison Industry Revenue Only(Y/N)',
         id: 'revenueOnly',
-        Cell: ({ value }) => (value ? '✓' : '--'),
       },
       {
-        Header: 'Parent Public Exposure',
         accessor: 'Parent Public Exposure',
         id: 'exposure',
-        // These values are prepended with identifiers like "Tier 1 - ", so slice these off
-        Cell: ({ value }) => (value ? value.split('-').slice(1).join('-') : '--'),
       },
       {
         accessor: 'Lead Executive',
@@ -116,6 +111,42 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'Headquarters',
         id: 'state',
       },
+      {
+        accessor: 'Revenue Fiscal Year',
+        id: 'fiscalYear',
+      },
+      {
+        accessor: 'Political Spending (Cumalative Since 2010)',
+        id: 'politicalSpending',
+      },
+      {
+        accessor: 'Notes',
+        id: 'notes',
+      },
+      {
+        accessor: 'Website',
+        id: 'website',
+      },
+      {
+        accessor: 'Corrections',
+        id: 'corrections',
+      },
+      {
+        accessor: 'Immigration Detention',
+        id: 'detention',
+      },
+      {
+        accessor: 'Prison Labor',
+        id: 'labor',
+      },
+      {
+        accessor: 'Financials',
+        id: 'financials',
+      },
+      {
+        accessor: 'Other',
+        id: 'other',
+      },
     ],
     []
   );
@@ -127,7 +158,26 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       initialState: {
         pageSize: 50,
         pageIndex: 0,
-        hiddenColumns: ['executive', 'harmScore', 'revenues', 'state', 'yearFounded', 'employees', 'exposure'],
+        hiddenColumns: [
+          'acquired',
+          'corrections',
+          'detention',
+          'employees',
+          'executive',
+          'exposure',
+          'financials',
+          'fiscalYear',
+          'harmScore',
+          'labor',
+          'notes',
+          'other',
+          'politicalSpending',
+          'revenueOnly',
+          'revenues',
+          'state',
+          'website',
+          'yearFounded',
+        ],
       },
     },
     useGlobalFilter,
@@ -187,7 +237,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       <GridItem colSpan={3}>
         <Flex p="10px" gap="2rem" bgColor="purple.500" w="full">
           <Link href="https://worthrises.org" isExternal>
-            <Image src="logo.png" h="40px" /> 
+            <Image src="logo.png" h="40px" />
           </Link>
           <Search setSearchTerm={setGlobalFilter} searchTerm={globalFilter} />
         </Flex>
