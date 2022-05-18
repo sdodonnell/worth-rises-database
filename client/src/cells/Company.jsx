@@ -10,12 +10,38 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  SimpleGrid,
   Text,
   Tooltip,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ExternalLinkIcon, InfoOutlineIcon } from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon, ExternalLinkIcon, InfoOutlineIcon } from '@chakra-ui/icons';
 import React from 'react';
+import TradingViewWidget from '../components/TradingViewWidget';
+
+const Header = ({ text, children }) => {
+  if (children) {
+    return (
+      <Heading fontSize="11px" color="rgb(0 0 0 / 70%)" textTransform="uppercase">
+        {text}
+        {children}
+      </Heading>
+    );
+  }
+  return (
+    <Heading fontSize="11px" color="rgb(0 0 0 / 70%)" textTransform="uppercase" _notFirst={{ marginTop: "10px"}}>
+      <Text>{text}</Text>
+    </Heading>
+  );
+};
+
+const CheckOrCloseIcon = isTrue => {
+  if (isTrue) {
+    return <CheckIcon />
+  }
+
+  return <CloseIcon />
+}
 
 const Company = ({ name, values }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,7 +71,7 @@ const Company = ({ name, values }) => {
     revenueOnly = '--',
     revenues = '--',
     state,
-    stock = '--',
+    stock,
     website,
     yearFounded = '--',
   } = values;
@@ -68,7 +94,7 @@ const Company = ({ name, values }) => {
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 {website && (
                   <Box>
-                    <Heading size="sm">Website</Heading>
+                    <Header text="Website" />
                     <Link href={website} isExternal>
                       {website} <ExternalLinkIcon mx="2px" />
                     </Link>
@@ -77,111 +103,113 @@ const Company = ({ name, values }) => {
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
-                  <Heading size="sm">Year Founded</Heading>
+                  <Header text="Year Founded" />
                   <Text>{yearFounded}</Text>
                 </Box>
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
-                  <Heading size="sm">Active Brand?</Heading>
+                  <Header text="Active Brand?" />
                   <Text>{active}</Text>
                 </Box>
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
-                  <Heading size="sm">
-                    Harm Score (3-15){' '}
+                  <Header text="Harm Score (3-15)">
                     <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
                       <InfoOutlineIcon />
                     </Tooltip>
-                  </Heading>
+                  </Header>
                   <Text>{harmScore}</Text>
                 </Box>
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
-                  <Heading size="sm">Headquarters</Heading>
+                  <Header text="Headquarters" />
                   <Text>{state}</Text>
-                  <Heading size="sm">Number of Employees</Heading>
+                  <Header text="Number of Employees" />
                   <Text>{Number(employees).toLocaleString('en-US') || '--'}</Text>
                 </Box>
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
-                  <Heading size="sm">Last Acquired</Heading>
+                  <Header text="Last Acquired" />
                   <Text>{acquired}</Text>
-                  <Heading size="sm">Lead Executive</Heading>
+                  <Header text="Lead Executive" />
                   <Text>{executive}</Text>
-                  <Heading size="sm">Owner/Major Investor</Heading>
+                  <Header text="Owner/Major Investor" />
                   <Text>{owner}</Text>
-                  <Heading size="sm">Parent Company</Heading>
+                  <Header text="Parent Company" />
                   <Text>{parent}</Text>
                 </Box>
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
-                  <Heading size="sm">Primary Sector</Heading>
+                  <Header text="Primary Sector" />
                   <Text>{primarySector}</Text>
-                  <Heading size="sm">Parent Public Exposure</Heading>
+                  <Header text="Parent Public Exposure" />
                   <Text>{exposure}</Text>
-                  <Heading size="sm">Parent Stock Ticker</Heading>
-                  <Text>{stock}</Text>
+                  <Header text="Parent Stock Ticker" />
+                  <Text>{stock || '--'}</Text>
                 </Box>
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
-
-                  <Heading size="sm">Annual Revenues (Mn)</Heading>
+                  <Header text="Annual Revenues (Mn)" />
                   <Text>{revenues}</Text>
-                  <Heading size="sm">Prison Industry Revenue Only</Heading>
+                  <Header text="Prison Industry Revenue Only" />
                   <Text>{revenueOnly}</Text>
-                  <Heading size="sm">Revenue Fiscal Year</Heading>
+                  <Header text="Revenue Fiscal Year" />
                   <Text>{fiscalYear}</Text>
-                  <Heading size="sm">Financials</Heading>
+                  <Header text="Financials" />
                   <Text>{financials}</Text>
                 </Box>
               </GridItem>
+              {stock && (
+                <GridItem colSpan={2} rowSpan={2}>
+                  <TradingViewWidget stockTicker={stock} />
+                </GridItem>
+              )}
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 <Box>
-                  <Heading size="sm">
-                    Political Spending{' '}
+                  <Header text="Political Spending">
                     <Tooltip label="Cumulative Since 2010" fontSize="md">
                       <InfoOutlineIcon />
                     </Tooltip>
-                  </Heading>
+                  </Header>
                   <Text>{politicalSpending}</Text>
                 </Box>
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Heading size="sm">Immigration Detention</Heading>
-                  <Text>{detention  ? 'Y' : 'N'}</Text>
-                  <Heading size="sm">Immigration Detention Involvement</Heading>
-                  <Text>{detentionInvolvement ? 'Y' : 'N'}</Text>
-                  <Heading size="sm">Prison Labor</Heading>
-                  <Text>{labor ? 'Y' : 'N'}</Text>
-                  <Heading size="sm">Supports Prison Labor</Heading>
-                  <Text>{laborInvolvement ? 'Y' : 'N'}</Text>
-                  <Heading size="sm">Divestment (Y/N)</Heading>
-                  <Text>{divestment  ? 'Y' : 'N'}</Text>
-                </Box>
+                <SimpleGrid templateColumns="auto 20px">
+                  <Header text="Immigration Detention" />
+                  <CheckOrCloseIcon isTrue={detention} />
+                  <Header text="Immigration Detention Involvement" />
+                  <CheckOrCloseIcon isTrue={detentionInvolvement} />
+                  <Header text="Prison Labor" />
+                  <CheckOrCloseIcon isTrue={labor} />
+                  <Header text="Supports Prison Labor" />
+                  <CheckOrCloseIcon isTrue={laborInvolvement} />
+                  <Header text="Divestment (Y/N)" />
+                  <CheckOrCloseIcon isTrue={divestment} />
+                </SimpleGrid>
               </GridItem>
               <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
                 {notes && (
                   <Box>
-                    <Heading size="sm">Notes</Heading>
+                    <Header text="Notes" />
                     <Text>{notes}</Text>
                   </Box>
                 )}
                 {corrections && (
                   <Box>
-                    <Heading size="sm">Corrections</Heading>
+                    <Header text="Corrections" />
                     <Text>{corrections}</Text>
                   </Box>
                 )}
                 {other && (
                   <Box>
-                    <Heading size="sm">Other</Heading>
+                    <Header text="Other" />
                     <Text>{other}</Text>
                   </Box>
                 )}
