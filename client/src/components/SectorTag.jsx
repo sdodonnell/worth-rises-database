@@ -1,7 +1,7 @@
 import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
-const SectorTag = ({ sector }) => {
+const SectorTag = ({ sector, setAllFilters }) => {
   const sectorColors = {
     Healthcare: 'red',
     Equipment: 'orange',
@@ -19,8 +19,21 @@ const SectorTag = ({ sector }) => {
     Telecom: 'green',
   };
 
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    setAllFilters([{ id: 'primarySector', value: e.target.innerText }]);
+  };
+
   return (
-    <Tag colorScheme={sectorColors[sector]} size="sm" whiteSpace="no-wrap">
+    <Tag
+      colorScheme={sectorColors[sector]}
+      size="sm"
+      whiteSpace="no-wrap"
+      onClick={handleClick}
+      _hover={{ cursor: 'pointer' }}
+      title="Click to filter by sector"
+    >
       {sector}
     </Tag>
   );

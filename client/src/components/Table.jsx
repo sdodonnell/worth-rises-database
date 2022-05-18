@@ -47,7 +47,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Primary Sector',
         accessor: 'Primary Sector',
         id: 'primarySector',
-        Cell: ({ value }) => <SectorTag sector={value} />,
+        Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} />,
         minWidth: 230,
       },
       {
