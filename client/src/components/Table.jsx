@@ -5,7 +5,6 @@ import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 import Company from '../cells/Company';
-import Search from './Search';
 import Filters from './Filters';
 import SectorTag from './SectorTag';
 
@@ -59,7 +58,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Harm Score',
         accessor: 'Harm Score',
         id: 'harmScore',
-        filter: 'between'
+        filter: 'between',
       },
       {
         Header: 'Involved in Immigration Detention',
@@ -240,11 +239,16 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           <Link href="https://worthrises.org" isExternal>
             <Image src="logo.png" h="40px" />
           </Link>
-          <Search setSearchTerm={setGlobalFilter} searchTerm={globalFilter} />
         </Flex>
       </GridItem>
       <GridItem borderRight="1px" borderColor="purple.400">
-        <Filters setGlobalFilter={setGlobalFilter} globalFilter={globalFilter} setAllFilters={setAllFilters} />
+        <Filters
+          setGlobalFilter={setGlobalFilter}
+          globalFilter={globalFilter}
+          setAllFilters={setAllFilters}
+          setSearchTerm={setGlobalFilter}
+          searchTerm={globalFilter}
+        />
       </GridItem>
       <GridItem overflow="scroll">
         <TableUI

@@ -1,13 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
   Checkbox,
-  filter,
   Flex,
   FormControl,
   FormLabel,
   Heading,
+  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -15,43 +15,73 @@ import {
   NumberInputStepper,
   Select,
   Stack,
+  Text,
   Tooltip,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 
-const Filters = ({ setAllFilters }) => {
-  const { register, handleSubmit } = useForm();
+const Filters = ({ setAllFilters, searchTerm = '', setSearchTerm }) => {
+  const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (data) => {
-    const { primarySector, subsector, minHarmScore, maxHarmScore, detentionInvolvement, laborInvolvement, divestment } =
-      data;
+    const {
+      keyword,
+      primarySector,
+      subsector,
+      minHarmScore,
+      maxHarmScore,
+      detentionInvolvement,
+      labor,
+      divestment,
+      active,
+    } = data;
+    
+    console.log('data');
 
     const filters = [
       { id: 'primarySector', value: primarySector },
       { id: 'subsector', value: subsector },
       { id: 'detentionInvolvement', value: detentionInvolvement },
-      { id: 'laborInvolvement', value: laborInvolvement },
-      { id: 'divestment', value: divestment },
+      { id: 'labor', value: labor },
     ];
+
+    if (active) {
+      filters.push({ id: 'active', value: 'Y' });
+    }
+
+    if (divestment) {
+      filters.push({ id: 'divestment', value: 'Y' });
+    }
 
     if (minHarmScore && maxHarmScore) {
       filters.push({ id: 'harmScore', value: [Number(minHarmScore), Number(maxHarmScore)] });
     }
 
     setAllFilters(filters);
+    setSearchTerm(keyword);
   };
 
   const resetFilters = () => {
+    // This should also clear all input fields
     setAllFilters([]);
-  }
+    setSearchTerm(null);
+    reset();
+  };
 
   return (
     <Flex direction="column" p="10px" gap={5}>
       <Heading size="lg">Filters</Heading>
+      {/* This is awkward, but it's a requirement for react-hook-form */}
       <form id="filter-form" onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
           <Flex direction="column" gap="12px">
+            <Box>
+              <FormLabel htmlFor="keyword">
+                <Heading size="sm">Keyword</Heading>
+              </FormLabel>
+              <Input placeholder="Enter Keyword" {...register('keyword')} />
+            </Box>
             <Box>
               <FormLabel htmlFor="primarySector">
                 <Heading size="sm">Sector</Heading>
@@ -132,14 +162,13 @@ const Filters = ({ setAllFilters }) => {
             </Box>
             <Box>
               <Heading size="sm">
-                Harm Score (3-13){' '}
+                Harm Score
                 <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
                   <InfoOutlineIcon />
                 </Tooltip>
               </Heading>
-              <Flex>
+              <Flex pt="5px">
                 <Box>
-                  <FormLabel htmlFor="minHarmScore">Minimum</FormLabel>
                   <NumberInput
                     id="minHarmScore"
                     maxWidth="60px"
@@ -156,8 +185,8 @@ const Filters = ({ setAllFilters }) => {
                     </NumberInputStepper>
                   </NumberInput>
                 </Box>
+                <Text px="5px">to</Text>
                 <Box>
-                  <FormLabel htmlFor="maxHarmScore">Maximum</FormLabel>
                   <NumberInput
                     id="maxHarmScore"
                     maxWidth="60px"
@@ -177,25 +206,40 @@ const Filters = ({ setAllFilters }) => {
               </Flex>
             </Box>
             <Box>
+              <FormLabel htmlFor="exposure">
+                <Heading size="sm">Public Markets Exposure</Heading>
+              </FormLabel>
+              <Select id="exposure" placeholder="Select market exposure tier" {...register('exposure')}>
+                <option>Tier 1a - Publicly Traded - Targeted Correctional Exposure</option>
+                <option>Tier 1b - Publicly Traded - Other</option>
+                <option>Tier 2 - Investment Firm-Owned</option>
+                <option>Tier 4 - Small Privately-Owned</option>
+                <option>Tier 3 - Large Privately-Owned, requires outside financing</option>
+              </Select>
+            </Box>
+            <Box>
               <Stack spacing={3} direction="column">
+                <Checkbox id="divestment" {...register('divestment')}>
+                  Divestment Target
+                </Checkbox>
+                <Checkbox id="labor" {...register('labor')}>
+                  Supports Prison Labor
+                </Checkbox>
                 <Checkbox id="detention" {...register('detentionInvolvement')}>
                   Involved in Immigration Detention
                 </Checkbox>
-                <Checkbox id="labor" {...register('laborInvolvement')}>
-                  Involved in Prison Labor
-                </Checkbox>
-                <Checkbox id="divestment" {...register('divestment')}>
-                  Divestment
+                <Checkbox id="active" {...register('active')}>
+                  Active Brands Only
                 </Checkbox>
               </Stack>
             </Box>
           </Flex>
         </FormControl>
       </form>
-      <Button colorScheme="blue" type="submit" form="filter-form">
+      <Button colorScheme="purple" type="submit" form="filter-form">
         Save
       </Button>
-      <Button colorScheme="blue" variant="outline" onClick={resetFilters}>
+      <Button colorScheme="purple" variant="outline" onClick={resetFilters}>
         Reset Filters
       </Button>
     </Flex>
