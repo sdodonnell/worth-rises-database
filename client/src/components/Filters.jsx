@@ -18,40 +18,78 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 
-const Filters = ({ setAllFilters, searchTerm = '', setSearchTerm }) => {
-  const { register, handleSubmit, reset } = useForm();
+const sectorMapping = {
+  'Community Corrections': [
+    'Bail & Surety',
+    'Day Reporting Center',
+    'Electronic Monitoring',
+    'Outpatient Programs',
+    'Residential Programs',
+  ],
+  'Construction & Maintenance': [
+    'Architecture & Engineering',
+    'Construction',
+    'Maintenance Services',
+    'Utility/Energy',
+  ],
+  'Data & Information Systems': [
+    'Arrest, Court, & Probation Data Systems',
+    'Corrections Data Systems',
+    'Immigration Data Systems',
+    'IT & Communications',
+    'Infrastructure & Services',
+    'Medical Records Systems',
+  ],
+  Equipment: ['Furnishings & Supplies', 'Security Equipment', 'Security Technology'],
+  'Financial Services': ['Agency Payment Processing', 'Money Transfers', 'Cash & Release Cards'],
+  'Food & Commissary': ['Care Packages', 'Commissary', 'Kitchen Equipment', 'Prison Food', 'Vending Machines'],
+  Healthcare: [
+    'Ambulance Services',
+    'Medical Equipment',
+    'Medical Healthcare',
+    'Mental Health Services',
+    'Medical Records Systems',
+    'Pharmacy',
+    'Substance Abuse Treatment',
+    'Third Party Staffing',
+  ],
+  Investor: [],
+  'Operations & Management': [
+    'Immigration Detention Operator',
+    'Private Prison Operator',
+    'Procurement, Contracting, & Other Admin Services',
+  ],
+  Other: [],
+  Personnel: ['Staff Management System', 'Staff Training', 'Third Party Staffing'],
+  'Programs & Labor': [
+    'Education Services, Materials, & Technology',
+    'Rehab Programming',
+    'Vocation/Industries (Prison Labor)',
+  ],
+  Telecom: ['Prison Communications', 'Tablets', 'Telecom Surveillance & Security'],
+  Transportation: ['Agency Transportation', 'Prison Transportation', 'Visitor Transportation'],
+};
+
+const Filters = ({ setAllFilters, setSearchTerm }) => {
+  const { register, handleSubmit, reset, control } = useForm();
+  const sector = useWatch({ control, name: 'sector' });
 
   const onSubmit = (data) => {
-    const {
-      keyword,
-      primarySector,
-      subsector,
-      minHarmScore,
-      maxHarmScore,
-      detentionInvolvement,
-      labor,
-      divestment,
-      active,
-    } = data;
-    
-    console.log('data');
+    const { keyword, sector, subsector, minHarmScore, maxHarmScore, detention, labor, divestment, active } = data;
 
     const filters = [
-      { id: 'primarySector', value: primarySector },
+      { id: 'primarySector', value: sector },
       { id: 'subsector', value: subsector },
-      { id: 'detentionInvolvement', value: detentionInvolvement },
-      { id: 'labor', value: labor },
+      { id: 'detentionInvolvement', value: detention },
+      { id: 'laborInvolvement', value: labor },
+      { id: 'divestment', value: divestment },
     ];
 
     if (active) {
       filters.push({ id: 'active', value: 'Y' });
-    }
-
-    if (divestment) {
-      filters.push({ id: 'divestment', value: 'Y' });
     }
 
     if (minHarmScore && maxHarmScore) {
@@ -63,7 +101,6 @@ const Filters = ({ setAllFilters, searchTerm = '', setSearchTerm }) => {
   };
 
   const resetFilters = () => {
-    // This should also clear all input fields
     setAllFilters([]);
     setSearchTerm(null);
     reset();
@@ -83,25 +120,13 @@ const Filters = ({ setAllFilters, searchTerm = '', setSearchTerm }) => {
               <Input placeholder="Enter Keyword" {...register('keyword')} />
             </Box>
             <Box>
-              <FormLabel htmlFor="primarySector">
+              <FormLabel htmlFor="sector">
                 <Heading size="sm">Sector</Heading>
               </FormLabel>
-              <Select id="primarySector" placeholder="Select sector" {...register('primarySector')}>
-                <option>Community Corrections</option>
-                <option>Construction &amp; Maintenance</option>
-                <option>Data &amp; Information Systems</option>
-                <option>Equipment</option>
-                <option>Financial Services</option>
-                <option>Food &amp; Commissary</option>
-                <option>Healthcare</option>
-                <option>Investor</option>
-                <option>Investor</option>
-                <option>Operations &amp; Management</option>
-                <option>Other</option>
-                <option>Personnel</option>
-                <option>Programs &amp; Labor</option>
-                <option>Telecom</option>
-                <option>Transportation</option>
+              <Select id="sector" placeholder="Select sector" {...register('sector')}>
+                {Object.keys(sectorMapping).map((sector) => (
+                  <option key={sector}>{sector}</option>
+                ))}
               </Select>
             </Box>
             <Box>
@@ -109,55 +134,7 @@ const Filters = ({ setAllFilters, searchTerm = '', setSearchTerm }) => {
                 <Heading size="sm">Sub-sector</Heading>
               </FormLabel>
               <Select id="subsector" placeholder="Select sub-sector" {...register('subsector')}>
-                <option>Ambulance Services</option>
-                <option>Agency Payment Processing</option>
-                <option>Agency Transportation</option>
-                <option>Architecture &amp; Engineerging</option>
-                <option>Arrest, Court, &amp; Probation Data Systems</option>
-                <option>Bail &amp; Surety</option>
-                <option>Care Packages</option>
-                <option>Cash &amp; Release Cards</option>
-                <option>Commissary</option>
-                <option>Construction</option>
-                <option>Construction, Equipment, &amp; Acquisition Financing</option>
-                <option>Corrections Data Systems</option>
-                <option>Day Reporting Center</option>
-                <option>Education Services, Materials, &amp; Technology</option>
-                <option>Electronic Monitoring</option>
-                <option>Equity/Debt Investor</option>
-                <option>Furnishings, Supplies, &amp; Other Facility Equipment</option>
-                <option>IT &amp; Communcations Infrastructure &amp; Service</option>
-                <option>Immigration Detention Operator</option>
-                <option>Kitchen Equipment</option>
-                <option>Maintenance Services</option>
-                <option>Medical Equipment</option>
-                <option>Medical Healthcare</option>
-                <option>Medical Records Systems</option>
-                <option>Mental Health Services</option>
-                <option>Money Transfers</option>
-                <option>Other</option>
-                <option>Outpatient Programs</option>
-                <option>Pharmacy</option>
-                <option>Prison Communications</option>
-                <option>Prison Food</option>
-                <option>Prison Transportation</option>
-                <option>Private Prison Operator</option>
-                <option>Probation, Parole, &amp; Other Supervision</option>
-                <option>Procurement, Contracting, &amp; Other Admin Services</option>
-                <option>Rehab Programming</option>
-                <option>Residential Programs</option>
-                <option>Security Equipment</option>
-                <option>Security Technology</option>
-                <option>Staff Management Systems</option>
-                <option>Staff Training</option>
-                <option>Substance Abuse Treatment</option>
-                <option>Tablets</option>
-                <option>Telecom Surveillance &amp; Security</option>
-                <option>Third Party Staffing</option>
-                <option>Utility/Energy</option>
-                <option>Vending Machines</option>
-                <option>Visitor Transportation</option>
-                <option>Vocation/Industries (Prison Labor)</option>
+                {sector && sectorMapping[sector].map((subsector) => <option key={sector}>{subsector}</option>)}
               </Select>
             </Box>
             <Box>
@@ -219,18 +196,46 @@ const Filters = ({ setAllFilters, searchTerm = '', setSearchTerm }) => {
             </Box>
             <Box>
               <Stack spacing={3} direction="column">
-                <Checkbox id="divestment" {...register('divestment')}>
-                  Divestment Target
-                </Checkbox>
-                <Checkbox id="labor" {...register('labor')}>
-                  Supports Prison Labor
-                </Checkbox>
-                <Checkbox id="detention" {...register('detentionInvolvement')}>
-                  Involved in Immigration Detention
-                </Checkbox>
-                <Checkbox id="active" {...register('active')}>
-                  Active Brands Only
-                </Checkbox>
+                <Controller
+                  control={control}
+                  name="divestment"
+                  defaultValue={false}
+                  render={({ field: { value, onChange } }) => (
+                    <Checkbox id="divestment" isChecked={value} onChange={(e) => onChange(e.target.checked)}>
+                      Divestment Target
+                    </Checkbox>
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="labor"
+                  defaultValue={false}
+                  render={({ field: { value, onChange } }) => (
+                    <Checkbox id="labor" isChecked={value} onChange={(e) => onChange(e.target.checked)}>
+                      Supports Prison Labor
+                    </Checkbox>
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="detention"
+                  defaultValue={false}
+                  render={({ field: { value, onChange } }) => (
+                    <Checkbox id="detention" isChecked={value} onChange={(e) => onChange(e.target.checked)}>
+                      Involved in Immigration Detention
+                    </Checkbox>
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="active"
+                  defaultValue={false}
+                  render={({ field: { value, onChange } }) => (
+                    <Checkbox id="active" isChecked={value} onChange={(e) => onChange(e.target.checked)}>
+                      Active Brands Only
+                    </Checkbox>
+                  )}
+                />
               </Stack>
             </Box>
           </Flex>

@@ -44,10 +44,18 @@ const SectorTag = ({ sector, setAllFilters, variant }) => {
     //     {sector}
     //   </Tag>
     // );
-    return <Text onClick={sortBySector}>{sector}</Text>;
+    return (
+      <Text onClick={sortBySector} _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
+        {sector}
+      </Text>
+    );
   }
 
-  return <Text onClick={sortBySubsector}>{sector}</Text>;
+  return (
+    <Text onClick={sortBySubsector} _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
+      {sector}
+    </Text>
+  );
 };
 
 export default SectorTag;

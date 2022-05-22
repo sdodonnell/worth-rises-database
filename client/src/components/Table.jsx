@@ -253,7 +253,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           globalFilter={globalFilter}
           setAllFilters={setAllFilters}
           setSearchTerm={setGlobalFilter}
-          searchTerm={globalFilter}
         />
       </GridItem>
       <GridItem overflow="scroll">
