@@ -13,27 +13,21 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Company',
+        Header: 'Corporate Name',
         accessor: 'Company',
         id: 'company',
         Cell: ({ value, row: { values } }) => <Company name={value || '--'} values={values} />,
       },
       {
-        Header: 'Active?',
-        accessor: 'Active Brand (Y/N)',
-        id: 'active',
-        Cell: ({ value }) => (value === 'Y' ? '✓' : ''),
-      },
-      {
-        Header: 'Owner/Major Investor',
-        accessor: 'Owner/Major Investor',
-        id: 'owner',
-        Cell: ({ value }) => (value ? String(value) : '--'),
-      },
-      {
         Header: 'Parent Company',
         accessor: 'Parent Company',
         id: 'parent',
+        Cell: ({ value }) => (value ? String(value) : '--'),
+      },
+      {
+        Header: 'Major Investor',
+        accessor: 'Owner/Major Investor',
+        id: 'owner',
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
@@ -43,17 +37,37 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
-        Header: 'Primary Sector',
+        Header: 'Sectors',
         accessor: 'Primary Sector',
         id: 'primarySector',
-        Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} />,
+        Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="primary" />,
         minWidth: 230,
       },
       {
-        Header: 'Sub-sector',
+        Header: 'Subsectors',
         accessor: 'Primary Sub-sector',
         id: 'subsector',
+        Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />,
       },
+      {
+        Header: 'Divestment Target',
+        accessor: 'Divestment (Y/N)',
+        id: 'divestment',
+        Cell: ({ value }) => (value ? <Box textAlign="center">✓</Box> : ''),
+      },
+      {
+        Header: 'Prison Labor',
+        accessor: 'Supports Prison Labor',
+        id: 'laborInvolvement',
+        Cell: ({ value }) => (value ? <Box textAlign="center">✓</Box> : ''),
+      },
+      {
+        Header: 'Immigration Detention',
+        accessor: 'Immigration Detention Involvement',
+        id: 'detentionInvolvement',
+        Cell: ({ value }) => (value ? <Box textAlign="center">✓</Box> : ''),
+      },
+      // Hidden columns; only necessary for company profile modal
       {
         Header: 'Harm Score',
         accessor: 'Harm Score',
@@ -61,24 +75,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         filter: 'between',
       },
       {
-        Header: 'Involved in Immigration Detention',
-        accessor: 'Immigration Detention Involvement',
-        id: 'detentionInvolvement',
-        Cell: ({ value }) => (value ? '✓' : ''),
+        Header: 'Active?',
+        accessor: 'Active Brand (Y/N)',
+        id: 'active',
+        Cell: ({ value }) => (value === 'Y' ? <Box textAlign="center">✓</Box> : ''),
       },
-      {
-        Header: 'Involved in Prison Labor',
-        accessor: 'Supports Prison Labor',
-        id: 'laborInvolvement',
-        Cell: ({ value }) => (value ? '✓' : ''),
-      },
-      {
-        Header: 'Divestment',
-        accessor: 'Divestment (Y/N)',
-        id: 'divestment',
-        Cell: ({ value }) => (value ? '✓' : ''),
-      },
-      // Hidden columns; only necessary for company profile modal
       {
         accessor: 'Founded',
         id: 'yearFounded',
@@ -160,6 +161,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         pageIndex: 0,
         hiddenColumns: [
           'acquired',
+          'active',
           'corrections',
           'detention',
           'employees',
@@ -178,6 +180,10 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'website',
           'yearFounded',
         ],
+        sortBy: [
+          { id: 'harmScore', desc: true },
+          { id: 'company' }
+        ]
       },
     },
     useGlobalFilter,

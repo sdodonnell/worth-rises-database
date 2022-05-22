@@ -3,12 +3,8 @@ import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import React from 'react';
 
 const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, isLoading, isError }) => {
-  // if (isError) {
-  //   return null;
-  // }
-
   return (
-    <Table {...getTableProps()}>
+    <Table {...getTableProps()} size="sm">
       <Thead pos="sticky" top="0" bgColor="white" boxShadow="sm">
         {
           // Loop over the header rows
@@ -19,13 +15,13 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                 // Loop over the headers in each row
                 headerGroup.headers.map((column) => (
                   // Apply the header cell props
-                  <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <Th whiteSpace="nowrap" py="10px" {...column.getHeaderProps()}>
                     {
                       // Render the header
                       column.render('Header')
                     }
-                    <ChevronUpIcon w={3} h={3} opacity={column.isSorted ? 0.5 : 1}/>
-                    <ChevronDownIcon w={3} h={3} opacity={column.isSortedDesc ? 0.5 : 1}/>
+                    {/* <ChevronUpIcon w={3} h={3} opacity={column.isSorted ? 0.5 : 1}/>
+                    <ChevronDownIcon w={3} h={3} opacity={column.isSortedDesc ? 0.5 : 1}/> */}
                   </Th>
                 ))
               }
