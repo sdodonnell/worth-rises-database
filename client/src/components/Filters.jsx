@@ -19,7 +19,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const sectorMapping = {
   'Community Corrections': [
@@ -141,7 +141,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
               <Heading size="sm">
                 Harm Score
                 <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
-                  <InfoOutlineIcon />
+                  <QuestionOutlineIcon ml="5px" mt="-3px" />
                 </Tooltip>
               </Heading>
               <Flex pt="5px">

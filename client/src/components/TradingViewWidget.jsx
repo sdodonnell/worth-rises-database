@@ -22,11 +22,14 @@ const TradingViewWidget = ({ stockTicker }) => {
 
   return (
     <>
-      <div id={`tradingview_${stockTicker}`} style={{ height: 'calc(100% - 32px' }} />
+      <div
+        id={`tradingview_${stockTicker}`}
+        style={{ height: 'calc(100% - 32px', borderRadius: '10px', overflow: 'hidden' }}
+      />
       <div className="tradingview-widget-copyright">
         <a href={`https://www.tradingview.com/symbols/NYSE-${stockTicker}/`} rel="noreferrer" target="_blank">
           <span className="blue-text">{stockTicker} Chart</span>
-        </a>
+        </a>{' '}
         by TradingView
       </div>
     </>

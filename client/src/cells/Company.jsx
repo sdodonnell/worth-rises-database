@@ -1,219 +1,199 @@
 import {
-  Box,
   Grid,
   GridItem,
   Heading,
   Link,
+  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  SimpleGrid,
   Text,
   Tooltip,
+  UnorderedList,
   useDisclosure,
 } from '@chakra-ui/react';
-import { CheckIcon, CloseIcon, ExternalLinkIcon, InfoOutlineIcon } from '@chakra-ui/icons';
+import { ExternalLinkIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 import React from 'react';
+import isURL from 'validator/es/lib/isURL';
 import TradingViewWidget from '../components/TradingViewWidget';
 
 const Header = ({ text, children }) => {
   if (children) {
     return (
-      <Heading fontSize="11px" color="rgb(0 0 0 / 70%)" textTransform="uppercase">
+      <Heading fontSize="11px" color="rgb(0 0 0 / 70%)" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
         {text}
         {children}
       </Heading>
     );
   }
   return (
-    <Heading fontSize="11px" color="rgb(0 0 0 / 70%)" textTransform="uppercase" _notFirst={{ marginTop: "10px"}}>
+    <Heading fontSize="11px" color="rgb(0 0 0 / 70%)" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
       <Text>{text}</Text>
     </Heading>
   );
 };
 
-const CheckOrCloseIcon = isTrue => {
-  if (isTrue) {
-    return <CheckIcon />
-  }
-
-  return <CloseIcon />
-}
-
 const Company = ({ name, values }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
-    acquired = '--',
+    acquired = 'N/A',
     active,
-    company,
-    corrections = '--',
-    detention = '--',
-    detentionInvolvement = '--',
-    divestment = '--',
-    employees = '--',
-    executive = '--',
-    exposure = '--',
-    financials = '--',
-    fiscalYear = '--',
-    harmScore = 'Not calculated',
-    labor,
-    laborInvolvement = '--',
+    corrections = '',
+    detentionSource = '',
+    detentionInvolvement = 'N/A',
+    divestment = 'N/A',
+    employees = 'N/A',
+    exposure = 'N/A',
+    financials = '',
+    fiscalYear = 'N/A',
+    harmScore = 'N/A',
+    laborSource = '',
+    laborInvolvement = 'N/A',
     notes,
-    other,
-    owner = '--',
-    parent = '--',
-    politicalSpending = '--',
+    other = '',
+    owner = 'N/A',
+    parent = 'N/A',
+    politicalSpending = 'N/A',
     primarySector,
-    revenueOnly = '--',
-    revenues = '--',
+    revenueOnly,
+    revenues = 'N/A',
     state,
     stock,
+    subsector,
     website,
-    yearFounded = '--',
+    yearFounded = 'N/A',
   } = values;
+
+  const companyName = active === 'Y' ? name : `${name} (no longer operating)`;
+  const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
+  const hasSources =
+    isURL(detentionSource) || isURL(corrections) || isURL(laborSource) || isURL(other) || isURL(financials);
 
   return (
     <>
       <Text fontWeight="bold" _hover={{ textDecor: 'underline', cursor: 'pointer' }} onClick={onOpen}>
         {name}
       </Text>
-      <Modal isOpen={isOpen} onClose={onClose} size="full">
+      <Modal isOpen={isOpen} onClose={onClose} size="6xl" scrollBehavior="inside">
         <ModalOverlay />
         <ModalCloseButton />
         <ModalContent bgColor="soft.gray">
           <ModalHeader>
-            <Heading size="md">{company}</Heading>
+            {website ? (
+              <Link to={website}>
+                <Heading size="lg">
+                  {companyName} <ExternalLinkIcon mx="2px" />
+                </Heading>
+              </Link>
+            ) : (
+              <Heading size="lg">{companyName}</Heading>
+            )}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Grid templateRows="auto 1fr 1fr 1fr" templateColumns="1fr 1fr 1fr 1fr" gap="18px">
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                {website && (
-                  <Box>
-                    <Header text="Website" />
-                    <Link href={website} isExternal>
-                      {website} <ExternalLinkIcon mx="2px" />
-                    </Link>
-                  </Box>
-                )}
+          <ModalBody pb="20px">
+            <Grid templateRows="1fr 1fr 1fr" templateColumns="1fr 1fr 1fr 1fr 1fr 1fr" gap="18px">
+              <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
+                <Heading size="sm">Overview</Heading>
+                <Header text="Year Founded" />
+                <Text>{yearFounded}</Text>
+                <Header text="Headquarters" />
+                <Text>{state}</Text>
+                <Header text="Employees" />
+                <Text>{employeeCount}</Text>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Header text="Year Founded" />
-                  <Text>{yearFounded}</Text>
-                </Box>
+              <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
+                <Heading size="sm">Corporate Structure</Heading>
+                <Header text="Parent Company" />
+                <Text>{parent}</Text>
+                <Header text="Major Investor" />
+                <Text>{owner}</Text>
+                <Header text="Last Acquired" />
+                <Text>{acquired}</Text>
+                <Header text="Public Market Exposure" />
+                <Text>{exposure}</Text>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Header text="Active Brand?" />
-                  <Text>{active}</Text>
-                </Box>
+              <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
+                <Heading size="sm">Sectors</Heading>
+                <Header text="Sector" />
+                <Text>{primarySector}</Text>
+                <Header text="Subsector" />
+                <Text>{subsector}</Text>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Header text="Harm Score (3-15)">
-                    <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
-                      <InfoOutlineIcon />
-                    </Tooltip>
-                  </Header>
-                  <Text>{harmScore}</Text>
-                </Box>
+              <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
+                <Heading size="sm">Harm</Heading>
+                <Header text="Harm Score">
+                  <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
+                    <QuestionOutlineIcon ml="5px" mt="-3px" />
+                  </Tooltip>
+                </Header>
+                <Text>{harmScore}</Text>
+                <UnorderedList>
+                  {divestment && <ListItem>Divestment Target</ListItem>}
+                  {laborInvolvement && <ListItem>Prison Labor</ListItem>}
+                  {detentionInvolvement && <ListItem>Immigration Detemtion</ListItem>}
+                </UnorderedList>
               </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Header text="Headquarters" />
-                  <Text>{state}</Text>
-                  <Header text="Number of Employees" />
-                  <Text>{Number(employees).toLocaleString('en-US') || '--'}</Text>
-                </Box>
-              </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Header text="Last Acquired" />
-                  <Text>{acquired}</Text>
-                  <Header text="Lead Executive" />
-                  <Text>{executive}</Text>
-                  <Header text="Owner/Major Investor" />
-                  <Text>{owner}</Text>
-                  <Header text="Parent Company" />
-                  <Text>{parent}</Text>
-                </Box>
-              </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Header text="Primary Sector" />
-                  <Text>{primarySector}</Text>
-                  <Header text="Parent Public Exposure" />
-                  <Text>{exposure}</Text>
-                  <Header text="Parent Stock Ticker" />
-                  <Text>{stock || '--'}</Text>
-                </Box>
-              </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Header text="Annual Revenues (Mn)" />
-                  <Text>{revenues}</Text>
-                  <Header text="Prison Industry Revenue Only" />
-                  <Text>{revenueOnly}</Text>
-                  <Header text="Revenue Fiscal Year" />
-                  <Text>{fiscalYear}</Text>
-                  <Header text="Financials" />
-                  <Text>{financials}</Text>
-                </Box>
+              <GridItem colSpan={1} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
+                <Heading size="sm">Financials</Heading>
+                <Header text="Annual Revenues ($Mn)" />
+                <Text>{revenues}</Text>
+                <Header text="Prison Industry Revenue Only?" />
+                <Text>{revenueOnly ? 'Y' : 'N'}</Text>
+                <Header text="Revenue Fiscal Year" />
+                <Text>{fiscalYear}</Text>
+                <Header text="Political Spending">
+                  <Tooltip label="Cumulative Since 2010" fontSize="md">
+                    <QuestionOutlineIcon ml="5px" mt="-3px" />
+                  </Tooltip>
+                </Header>
+                <Text>{politicalSpending}</Text>
               </GridItem>
               {stock && (
-                <GridItem colSpan={2} rowSpan={2}>
+                <GridItem colSpan={3} rowSpan={2}>
                   <TradingViewWidget stockTicker={stock} />
                 </GridItem>
               )}
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Box>
-                  <Header text="Political Spending">
-                    <Tooltip label="Cumulative Since 2010" fontSize="md">
-                      <InfoOutlineIcon />
-                    </Tooltip>
-                  </Header>
-                  <Text>{politicalSpending}</Text>
-                </Box>
-              </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <SimpleGrid templateColumns="auto 20px">
-                  <Header text="Immigration Detention" />
-                  <CheckOrCloseIcon isTrue={detention} />
-                  <Header text="Immigration Detention Involvement" />
-                  <CheckOrCloseIcon isTrue={detentionInvolvement} />
-                  <Header text="Prison Labor" />
-                  <CheckOrCloseIcon isTrue={labor} />
-                  <Header text="Supports Prison Labor" />
-                  <CheckOrCloseIcon isTrue={laborInvolvement} />
-                  <Header text="Divestment (Y/N)" />
-                  <CheckOrCloseIcon isTrue={divestment} />
-                </SimpleGrid>
-              </GridItem>
-              <GridItem borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                {notes && (
-                  <Box>
-                    <Header text="Notes" />
-                    <Text>{notes}</Text>
-                  </Box>
-                )}
-                {corrections && (
-                  <Box>
-                    <Header text="Corrections" />
-                    <Text>{corrections}</Text>
-                  </Box>
-                )}
-                {other && (
-                  <Box>
-                    <Header text="Other" />
-                    <Text>{other}</Text>
-                  </Box>
-                )}
-              </GridItem>
+              {notes && (
+                <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
+                  <Heading size="sm">Notes</Heading>
+                  <Text>{notes}</Text>
+                </GridItem>
+              )}
+
+              {hasSources && (
+                <GridItem colSpan={1} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
+                  <Heading size="sm">Sources</Heading>
+                  {isURL(corrections) && (
+                    <Link to={corrections}>
+                      Corrections <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  )}
+                  {isURL(laborSource) && (
+                    <Link to={corrections}>
+                      Prison Labor <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  )}
+                  {isURL(detentionSource) && (
+                    <Link to={corrections}>
+                      Immigration Detention <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  )}
+                  {isURL(financials) && (
+                    <Link to={corrections}>
+                      Financials <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  )}
+                  {isURL(other) && (
+                    <Link to={corrections}>
+                      Other <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  )}
+                </GridItem>
+              )}
             </Grid>
           </ModalBody>
         </ModalContent>
