@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Table from './components/Table';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from './theme';
 
 const App = () => {
   const initialDataState = new Array(25).fill({});
@@ -15,7 +17,7 @@ const App = () => {
 
     const getData = async () => {
       try {
-        const results = await axios.get('/api');
+        const results = await axios.get('http://dev.thrillist.com:3002/api');
         clearTimeout(timeout);
         const data = results.data.flat();
         setData(data);
@@ -30,7 +32,11 @@ const App = () => {
     getData();
   }, []);
 
-  return <Table data={data} isLoading={isLoading} isError={isError} isCacheMiss={isCacheMiss} />;
+  return (
+    <ChakraProvider theme={theme}>
+      <Table data={data} isLoading={isLoading} isError={isError} isCacheMiss={isCacheMiss} />;
+    </ChakraProvider>
+  );
 };
 
 export default App;

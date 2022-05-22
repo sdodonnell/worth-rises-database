@@ -23,14 +23,14 @@ import TradingViewWidget from '../components/TradingViewWidget';
 const Header = ({ text, children }) => {
   if (children) {
     return (
-      <Heading fontSize="11px" color="rgb(0 0 0 / 70%)" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
+      <Heading fontSize="11px" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
         {text}
         {children}
       </Heading>
     );
   }
   return (
-    <Heading fontSize="11px" color="rgb(0 0 0 / 70%)" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
+    <Heading fontSize="11px" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
       <Text>{text}</Text>
     </Heading>
   );
@@ -82,7 +82,7 @@ const Company = ({ name, values }) => {
         <ModalOverlay />
         <ModalCloseButton />
         <ModalContent bgColor="soft.gray">
-          <ModalHeader>
+          <ModalHeader color="normal.purple">
             {website ? (
               <Link to={website}>
                 <Heading size="lg">
@@ -96,8 +96,18 @@ const Company = ({ name, values }) => {
           <ModalCloseButton />
           <ModalBody pb="20px">
             <Grid templateRows="1fr 1fr 1fr" templateColumns="1fr 1fr 1fr 1fr 1fr 1fr" gap="18px">
-              <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Heading size="sm">Overview</Heading>
+              <GridItem
+                colSpan={2}
+                borderRadius="10px"
+                p="10px"
+                bgColor="white"
+                borderLeft="5px solid"
+                borderColor="normal.green"
+                boxShadow="md"
+              >
+                <Heading size="sm" color="normal.purple">
+                  Overview
+                </Heading>
                 <Header text="Year Founded" />
                 <Text>{yearFounded}</Text>
                 <Header text="Headquarters" />
@@ -105,8 +115,18 @@ const Company = ({ name, values }) => {
                 <Header text="Employees" />
                 <Text>{employeeCount}</Text>
               </GridItem>
-              <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Heading size="sm">Corporate Structure</Heading>
+              <GridItem
+                colSpan={2}
+                borderRadius="10px"
+                p="10px"
+                bgColor="white"
+                borderLeft="5px solid"
+                borderColor="normal.green"
+                boxShadow="md"
+              >
+                <Heading size="sm" color="normal.purple">
+                  Corporate Structure
+                </Heading>
                 <Header text="Parent Company" />
                 <Text>{parent}</Text>
                 <Header text="Major Investor" />
@@ -116,15 +136,35 @@ const Company = ({ name, values }) => {
                 <Header text="Public Market Exposure" />
                 <Text>{exposure}</Text>
               </GridItem>
-              <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Heading size="sm">Sectors</Heading>
+              <GridItem
+                colSpan={2}
+                borderRadius="10px"
+                p="10px"
+                bgColor="white"
+                borderLeft="5px solid"
+                borderColor="normal.green"
+                boxShadow="md"
+              >
+                <Heading size="sm" color="normal.purple">
+                  Sectors
+                </Heading>
                 <Header text="Sector" />
                 <Text>{primarySector}</Text>
                 <Header text="Subsector" />
                 <Text>{subsector}</Text>
               </GridItem>
-              <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Heading size="sm">Harm</Heading>
+              <GridItem
+                colSpan={2}
+                borderRadius="10px"
+                p="10px"
+                bgColor="white"
+                borderLeft="5px solid"
+                borderColor="normal.green"
+                boxShadow="md"
+              >
+                <Heading size="sm" color="normal.purple">
+                  Harm
+                </Heading>
                 <Header text="Harm Score">
                   <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
                     <QuestionOutlineIcon ml="5px" mt="-3px" />
@@ -137,8 +177,18 @@ const Company = ({ name, values }) => {
                   {detentionInvolvement && <ListItem>Immigration Detemtion</ListItem>}
                 </UnorderedList>
               </GridItem>
-              <GridItem colSpan={1} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                <Heading size="sm">Financials</Heading>
+              <GridItem
+                colSpan={1}
+                borderRadius="10px"
+                p="10px"
+                bgColor="white"
+                borderLeft="5px solid"
+                borderColor="normal.green"
+                boxShadow="md"
+              >
+                <Heading size="sm" color="normal.purple">
+                  Financials
+                </Heading>
                 <Header text="Annual Revenues ($Mn)" />
                 <Text>{revenues}</Text>
                 <Header text="Prison Industry Revenue Only?" />
@@ -158,37 +208,57 @@ const Company = ({ name, values }) => {
                 </GridItem>
               )}
               {notes && (
-                <GridItem colSpan={2} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                  <Heading size="sm">Notes</Heading>
+                <GridItem
+                  colSpan={2}
+                  borderRadius="10px"
+                  p="10px"
+                  bgColor="white"
+                  borderLeft="5px solid"
+                  borderColor="normal.green"
+                  boxShadow="md"
+                >
+                  <Heading size="sm" color="normal.purple">
+                    Notes
+                  </Heading>
                   <Text>{notes}</Text>
                 </GridItem>
               )}
 
               {hasSources && (
-                <GridItem colSpan={1} borderRadius="10px" p="10px" bgColor="white" boxShadow="md">
-                  <Heading size="sm">Sources</Heading>
+                <GridItem
+                  colSpan={1}
+                  borderRadius="10px"
+                  p="10px"
+                  bgColor="white"
+                  borderLeft="5px solid"
+                  borderColor="normal.green"
+                  boxShadow="md"
+                >
+                  <Heading size="sm" color="normal.purple">
+                    Sources
+                  </Heading>
                   {isURL(corrections) && (
-                    <Link to={corrections}>
+                    <Link to={corrections} isExternal>
                       Corrections <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
                   {isURL(laborSource) && (
-                    <Link to={corrections}>
+                    <Link to={corrections} isExternal>
                       Prison Labor <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
                   {isURL(detentionSource) && (
-                    <Link to={corrections}>
+                    <Link to={corrections} isExternal>
                       Immigration Detention <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
                   {isURL(financials) && (
-                    <Link to={corrections}>
+                    <Link to={corrections} isExternal>
                       Financials <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
                   {isURL(other) && (
-                    <Link to={corrections}>
+                    <Link to={corrections} isExternal>
                       Other <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}

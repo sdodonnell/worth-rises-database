@@ -15,7 +15,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                 // Loop over the headers in each row
                 headerGroup.headers.map((column) => (
                   // Apply the header cell props
-                  <Th whiteSpace="nowrap" py="10px" {...column.getHeaderProps()}>
+                  <Th whiteSpace="nowrap" py="10px" color="normal.gray" {...column.getHeaderProps()}>
                     {
                       // Render the header
                       column.render('Header')

@@ -45,14 +45,14 @@ const SectorTag = ({ sector, setAllFilters, variant }) => {
     //   </Tag>
     // );
     return (
-      <Text onClick={sortBySector} _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
+      <Text minHeight="16px" onClick={sortBySector} _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
         {sector}
       </Text>
     );
   }
 
   return (
-    <Text onClick={sortBySubsector} _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
+    <Text minHeight="16px" onClick={sortBySubsector} _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
       {sector}
     </Text>
   );

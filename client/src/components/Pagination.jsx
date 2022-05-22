@@ -15,10 +15,10 @@ const Pagination = ({
   return (
     <Flex color="black">
       <Grid autoFlow="column" alignItems="center" gap="10px">
-        <Button size="sm" p="0.5rem" onClick={() => previousPage()} disabled={!isPreviousPage}>
+        <Button size="sm" p="0.5rem" colorScheme="brand" onClick={() => previousPage()} disabled={!isPreviousPage}>
           <ChevronLeftIcon w={6} h={6} />
         </Button>
-        <Button size="sm" p="0.5rem" onClick={() => nextPage()} disabled={!isNextPage} mr="10px">
+        <Button size="sm" p="0.5rem" colorScheme="brand" onClick={() => nextPage()} disabled={!isNextPage} mr="10px">
           <ChevronRightIcon w={6} h={6} />
         </Button>
         <Select

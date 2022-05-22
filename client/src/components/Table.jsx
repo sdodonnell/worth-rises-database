@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
-import { Box, Flex, Grid, GridItem, Image, Link, useToast } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, Heading, Image, Link, Text, useToast } from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
-import Company from '../cells/Company';
+import Company from './Company';
 import Filters from './Filters';
 import SectorTag from './SectorTag';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   const tableData = useMemo(() => data, [data]);
@@ -41,7 +42,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'Primary Sector',
         id: 'primarySector',
         Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="primary" />,
-        minWidth: 230,
       },
       {
         Header: 'Subsectors',
@@ -53,19 +53,31 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Divestment Target',
         accessor: 'Divestment (Y/N)',
         id: 'divestment',
-        Cell: ({ value }) => (value ? <Box textAlign="center">✓</Box> : ''),
+        Cell: ({ value }) => (
+          <Box minHeight="16px" textAlign="center">
+            {value ? '✓' : ''}
+          </Box>
+        ),
       },
       {
         Header: 'Prison Labor',
         accessor: 'Supports Prison Labor',
         id: 'laborInvolvement',
-        Cell: ({ value }) => (value ? <Box textAlign="center">✓</Box> : ''),
+        Cell: ({ value }) => (
+          <Box minHeight="16px" textAlign="center">
+            {value ? '✓' : ''}
+          </Box>
+        ),
       },
       {
         Header: 'Immigration Detention',
         accessor: 'Immigration Detention Involvement',
         id: 'detentionInvolvement',
-        Cell: ({ value }) => (value ? <Box textAlign="center">✓</Box> : ''),
+        Cell: ({ value }) => (
+          <Box minHeight="16px" textAlign="center">
+            {value ? '✓' : ''}
+          </Box>
+        ),
       },
       // Hidden columns; only necessary for company profile modal
       {
@@ -78,7 +90,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Active?',
         accessor: 'Active Brand (Y/N)',
         id: 'active',
-        Cell: ({ value }) => (value === 'Y' ? <Box textAlign="center">✓</Box> : ''),
       },
       {
         accessor: 'Founded',
@@ -180,10 +191,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'website',
           'yearFounded',
         ],
-        sortBy: [
-          { id: 'harmScore', desc: true },
-          { id: 'company' }
-        ]
+        sortBy: [{ id: 'harmScore', desc: true }, { id: 'company' }],
       },
     },
     useGlobalFilter,
@@ -239,21 +247,27 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   }, [isCacheMiss, isLoading]);
 
   return (
-    <Grid h="full" w="full" templateRows="60px calc(100vh - 110px) 50px" templateColumns="300px 1fr">
-      <GridItem colSpan={3}>
-        <Flex p="10px" gap="2rem" bgColor="purple.500" w="full">
-          <Link href="https://worthrises.org" isExternal>
-            <Image src="logo.png" h="40px" />
-          </Link>
-        </Flex>
-      </GridItem>
-      <GridItem borderRight="1px" borderColor="purple.400">
+    <Grid h="full" w="full" templateRows="160px calc(100vh - 210px) 50px" templateColumns="300px 1fr">
+      <GridItem colSpan={1} rowSpan={3} borderRight="1px" borderColor="purple.100">
         <Filters
           setGlobalFilter={setGlobalFilter}
           globalFilter={globalFilter}
           setAllFilters={setAllFilters}
           setSearchTerm={setGlobalFilter}
         />
+      </GridItem>
+      <GridItem colSpan={2} p="15px" borderBottom="1px solid" borderColor="purple.100">
+        <Heading color="normal.purple">Prison Industry: Private Sector Players</Heading>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat.
+        </Text>
+        <Link to="https://worthrises.org/theprisonindustry2020" isExternal>
+          <Text fontWeight="bold" color="normal.gray">
+            Methodology <ExternalLinkIcon />
+          </Text>
+        </Link>
       </GridItem>
       <GridItem overflow="scroll">
         <TableUI
@@ -266,8 +280,8 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           isError={isError}
         />
       </GridItem>
-      <GridItem colSpan={3}>
-        <Flex justify="space-between" align="center" p="1rem" bgColor="purple.100" color="white" h="50">
+      <GridItem colSpan={2} colStart={2}>
+        <Flex justify="space-between" align="center" p="1rem" bgColor="brand.100" color="white" h="50">
           <Pagination
             previousPage={previousPage}
             nextPage={nextPage}
