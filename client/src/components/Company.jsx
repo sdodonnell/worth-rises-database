@@ -16,7 +16,7 @@ import {
   UnorderedList,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ExternalLinkIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, ExternalLinkIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 import React from 'react';
 import isURL from 'validator/es/lib/isURL';
 import TradingViewWidget from '../components/TradingViewWidget';
@@ -45,8 +45,8 @@ const Company = ({ name, values }) => {
     active,
     corrections = '',
     detentionSource = '',
-    detentionInvolvement = 'N/A',
-    divestment = 'N/A',
+    detentionInvolvement,
+    divestment,
     employees = 'N/A',
     executive = 'N/A',
     exposure = 'N/A',
@@ -54,7 +54,7 @@ const Company = ({ name, values }) => {
     fiscalYear = 'N/A',
     harmScore = 'N/A',
     laborSource = '',
-    laborInvolvement = 'N/A',
+    laborInvolvement,
     notes,
     other = '',
     owner = 'N/A',
@@ -96,7 +96,7 @@ const Company = ({ name, values }) => {
           <ModalHeader color="normal.purple">
             {website ? (
               <Link href={website}>
-                <Flex alignItems="baseline">
+                <Flex alignItems="baseline" gap="5px">
                   {companyHeading}
                   <ExternalLinkIcon mx="2px" />
                 </Flex>
@@ -182,11 +182,50 @@ const Company = ({ name, values }) => {
                     <QuestionOutlineIcon ml="5px" mt="-3px" />
                   </Tooltip>
                 </Heading>
-                <UnorderedList>
-                  {divestment && <ListItem>Divestment Target</ListItem>}
-                  {laborInvolvement && <ListItem>Prison Labor</ListItem>}
-                  {detentionInvolvement && <ListItem>Immigration Detemtion</ListItem>}
+                <UnorderedList mb="15px">
+                  {
+                    <ListItem>
+                      Salience: ??{' '}
+                      <Tooltip label="Include a tooltip here about what salience is" fontSize="md">
+                        <QuestionOutlineIcon ml="5px" mt="-3px" />
+                      </Tooltip>
+                    </ListItem>
+                  }
+                  {
+                    <ListItem>
+                      Responsibility: ??{' '}
+                      <Tooltip label="Include a tooltip here about what responsibility is" fontSize="md">
+                        <QuestionOutlineIcon ml="5px" mt="-3px" />
+                      </Tooltip>
+                    </ListItem>
+                  }
+                  {
+                    <ListItem>
+                      Responsive: ??{' '}
+                      <Tooltip label="Include a tooltip here about what a responsive is" fontSize="md">
+                        <QuestionOutlineIcon ml="5px" mt="-3px" />
+                      </Tooltip>
+                    </ListItem>
+                  }
                 </UnorderedList>
+                {divestment && (
+                  <Flex alignItems="baseline" gap="5px">
+                    <CheckCircleIcon color="normal.red" h="12px" />
+                    Divestment Target
+                  </Flex>
+                )}
+                {laborInvolvement && (
+                  <Flex alignItems="baseline" gap="5px">
+                    <CheckCircleIcon color="normal.red" h="12px" />
+                    Supports Prison Labor
+                  </Flex>
+                )}
+                {detentionInvolvement && (
+                  <Flex alignItems="baseline" gap="5px">
+                    <CheckCircleIcon color="normal.red" h="12px" />
+                    Involved in Immigration Detention
+                  </Flex>
+                )}
               </GridItem>
               <GridItem
                 colSpan={2}
@@ -202,10 +241,10 @@ const Company = ({ name, values }) => {
                 </Heading>
                 <Header text="Annual Revenues ($Mn)" />
                 <Text>{revenues}</Text>
-                <Header text="Prison Industry Revenue Only?" />
-                <Text>{revenueOnly ? 'Y' : 'N'}</Text>
                 <Header text="Revenue Fiscal Year" />
                 <Text>{fiscalYear}</Text>
+                <Header text="Prison Industry Revenue Only" />
+                <Text>{revenueOnly ? 'Y' : 'N'}</Text>
                 <Header text="Political Spending">
                   <Tooltip label="Cumulative Since 2010" fontSize="md">
                     <QuestionOutlineIcon ml="5px" mt="-3px" />
