@@ -16,7 +16,7 @@ import {
   UnorderedList,
   useDisclosure,
 } from '@chakra-ui/react';
-import { CheckCircleIcon, ExternalLinkIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, ExternalLinkIcon, InfoIcon, QuestionOutlineIcon, WarningIcon } from '@chakra-ui/icons';
 import React from 'react';
 import isURL from 'validator/es/lib/isURL';
 import TradingViewWidget from '../components/TradingViewWidget';
@@ -159,7 +159,7 @@ const Company = ({ name, values }) => {
                 borderColor="normal.green"
                 boxShadow="md"
               >
-                <Heading size="sm" color="normal.purple">
+                <Heading size="sm" color="white" bgColor="normal.purple">
                   Sectors
                 </Heading>
                 <Header text="Sector" />
@@ -171,61 +171,43 @@ const Company = ({ name, values }) => {
                 colSpan={2}
                 borderRadius="10px"
                 p="10px"
-                bgColor="white"
+                bgColor="soft.red"
                 borderLeft="5px solid"
-                borderColor="normal.green"
+                borderColor="normal.red"
                 boxShadow="md"
               >
-                <Heading size="sm" color="normal.purple">
+                <Heading size="sm" color="white" bgColor="normal.red">
                   Harm Score: {harmScore}
                   <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
                     <QuestionOutlineIcon ml="5px" mt="-3px" />
                   </Tooltip>
                 </Heading>
                 <UnorderedList mb="15px">
-                  {
-                    <ListItem>
-                      Salience: ??{' '}
-                      <Tooltip label="Include a tooltip here about what salience is" fontSize="md">
-                        <QuestionOutlineIcon ml="5px" mt="-3px" />
-                      </Tooltip>
-                    </ListItem>
-                  }
-                  {
-                    <ListItem>
-                      Responsibility: ??{' '}
-                      <Tooltip label="Include a tooltip here about what responsibility is" fontSize="md">
-                        <QuestionOutlineIcon ml="5px" mt="-3px" />
-                      </Tooltip>
-                    </ListItem>
-                  }
-                  {
-                    <ListItem>
-                      Responsive: ??{' '}
-                      <Tooltip label="Include a tooltip here about what a responsive is" fontSize="md">
-                        <QuestionOutlineIcon ml="5px" mt="-3px" />
-                      </Tooltip>
-                    </ListItem>
-                  }
+                  {<ListItem>Salience: ?? </ListItem>}
+                  {<ListItem>Responsibility: ?? </ListItem>}
+                  {<ListItem>Responsive: ?? </ListItem>}
                 </UnorderedList>
+                <Flex flexDir="column">
                 {divestment && (
                   <Flex alignItems="baseline" gap="5px">
-                    <CheckCircleIcon color="normal.red" h="12px" />
+                    <WarningIcon color="normal.red" h="14px" />
                     Divestment Target
                   </Flex>
                 )}
                 {laborInvolvement && (
                   <Flex alignItems="baseline" gap="5px">
-                    <CheckCircleIcon color="normal.red" h="12px" />
+                    <WarningIcon color="normal.red" h="14px" />
                     Supports Prison Labor
                   </Flex>
                 )}
                 {detentionInvolvement && (
                   <Flex alignItems="baseline" gap="5px">
-                    <CheckCircleIcon color="normal.red" h="12px" />
+                    <WarningIcon color="normal.red" h="14px" />
                     Involved in Immigration Detention
                   </Flex>
                 )}
+
+                </Flex>
               </GridItem>
               <GridItem
                 colSpan={2}
