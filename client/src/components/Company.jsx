@@ -1,4 +1,5 @@
 import {
+  Flex,
   Grid,
   GridItem,
   Heading,
@@ -47,6 +48,7 @@ const Company = ({ name, values }) => {
     detentionInvolvement = 'N/A',
     divestment = 'N/A',
     employees = 'N/A',
+    executive = 'N/A',
     exposure = 'N/A',
     financials = '',
     fiscalYear = 'N/A',
@@ -68,10 +70,19 @@ const Company = ({ name, values }) => {
     yearFounded = 'N/A',
   } = values;
 
-  const companyName = active === 'Y' ? name : `${name} (no longer operating)`;
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
   const hasSources =
     isURL(detentionSource) || isURL(corrections) || isURL(laborSource) || isURL(other) || isURL(financials);
+
+  const companyHeading =
+    active === 'Y' ? (
+      <Heading size="lg">{name}</Heading>
+    ) : (
+      <Flex gap="5px" alignItems="baseline">
+        <Heading size="lg">{name}</Heading>
+        <Text size="md">(brand not active)</Text>
+      </Flex>
+    );
 
   return (
     <>
@@ -84,18 +95,19 @@ const Company = ({ name, values }) => {
         <ModalContent bgColor="soft.gray">
           <ModalHeader color="normal.purple">
             {website ? (
-              <Link to={website}>
-                <Heading size="lg">
-                  {companyName} <ExternalLinkIcon mx="2px" />
-                </Heading>
+              <Link href={website}>
+                <Flex alignItems="baseline">
+                  {companyHeading}
+                  <ExternalLinkIcon mx="2px" />
+                </Flex>
               </Link>
             ) : (
-              <Heading size="lg">{companyName}</Heading>
+              companyHeading
             )}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb="20px">
-            <Grid templateRows="1fr 1fr 1fr" templateColumns="1fr 1fr 1fr 1fr 1fr 1fr" gap="18px">
+            <Grid templateRows="1fr 1fr 1fr" templateColumns="repeat(8, 1fr)" gap="18px">
               <GridItem
                 colSpan={2}
                 borderRadius="10px"
@@ -114,6 +126,8 @@ const Company = ({ name, values }) => {
                 <Text>{state}</Text>
                 <Header text="Employees" />
                 <Text>{employeeCount}</Text>
+                <Header text="Lead Executive" />
+                <Text>{executive}</Text>
               </GridItem>
               <GridItem
                 colSpan={2}
@@ -163,14 +177,11 @@ const Company = ({ name, values }) => {
                 boxShadow="md"
               >
                 <Heading size="sm" color="normal.purple">
-                  Harm
-                </Heading>
-                <Header text="Harm Score">
+                  Harm Score: {harmScore}
                   <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
                     <QuestionOutlineIcon ml="5px" mt="-3px" />
                   </Tooltip>
-                </Header>
-                <Text>{harmScore}</Text>
+                </Heading>
                 <UnorderedList>
                   {divestment && <ListItem>Divestment Target</ListItem>}
                   {laborInvolvement && <ListItem>Prison Labor</ListItem>}
@@ -178,7 +189,7 @@ const Company = ({ name, values }) => {
                 </UnorderedList>
               </GridItem>
               <GridItem
-                colSpan={1}
+                colSpan={2}
                 borderRadius="10px"
                 p="10px"
                 bgColor="white"
@@ -200,13 +211,8 @@ const Company = ({ name, values }) => {
                     <QuestionOutlineIcon ml="5px" mt="-3px" />
                   </Tooltip>
                 </Header>
-                <Text>{politicalSpending}</Text>
+                <Text>{politicalSpending === 'N/A' ? 'N/A' : `$${politicalSpending}`}</Text>
               </GridItem>
-              {stock && (
-                <GridItem colSpan={3} rowSpan={2}>
-                  <TradingViewWidget stockTicker={stock} />
-                </GridItem>
-              )}
               {notes && (
                 <GridItem
                   colSpan={2}
@@ -226,7 +232,7 @@ const Company = ({ name, values }) => {
 
               {hasSources && (
                 <GridItem
-                  colSpan={1}
+                  colSpan={2}
                   borderRadius="10px"
                   p="10px"
                   bgColor="white"
@@ -238,30 +244,36 @@ const Company = ({ name, values }) => {
                     Sources
                   </Heading>
                   {isURL(corrections) && (
-                    <Link to={corrections} isExternal>
+                    <Link href={corrections} isExternal>
                       Corrections <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
                   {isURL(laborSource) && (
-                    <Link to={corrections} isExternal>
+                    <Link href={laborSource} isExternal>
                       Prison Labor <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
                   {isURL(detentionSource) && (
-                    <Link to={corrections} isExternal>
+                    <Link href={detentionSource} isExternal>
                       Immigration Detention <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
                   {isURL(financials) && (
-                    <Link to={corrections} isExternal>
+                    <Link href={financials} isExternal>
                       Financials <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
                   {isURL(other) && (
-                    <Link to={corrections} isExternal>
+                    <Link href={other} isExternal>
                       Other <ExternalLinkIcon mx="2px" />
                     </Link>
                   )}
+                </GridItem>
+              )}
+
+              {stock && (
+                <GridItem colSpan={4} rowSpan={2}>
+                  <TradingViewWidget stockTicker={stock} />
                 </GridItem>
               )}
             </Grid>

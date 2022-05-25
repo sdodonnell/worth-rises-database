@@ -10,11 +10,6 @@ import {
   Image,
   Input,
   Link,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
   Stack,
   Text,
@@ -41,8 +36,7 @@ const sectorMapping = {
     'Arrest, Court, & Probation Data Systems',
     'Corrections Data Systems',
     'Immigration Data Systems',
-    'IT & Communications',
-    'Infrastructure & Services',
+    'IT & Communications Infrastructure & Services',
     'Medical Records Systems',
   ],
   Equipment: ['Furnishings & Supplies', 'Security Equipment', 'Security Technology'],
@@ -76,7 +70,7 @@ const sectorMapping = {
 };
 
 const Filters = ({ setAllFilters, setSearchTerm }) => {
-  const { register, handleSubmit, reset, control } = useForm();
+  const { register, handleSubmit, reset, control } = useForm({ defaultValues: { maxHarmScore: 15 } });
   const sector = useWatch({ control, name: 'sector' });
 
   const onSubmit = (data) => {
@@ -121,7 +115,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
           <FormControl>
             <Flex direction="column" gap="12px">
               <Box>
-                <FormLabel color="normal.500" htmlFor="keyword">
+                <FormLabel color="brand.500" htmlFor="keyword">
                   <Heading size="sm">Keyword</Heading>
                 </FormLabel>
                 <Input placeholder="Enter Keyword" bgColor="white" {...register('keyword')} />
@@ -151,43 +145,27 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                     <QuestionOutlineIcon ml="5px" mt="-3px" color="brand.500" />
                   </Tooltip>
                 </Heading>
-                <Flex pt="5px">
+                <Flex pt="5px" alignItems="center">
                   <Box>
-                    <NumberInput
-                      id="minHarmScore"
-                      bgColor="white"
-                      maxWidth="60px"
-                      size="sm"
-                      step={1}
-                      min={3}
-                      max={15}
-                      {...register('minHarmScore')}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+                    <Select id="minHarmScore" bgColor="white" maxWidth="70px" {...register('minHarmScore')}>
+                      {Array(13)
+                        .fill()
+                        .map((_, i) => (
+                          <option key={i}>{i + 3}</option>
+                        ))}
+                    </Select>
                   </Box>
                   <Text px="5px">to</Text>
                   <Box>
-                    <NumberInput
-                      id="maxHarmScore"
-                      bgColor="white"
-                      maxWidth="60px"
-                      size="sm"
-                      step={1}
-                      min={3}
-                      max={15}
-                      {...register('maxHarmScore')}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+                    <Select id="maxHarmScore" bgColor="white" maxWidth="70px" defaultValue="15" {...register('maxHarmScore')}>
+                      {Array(13)
+                        .fill()
+                        .map((_, i) => (
+                          <option key={i}>
+                            {i + 3}
+                          </option>
+                        ))}
+                    </Select>
                   </Box>
                 </Flex>
               </Box>

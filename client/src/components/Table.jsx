@@ -50,6 +50,12 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />,
       },
       {
+        Header: 'Harm Score',
+        accessor: 'Harm Score',
+        id: 'harmScore',
+        filter: 'between',
+      },
+      {
         Header: 'Divestment Target',
         accessor: 'Divestment (Y/N)',
         id: 'divestment',
@@ -80,12 +86,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         ),
       },
       // Hidden columns; only necessary for company profile modal
-      {
-        Header: 'Harm Score',
-        accessor: 'Harm Score',
-        id: 'harmScore',
-        filter: 'between',
-      },
       {
         Header: 'Active?',
         accessor: 'Active Brand (Y/N)',
@@ -180,7 +180,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'exposure',
           'financials',
           'fiscalYear',
-          'harmScore',
           'laborSource',
           'notes',
           'other',
@@ -240,6 +239,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         status: 'info',
         duration: null,
         position: 'top',
+        colorScheme: 'brand'
       });
     } else {
       toast.closeAll();
@@ -263,7 +263,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat.
         </Text>
-        <Link to="https://worthrises.org/theprisonindustry2020" isExternal>
+        <Link href="https://worthrises.org/theprisonindustry2020" isExternal>
           <Text fontWeight="bold" color="normal.gray">
             Methodology <ExternalLinkIcon />
           </Text>
