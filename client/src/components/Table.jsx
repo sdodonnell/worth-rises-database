@@ -54,6 +54,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'Harm Score',
         id: 'harmScore',
         filter: 'between',
+        Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
         Header: 'Divestment Target',
@@ -239,7 +240,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         status: 'info',
         duration: null,
         position: 'top',
-        colorScheme: 'brand'
+        colorScheme: 'brand',
       });
     } else {
       toast.closeAll();

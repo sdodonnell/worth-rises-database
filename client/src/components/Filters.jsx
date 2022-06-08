@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const sectorMapping = {
@@ -39,7 +39,7 @@ const sectorMapping = {
     'IT & Communications Infrastructure & Services',
     'Medical Records Systems',
   ],
-  Equipment: ['Furnishings & Supplies', 'Security Equipment', 'Security Technology'],
+  Equipment: ['Furnishings, Supplies, & Other Facility Equipment', 'Security Equipment', 'Security Technology'],
   'Financial Services': ['Agency Payment Processing', 'Money Transfers', 'Cash & Release Cards'],
   'Food & Commissary': ['Care Packages', 'Commissary', 'Kitchen Equipment', 'Prison Food', 'Vending Machines'],
   Healthcare: [
@@ -70,10 +70,15 @@ const sectorMapping = {
 };
 
 const Filters = ({ setAllFilters, setSearchTerm }) => {
-  const { register, handleSubmit, reset, control } = useForm({ defaultValues: { maxHarmScore: 15 } });
-  const sector = useWatch({ control, name: 'sector' });
+  const { register, reset, control, watch } = useForm({ defaultValues: { maxHarmScore: 15 } });
+  const sector = watch('sector');
+  const data = watch();
 
-  const onSubmit = (data) => {
+  useEffect(() => {
+    submitSearch(data);
+  }, [data]);
+
+  const submitSearch = (data) => {
     const { active, detention, divestment, exposure, keyword, labor, maxHarmScore, minHarmScore, sector, subsector } =
       data;
 
@@ -110,8 +115,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
         <Image src="logo2.png" h="50px" />
       </Link>
       <Flex direction="column" p="15px" gap={5}>
-        {/* This is awkward, but it's a requirement for react-hook-form */}
-        <form id="filter-form" onSubmit={handleSubmit(onSubmit)}>
+        <form id="filter-form">
           <FormControl>
             <Flex direction="column" gap="12px">
               <Box>
@@ -134,8 +138,8 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 <FormLabel color="brand.500" htmlFor="subsector">
                   <Heading size="sm">Sub-sector</Heading>
                 </FormLabel>
-                <Select id="subsector" placeholder="Select sub-sector" bgColor="white" {...register('subsector')}>
-                  {sector && sectorMapping[sector].map((subsector) => <option key={sector}>{subsector}</option>)}
+                <Select id="subsector" placeholder="Select sub-sector" bgColor="white" isDisabled={!sector} {...register('subsector')}>
+                  {sector && sectorMapping[sector].map((subsector) => <option key={subsector}>{subsector}</option>)}
                 </Select>
               </Box>
               <Box>
@@ -157,13 +161,17 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                   </Box>
                   <Text px="5px">to</Text>
                   <Box>
-                    <Select id="maxHarmScore" bgColor="white" maxWidth="70px" defaultValue="15" {...register('maxHarmScore')}>
+                    <Select
+                      id="maxHarmScore"
+                      bgColor="white"
+                      maxWidth="70px"
+                      defaultValue="15"
+                      {...register('maxHarmScore')}
+                    >
                       {Array(13)
                         .fill()
                         .map((_, i) => (
-                          <option key={i}>
-                            {i + 3}
-                          </option>
+                          <option key={i}>{i + 3}</option>
                         ))}
                     </Select>
                   </Box>
@@ -257,10 +265,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
             </Flex>
           </FormControl>
         </form>
-        <Button colorScheme="brand" type="submit" form="filter-form">
-          Save
-        </Button>
-        <Button colorScheme="brand" variant="outline" onClick={resetFilters}>
+        <Button colorScheme="brand" onClick={resetFilters}>
           Reset Filters
         </Button>
       </Flex>
@@ -268,4 +273,4 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
   );
 };
 
-export default Filters;
+export default memo(Filters);

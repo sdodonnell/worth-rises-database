@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Grid,
   GridItem,
@@ -16,7 +17,8 @@ import {
   UnorderedList,
   useDisclosure,
 } from '@chakra-ui/react';
-import { CheckCircleIcon, ExternalLinkIcon, InfoIcon, QuestionOutlineIcon, WarningIcon } from '@chakra-ui/icons';
+import { Icon, ExternalLinkIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
+import { MdErrorOutline } from 'react-icons/md';
 import React from 'react';
 import isURL from 'validator/es/lib/isURL';
 import TradingViewWidget from '../components/TradingViewWidget';
@@ -34,6 +36,24 @@ const Header = ({ text, children }) => {
     <Heading fontSize="11px" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
       <Text>{text}</Text>
     </Heading>
+  );
+};
+
+const Source = ({ source, name }) => {
+  if (!source) return null;
+
+  if (isURL(source)) {
+    return (
+      <Link href={source} isExternal>
+        {name} <ExternalLinkIcon mx="2px" />
+      </Link>
+    );
+  }
+
+  return (
+    <Text>
+      {name}: {source}
+    </Text>
   );
 };
 
@@ -71,17 +91,15 @@ const Company = ({ name, values }) => {
   } = values;
 
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
-  const hasSources =
-    isURL(detentionSource) || isURL(corrections) || isURL(laborSource) || isURL(other) || isURL(financials);
+  const hasSources = detentionSource || corrections || laborSource || other || financials;
 
   const companyHeading =
     active === 'Y' ? (
       <Heading size="lg">{name}</Heading>
     ) : (
-      <Flex gap="5px" alignItems="baseline">
-        <Heading size="lg">{name}</Heading>
-        <Text size="md">(brand not active)</Text>
-      </Flex>
+      <Heading size="lg">
+        {name} <span style={{ fontSize: '16px' }}>(brand not active)</span>
+      </Heading>
     );
 
   return (
@@ -153,61 +171,64 @@ const Company = ({ name, values }) => {
               <GridItem
                 colSpan={2}
                 borderRadius="10px"
-                p="10px"
-                bgColor="white"
+                bgColor="soft.purple"
                 borderLeft="5px solid"
-                borderColor="normal.green"
+                borderColor="normal.purple"
                 boxShadow="md"
+                overflow="hidden"
               >
-                <Heading size="sm" color="white" bgColor="normal.purple">
+                <Heading size="sm" color="white" bgColor="normal.purple" p="10px 10px 8px">
                   Sectors
                 </Heading>
-                <Header text="Sector" />
-                <Text>{primarySector}</Text>
-                <Header text="Subsector" />
-                <Text>{subsector}</Text>
+                <Box p="10px">
+                  <Header text="Sector" />
+                  <Text>{primarySector}</Text>
+                  <Header text="Subsector" />
+                  <Text>{subsector}</Text>
+                </Box>
               </GridItem>
               <GridItem
                 colSpan={2}
                 borderRadius="10px"
-                p="10px"
                 bgColor="soft.red"
                 borderLeft="5px solid"
                 borderColor="normal.red"
                 boxShadow="md"
+                overflow="hidden"
               >
-                <Heading size="sm" color="white" bgColor="normal.red">
+                <Heading size="sm" color="white" bgColor="normal.red" p="10px 10px 8px">
                   Harm Score: {harmScore}
                   <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
                     <QuestionOutlineIcon ml="5px" mt="-3px" />
                   </Tooltip>
                 </Heading>
-                <UnorderedList mb="15px">
-                  {<ListItem>Salience: ?? </ListItem>}
-                  {<ListItem>Responsibility: ?? </ListItem>}
-                  {<ListItem>Responsive: ?? </ListItem>}
-                </UnorderedList>
-                <Flex flexDir="column">
-                {divestment && (
-                  <Flex alignItems="baseline" gap="5px">
-                    <WarningIcon color="normal.red" h="14px" />
-                    Divestment Target
+                <Box p="10px">
+                  <UnorderedList mb="15px">
+                    {<ListItem>Salience: ?? </ListItem>}
+                    {<ListItem>Responsibility: ?? </ListItem>}
+                    {<ListItem>Responsive: ?? </ListItem>}
+                  </UnorderedList>
+                  <Flex flexDir="column">
+                    {divestment && (
+                      <Flex alignItems="baseline" gap="5px">
+                        <Icon as={MdErrorOutline} color="normal.red" h="18px" w="18px" />
+                        Divestment Target
+                      </Flex>
+                    )}
+                    {laborInvolvement && (
+                      <Flex alignItems="baseline" gap="5px">
+                        <Icon as={MdErrorOutline} color="normal.red" h="18px" w="18px" />
+                        Supports Prison Labor
+                      </Flex>
+                    )}
+                    {detentionInvolvement && (
+                      <Flex alignItems="baseline" gap="5px">
+                        <Icon as={MdErrorOutline} color="normal.red" h="18px" w="18px" />
+                        Involved in Immigration Detention
+                      </Flex>
+                    )}
                   </Flex>
-                )}
-                {laborInvolvement && (
-                  <Flex alignItems="baseline" gap="5px">
-                    <WarningIcon color="normal.red" h="14px" />
-                    Supports Prison Labor
-                  </Flex>
-                )}
-                {detentionInvolvement && (
-                  <Flex alignItems="baseline" gap="5px">
-                    <WarningIcon color="normal.red" h="14px" />
-                    Involved in Immigration Detention
-                  </Flex>
-                )}
-
-                </Flex>
+                </Box>
               </GridItem>
               <GridItem
                 colSpan={2}
@@ -264,31 +285,13 @@ const Company = ({ name, values }) => {
                   <Heading size="sm" color="normal.purple">
                     Sources
                   </Heading>
-                  {isURL(corrections) && (
-                    <Link href={corrections} isExternal>
-                      Corrections <ExternalLinkIcon mx="2px" />
-                    </Link>
-                  )}
-                  {isURL(laborSource) && (
-                    <Link href={laborSource} isExternal>
-                      Prison Labor <ExternalLinkIcon mx="2px" />
-                    </Link>
-                  )}
-                  {isURL(detentionSource) && (
-                    <Link href={detentionSource} isExternal>
-                      Immigration Detention <ExternalLinkIcon mx="2px" />
-                    </Link>
-                  )}
-                  {isURL(financials) && (
-                    <Link href={financials} isExternal>
-                      Financials <ExternalLinkIcon mx="2px" />
-                    </Link>
-                  )}
-                  {isURL(other) && (
-                    <Link href={other} isExternal>
-                      Other <ExternalLinkIcon mx="2px" />
-                    </Link>
-                  )}
+                  <Box direction="column">
+                    <Source source={corrections} name="Corrections" />
+                    <Source source={laborSource} name="Prison Labor" />
+                    <Source source={detentionSource} name="Immigration Detention" />
+                    <Source source={financials} name="Financials" />
+                    <Source source={other} name="Other" />
+                  </Box>
                 </GridItem>
               )}
 
