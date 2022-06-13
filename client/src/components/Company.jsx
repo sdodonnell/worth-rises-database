@@ -129,44 +129,48 @@ const Company = ({ name, values }) => {
               <GridItem
                 colSpan={2}
                 borderRadius="10px"
-                p="10px"
                 bgColor="white"
                 borderLeft="5px solid"
-                borderColor="normal.green"
+                borderColor="normal.purple"
                 boxShadow="md"
+                overflow="hidden"
               >
-                <Heading size="sm" color="normal.purple">
+                <Heading size="sm" color="white" bgColor="normal.purple" p="10px 10px 8px">
                   Overview
                 </Heading>
-                <Header text="Year Founded" />
-                <Text>{yearFounded}</Text>
-                <Header text="Headquarters" />
-                <Text>{state}</Text>
-                <Header text="Employees" />
-                <Text>{employeeCount}</Text>
-                <Header text="Lead Executive" />
-                <Text>{executive}</Text>
+                <Box p="10px">
+                  <Header text="Year Founded" />
+                  <Text>{yearFounded}</Text>
+                  <Header text="Headquarters" />
+                  <Text>{state}</Text>
+                  <Header text="Employees" />
+                  <Text>{employeeCount}</Text>
+                  <Header text="Lead Executive" />
+                  <Text>{executive}</Text>
+                </Box>
               </GridItem>
               <GridItem
                 colSpan={2}
                 borderRadius="10px"
-                p="10px"
                 bgColor="white"
                 borderLeft="5px solid"
-                borderColor="normal.green"
+                borderColor="normal.purple"
                 boxShadow="md"
+                overflow="hidden"
               >
-                <Heading size="sm" color="normal.purple">
+                <Heading size="sm" color="white" bgColor="normal.purple" p="10px 10px 8px">
                   Corporate Structure
                 </Heading>
-                <Header text="Parent Company" />
-                <Text>{parent}</Text>
-                <Header text="Major Investor" />
-                <Text>{owner}</Text>
-                <Header text="Last Acquired" />
-                <Text>{acquired}</Text>
-                <Header text="Public Market Exposure" />
-                <Text>{exposure}</Text>
+                <Box p="10px">
+                  <Header text="Parent Company" />
+                  <Text>{parent}</Text>
+                  <Header text="Major Investor" />
+                  <Text>{owner}</Text>
+                  <Header text="Last Acquired" />
+                  <Text>{acquired}</Text>
+                  <Header text="Public Market Exposure" />
+                  <Text>{exposure}</Text>
+                </Box>
               </GridItem>
               <GridItem
                 colSpan={2}
@@ -233,42 +237,46 @@ const Company = ({ name, values }) => {
               <GridItem
                 colSpan={2}
                 borderRadius="10px"
-                p="10px"
                 bgColor="white"
                 borderLeft="5px solid"
-                borderColor="normal.green"
+                borderColor="normal.purple"
                 boxShadow="md"
+                overflow="hidden"
               >
-                <Heading size="sm" color="normal.purple">
+                <Heading size="sm" color="white" bgColor="normal.purple" p="10px 10px 8px">
                   Financials
                 </Heading>
-                <Header text="Annual Revenues ($Mn)" />
-                <Text>{revenues}</Text>
-                <Header text="Revenue Fiscal Year" />
-                <Text>{fiscalYear}</Text>
-                <Header text="Prison Industry Revenue Only" />
-                <Text>{revenueOnly ? 'Y' : 'N'}</Text>
-                <Header text="Political Spending">
-                  <Tooltip label="Cumulative Since 2010" fontSize="md">
-                    <QuestionOutlineIcon ml="5px" mt="-3px" />
-                  </Tooltip>
-                </Header>
-                <Text>{politicalSpending === 'N/A' ? 'N/A' : `$${politicalSpending}`}</Text>
+                <Box p="10px">
+                  <Header text="Annual Revenues ($Mn)" />
+                  <Text>{revenues}</Text>
+                  <Header text="Revenue Fiscal Year" />
+                  <Text>{fiscalYear}</Text>
+                  <Header text="Prison Industry Revenue Only" />
+                  <Text>{revenueOnly ? 'Y' : 'N'}</Text>
+                  <Header text="Political Spending">
+                    <Tooltip label="Cumulative Since 2010" fontSize="md">
+                      <QuestionOutlineIcon ml="5px" mt="-3px" />
+                    </Tooltip>
+                  </Header>
+                  <Text>{politicalSpending === 'N/A' ? 'N/A' : `$${politicalSpending}`}</Text>
+                </Box>
               </GridItem>
               {notes && (
                 <GridItem
                   colSpan={2}
                   borderRadius="10px"
-                  p="10px"
                   bgColor="white"
                   borderLeft="5px solid"
-                  borderColor="normal.green"
+                  borderColor="normal.purple"
                   boxShadow="md"
+                  overflow="hidden"
                 >
-                  <Heading size="sm" color="normal.purple">
+                  <Heading size="sm" color="white" bgColor="normal.purple" p="10px 10px 8px">
                     Notes
                   </Heading>
-                  <Text>{notes}</Text>
+                  <Box p="10px">
+                    <Text>{notes}</Text>
+                  </Box>
                 </GridItem>
               )}
 
@@ -276,16 +284,16 @@ const Company = ({ name, values }) => {
                 <GridItem
                   colSpan={2}
                   borderRadius="10px"
-                  p="10px"
                   bgColor="white"
                   borderLeft="5px solid"
-                  borderColor="normal.green"
+                  borderColor="normal.purple"
                   boxShadow="md"
+                  overflow="hidden"
                 >
-                  <Heading size="sm" color="normal.purple">
+                  <Heading size="sm" color="white" bgColor="normal.purple" p="10px 10px 8px">
                     Sources
                   </Heading>
-                  <Box direction="column">
+                  <Box direction="column" p="10px">
                     <Source source={corrections} name="Corrections" />
                     <Source source={laborSource} name="Prison Labor" />
                     <Source source={detentionSource} name="Immigration Detention" />
