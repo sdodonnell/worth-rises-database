@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
 import { Box, Flex, Grid, GridItem, Heading, Image, Link, Text, useToast } from '@chakra-ui/react';
 import TableUI from './TableUI';
@@ -10,6 +10,17 @@ import SectorTag from './SectorTag';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
+  const filterArray = useCallback((rows, id, filterValue) => {
+    if (!filterValue || !Array.isArray(filterValue) || filterValue.length === 0) {
+      return rows;
+    }
+
+    return rows.filter((row) => {
+      const rowValue = row.values[id];
+      return filterValue.includes(rowValue);
+    });
+  }, []);
+
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
@@ -41,12 +52,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Sectors',
         accessor: 'Primary Sector',
         id: 'primarySector',
+        filter: filterArray,
         Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="primary" />,
       },
       {
         Header: 'Subsectors',
         accessor: 'Primary Sub-sector',
         id: 'subsector',
+        filter: filterArray,
         Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />,
       },
       {
@@ -164,10 +177,22 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     []
   );
 
+  const getSubRows = useCallback((row) => {
+    const parent = row['Parent Company'] || null;
+
+    if (parent) {
+      const ret = tableData.filter((el) => el['Company'] === parent);
+      return ret;
+    }
+
+    return [];
+  }, []);
+
   const tableInstance = useTable(
     {
       columns,
       data: tableData,
+      getSubRows,
       initialState: {
         pageSize: 50,
         pageIndex: 0,

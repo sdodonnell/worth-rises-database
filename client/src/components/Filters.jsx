@@ -10,13 +10,18 @@ import {
   Image,
   Input,
   Link,
+  Menu,
+  MenuButton,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
   Select,
   Stack,
   Text,
   Tooltip,
 } from '@chakra-ui/react';
 import { Controller, useForm } from 'react-hook-form';
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 
 const sectorMapping = {
   'Community Corrections': [
@@ -70,7 +75,13 @@ const sectorMapping = {
 };
 
 const Filters = ({ setAllFilters, setSearchTerm }) => {
-  const { register, reset, control, watch } = useForm({ defaultValues: { maxHarmScore: 15 } });
+  const { register, reset, control, watch, setValue } = useForm({
+    defaultValues: { maxHarmScore: 15, sector: [], subsector: [] },
+  });
+
+  register('sector');
+  register('subsector');
+
   const sector = watch('sector');
   const data = watch();
 
@@ -82,6 +93,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     const { active, detention, divestment, exposure, keyword, labor, maxHarmScore, minHarmScore, sector, subsector } =
       data;
 
+    console.log(data);
     const filters = [
       { id: 'primarySector', value: sector },
       { id: 'subsector', value: subsector },
@@ -109,6 +121,14 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     reset();
   };
 
+  const updateSector = (sectors) => {
+    setValue('sector', sectors);
+  };
+
+  const updateSubsector = (subsectors) => {
+    setValue('subsector', subsectors);
+  };
+
   return (
     <Flex p="10px" direction="column" gap="10px" height="100%" bgColor="softer.purple" overflow="scroll">
       <Link href="https://worthrises.org" isExternal>
@@ -128,19 +148,74 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 <FormLabel color="brand.500" htmlFor="sector">
                   <Heading size="sm">Sector</Heading>
                 </FormLabel>
-                <Select id="sector" placeholder="Select sector" bgColor="white" {...register('sector')}>
-                  {Object.keys(sectorMapping).map((sector) => (
-                    <option key={sector}>{sector}</option>
-                  ))}
-                </Select>
+                <Menu closeOnSelect={false}>
+                  <MenuButton
+                    as={Button}
+                    placeholder="Select sector"
+                    bgColor="white"
+                    fontWeight="normal"
+                    color="black"
+                    width="100%"
+                    textAlign="left"
+                    _hover={{ bg: 'white' }}
+                    _active={{ bg: 'white' }}
+                    _focus={{ bg: 'white' }}
+                    _expanded={{ bg: 'white' }}
+                    rightIcon={<ChevronDownIcon />}
+                  >
+                    Select Sector
+                  </MenuButton>
+                  <MenuList maxWidth="200px">
+                    <MenuOptionGroup type="checkbox" onChange={updateSector}>
+                      {Object.keys(sectorMapping).map((sector) => (
+                        <MenuItemOption key={sector} value={sector}>
+                          {sector}
+                        </MenuItemOption>
+                      ))}
+                    </MenuOptionGroup>
+                  </MenuList>
+                </Menu>
               </Box>
               <Box>
                 <FormLabel color="brand.500" htmlFor="subsector">
                   <Heading size="sm">Sub-sector</Heading>
                 </FormLabel>
-                <Select id="subsector" placeholder="Select sub-sector" bgColor="white" isDisabled={!sector} {...register('subsector')}>
-                  {sector && sectorMapping[sector].map((subsector) => <option key={subsector}>{subsector}</option>)}
-                </Select>
+                <Menu closeOnSelect={false}>
+                  <MenuButton
+                    as={Button}
+                    placeholder="Select sector"
+                    isDisabled={!sector.length}
+                    bgColor="white"
+                    fontWeight="normal"
+                    color="black"
+                    width="100%"
+                    textAlign="left"
+                    _hover={{ bg: 'white' }}
+                    _active={{ bg: 'white' }}
+                    _focus={{ bg: 'white' }}
+                    _expanded={{ bg: 'white' }}
+                    rightIcon={<ChevronDownIcon />}
+                  >
+                    Select Subsector
+                  </MenuButton>
+                  <MenuList maxWidth="200px">
+                    <MenuOptionGroup type="checkbox" onChange={updateSubsector}>
+                      {Object.entries(sectorMapping)
+                        .map(([k, v]) => {
+                          if (sector.includes(k)) {
+                            return v.map((subsector) => (
+                              <MenuItemOption key={subsector} value={subsector}>
+                                {subsector}
+                              </MenuItemOption>
+                            ));
+                          }
+
+                          return [];
+                        })
+                        .flat()}
+                    </MenuOptionGroup>
+                  </MenuList>
+                </Menu>
               </Box>
               <Box>
                 <Heading size="sm" color="brand.500">
