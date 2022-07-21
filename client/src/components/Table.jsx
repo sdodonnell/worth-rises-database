@@ -274,7 +274,15 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
 
   return (
     <Grid h="full" w="full" templateRows="80px calc(100vh - 130px) 50px" templateColumns="300px 1fr">
-      <GridItem colSpan={3} rowSpan={1} p="15px" borderBottom="1px solid" bgColor="black" display="flex" alignItems="center">
+      <GridItem
+        colSpan={3}
+        rowSpan={1}
+        p="15px"
+        borderBottom="1px solid"
+        bgColor="black"
+        display="flex"
+        alignItems="center"
+      >
         <Flex alignItems="center" gap="20px">
           <Link href="https://worthrises.org" isExternal>
             <Image src="logo-white.png" h="42px" mx="20px" mt="-8px" />
@@ -287,7 +295,15 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           </Heading>
         </Flex>
       </GridItem>
-      <GridItem colSpan={1} rowSpan={2} borderRight="2px" borderColor="soft.gray" bgColor="softer.gray" p="24px">
+      <GridItem
+        colSpan={1}
+        rowSpan={2}
+        borderRight="2px"
+        borderColor="soft.gray"
+        bgColor="softer.gray"
+        p="24px"
+        overflow="scroll"
+      >
         <Flex flexDir="column" gap="36px">
           <Text fontSize="sm" fontWeight="light">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
