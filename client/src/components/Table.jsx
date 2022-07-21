@@ -273,27 +273,38 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   }, [isCacheMiss, isLoading]);
 
   return (
-    <Grid h="full" w="full" templateRows="160px calc(100vh - 210px) 50px" templateColumns="300px 1fr">
-      <GridItem colSpan={1} rowSpan={3} borderRight="1px" borderColor="purple.100">
-        <Filters
-          setGlobalFilter={setGlobalFilter}
-          globalFilter={globalFilter}
-          setAllFilters={setAllFilters}
-          setSearchTerm={setGlobalFilter}
-        />
+    <Grid h="full" w="full" templateRows="80px calc(100vh - 130px) 50px" templateColumns="300px 1fr">
+      <GridItem colSpan={3} rowSpan={1} p="15px" borderBottom="1px solid" bgColor="black" display="flex" alignItems="center">
+        <Flex alignItems="center" gap="20px">
+          <Link href="https://worthrises.org" isExternal>
+            <Image src="logo-white.png" h="42px" mx="20px" mt="-8px" />
+          </Link>
+          <Heading color="white" fontSize="2xl">
+            Prison Industry
+          </Heading>
+          <Heading color="white" fontSize="2xl" fontWeight="light">
+            Private Sector Players
+          </Heading>
+        </Flex>
       </GridItem>
-      <GridItem colSpan={2} p="15px" borderBottom="1px solid" borderColor="purple.100">
-        <Heading color="normal.purple">Prison Industry: Private Sector Players</Heading>
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat.
-        </Text>
-        <Link href="https://worthrises.org/theprisonindustry2020" isExternal>
-          <Text fontWeight="bold" color="normal.gray">
-            Methodology <ExternalLinkIcon />
+      <GridItem colSpan={1} rowSpan={2} borderRight="2px" borderColor="soft.gray" bgColor="softer.gray" p="24px">
+        <Flex flexDir="column" gap="36px">
+          <Text fontSize="sm" fontWeight="light">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua.
+            <Link href="https://worthrises.org/theprisonindustry2020" isExternal>
+              <Text fontWeight="bold" color="normal.gray">
+                See our methodology here <ExternalLinkIcon />
+              </Text>
+            </Link>
           </Text>
-        </Link>
+          <Filters
+            setGlobalFilter={setGlobalFilter}
+            globalFilter={globalFilter}
+            setAllFilters={setAllFilters}
+            setSearchTerm={setGlobalFilter}
+          />
+        </Flex>
       </GridItem>
       <GridItem overflow="scroll">
         <TableUI
@@ -307,7 +318,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         />
       </GridItem>
       <GridItem colSpan={2} colStart={2}>
-        <Flex justify="space-between" align="center" p="1rem" bgColor="brand.100" color="white" h="50">
+        <Flex justify="space-between" align="center" p="1rem" bgColor="softer.gray" color="white" h="50">
           <Pagination
             previousPage={previousPage}
             nextPage={nextPage}

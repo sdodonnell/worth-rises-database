@@ -17,6 +17,8 @@ export default extendTheme(withDefaultColorScheme({ colorScheme: 'purple' }), {
       red: '#ff1654',
       purple: '#3a0058',
       gray: '#211f33',
+      black: '#000',
+      white: '#FFF',
     },
     soft: {
       yellow: '#f5fa9e',
@@ -30,7 +32,7 @@ export default extendTheme(withDefaultColorScheme({ colorScheme: 'purple' }), {
       green: 'rgba(213, 238, 170, 0.7)',
       red: 'rgba(255, 194, 210, 0.5)',
       purple: 'rgba(241, 214, 255, 0.5)',
-      gray: 'rgba(232, 230, 239, 0.5)',
+      gray: '#F7F6F8',
     },
   },
 });

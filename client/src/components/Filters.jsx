@@ -130,22 +130,19 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
   };
 
   return (
-    <Flex p="10px" direction="column" gap="10px" height="100%" bgColor="softer.purple" overflow="scroll">
-      <Link href="https://worthrises.org" isExternal>
-        <Image src="logo2.png" h="50px" />
-      </Link>
-      <Flex direction="column" p="15px" gap={5}>
+    <Flex direction="column" gap="10px" height="100%" overflow="scroll">
+      <Flex direction="column" gap={5}>
         <form id="filter-form">
           <FormControl>
             <Flex direction="column" gap="12px">
               <Box>
-                <FormLabel color="brand.500" htmlFor="keyword">
+                <FormLabel color="black" htmlFor="keyword">
                   <Heading size="sm">Keyword</Heading>
                 </FormLabel>
                 <Input placeholder="Enter Keyword" bgColor="white" {...register('keyword')} />
               </Box>
               <Box>
-                <FormLabel color="brand.500" htmlFor="sector">
+                <FormLabel color="black" htmlFor="sector">
                   <Heading size="sm">Sector</Heading>
                 </FormLabel>
                 <Menu closeOnSelect={false}>
@@ -177,7 +174,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 </Menu>
               </Box>
               <Box>
-                <FormLabel color="brand.500" htmlFor="subsector">
+                <FormLabel color="black" htmlFor="subsector">
                   <Heading size="sm">Sub-sector</Heading>
                 </FormLabel>
                 <Menu closeOnSelect={false}>
@@ -218,10 +215,10 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 </Menu>
               </Box>
               <Box>
-                <Heading size="sm" color="brand.500">
+                <Heading size="sm" color="black">
                   Harm Score
                   <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
-                    <QuestionOutlineIcon ml="5px" mt="-3px" color="brand.500" />
+                    <QuestionOutlineIcon ml="5px" mt="-3px" color="black" />
                   </Tooltip>
                 </Heading>
                 <Flex pt="5px" alignItems="center">
@@ -254,7 +251,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
               </Box>
               <Box>
                 <FormLabel htmlFor="exposure">
-                  <Heading size="sm" color="brand.500">
+                  <Heading size="sm" color="black">
                     Public Markets Exposure
                   </Heading>
                 </FormLabel>
@@ -281,7 +278,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       <Checkbox
                         id="divestment"
                         isChecked={value}
-                        borderColor="brand.500"
+                        borderColor="black"
                         onChange={(e) => onChange(e.target.checked)}
                       >
                         Divestment Target
@@ -296,7 +293,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       <Checkbox
                         id="labor"
                         isChecked={value}
-                        borderColor="brand.500"
+                        borderColor="black"
                         onChange={(e) => onChange(e.target.checked)}
                       >
                         Supports Prison Labor
@@ -311,7 +308,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       <Checkbox
                         id="detention"
                         isChecked={value}
-                        borderColor="brand.500"
+                        borderColor="black"
                         colorScheme="brand"
                         onChange={(e) => onChange(e.target.checked)}
                       >
@@ -327,7 +324,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       <Checkbox
                         id="active"
                         isChecked={value}
-                        borderColor="brand.500"
+                        borderColor="black"
                         colorScheme="brand"
                         onChange={(e) => onChange(e.target.checked)}
                       >
