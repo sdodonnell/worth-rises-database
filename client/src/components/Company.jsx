@@ -261,7 +261,7 @@ const Company = ({ name, values }) => {
               </GridItem>
               <GridItem gridArea="e">{stock && <TradingViewWidget stockTicker={stock} />}</GridItem>
               {notes && (
-                <GridItem gridArea="f" display="flex" flexDir="column" justifyContent="flex-end">
+                <GridItem gridArea="f" display="flex" flexDir="column" justifyContent={stock ? 'flex-end' : 'initial'}>
                   <Header text="Notes" />
                   <Text fontStyle="italic" fontSize="sm">
                     {notes}
@@ -269,7 +269,12 @@ const Company = ({ name, values }) => {
                 </GridItem>
               )}
               {hasSources && (
-                <GridItem gridArea={notes ? 'g' : 'f'} display="flex" flexDir="column" justifyContent={stock ? 'flex-end' : 'initial'}>
+                <GridItem
+                  gridArea={notes ? 'g' : 'f'}
+                  display="flex"
+                  flexDir="column"
+                  justifyContent={stock ? 'flex-end' : 'initial'}
+                >
                   <Header text="Sources" />
                   <Source source={corrections} name="Corrections" />
                   <Source source={laborSource} name="Prison Labor" />
