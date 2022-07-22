@@ -177,22 +177,22 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     []
   );
 
-  const getSubRows = useCallback((row) => {
-    const parent = row['Parent Company'] || null;
+  // const getSubRows = useCallback((row) => {
+  //   const parent = row['Parent Company'] || null;
 
-    if (parent) {
-      const ret = tableData.filter((el) => el['Company'] === parent);
-      return ret;
-    }
+  //   if (parent) {
+  //     const ret = tableData.filter((el) => el['Company'] === parent);
+  //     return ret;
+  //   }
 
-    return [];
-  }, []);
+  //   return [];
+  // }, []);
 
   const tableInstance = useTable(
     {
       columns,
       data: tableData,
-      getSubRows,
+      // getSubRows,
       initialState: {
         pageSize: 50,
         pageIndex: 0,
@@ -309,9 +309,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.
             <Link href="https://worthrises.org/theprisonindustry2020" isExternal>
-              <Text fontWeight="bold" color="normal.gray">
                 See our methodology here <ExternalLinkIcon />
-              </Text>
             </Link>
           </Text>
           <Filters

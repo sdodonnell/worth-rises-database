@@ -3,43 +3,31 @@ import axios from 'axios';
 import useSWR from 'swr';
 import Table from '../components/Table';
 
-const fetcher = url => axios.get(url).then(res => res.data)
+const fetcher = url => axios.get(url).then(res => res.data);
+
+function useEntries () {
+  const { data, error } = useSWR('/api/getEntries', fetcher, {onLoadingSlow: () => setIsLoadingSlowly(true), shouldRetryOnError: false});
+  const [isLoadingSlowly, setIsLoadingSlowly] = useState(false);
+
+  return {
+    data: data?.flat(),
+    isLoading: !error && !data,
+    isError: error,
+    isLoadingSlowly
+  }
+}
 
 const App = () => {
   const initialDataState = new Array(25).fill({});
 
-  const [data, setData] = useState(initialDataState);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [isCacheMiss, setIsCacheMiss] = useState(false);
+  const { data, isLoading, isError, isLoadingSlowly } = useEntries();
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsCacheMiss(true), 1500);
-
-    const getData = async () => {
-      try {
-        const { results, error } = await useSWR('/api/getEntries', fetcher);
-
-        if (error) {
-          throw Error('Something went wrong with SWR');
-        }
-        
-        clearTimeout(timeout);
-        const data = results.data.flat();
-        setData(data);
-        setIsLoading(false);
-      } catch (e) {
-        console.log(e);
-        clearTimeout(timeout);
-        setIsError(true);
-      }
-    };
-
-    getData();
-  }, []);
+  if (isError) {
+    console.log('Something went wrong.');
+  }
 
   return (
-      <Table data={data} isLoading={isLoading} isError={isError} isCacheMiss={isCacheMiss} />
+      <Table data={data || initialDataState} isLoading={isLoading} isError={isError} isCacheMiss={isLoadingSlowly} />
   );
 };
 

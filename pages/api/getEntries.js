@@ -1,13 +1,16 @@
-export default getAllEntries = async (req, res) => {
+import Airtable from 'airtable';
+
+export default async (req, res) => {
     res.setHeader('Cache-Control', 's-maxage=86400');
 
-    const base = new Airtable({ apiKey: process.env.API_KEY }).base('appNAH2NzKzc4R9Fe');
-
-    // let value = this.cache.get('myKey');
-
-    const values = await checkAirtable(base);
-
-    res.status(200).json(values);
+    try {
+      const base = new Airtable({ apiKey: process.env.API_KEY }).base('appNAH2NzKzc4R9Fe');
+      const values = await checkAirtable(base);
+  
+      res.status(200).json(values);
+    } catch (error) {
+      res.status(500).json({ error })
+    }
 }
 
   const parsePrimarySector = (records, base, primarySectors) => {
