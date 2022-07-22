@@ -93,7 +93,6 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     const { active, detention, divestment, exposure, keyword, labor, maxHarmScore, minHarmScore, sector, subsector } =
       data;
 
-    console.log(data);
     const filters = [
       { id: 'primarySector', value: sector },
       { id: 'subsector', value: subsector },

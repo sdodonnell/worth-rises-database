@@ -25,7 +25,7 @@ class Cache {
     this.cache.del(keys);
   }
 
-  delStartWith(startStr = '') {
+  delStartWiIfth(startStr = '') {
     if (!startStr) {
       return;
     }

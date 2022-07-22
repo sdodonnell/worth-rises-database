@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 import React from 'react';
-import isURL from 'validator/es/lib/isURL';
+import {isURL} from 'validator';
 import TradingViewWidget from './TradingViewWidget';
 
 const Header = ({ text, children }) => {
