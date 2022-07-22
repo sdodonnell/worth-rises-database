@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Table from './components/Table';
+import Table from '../components/Table';
 import { ChakraProvider } from '@chakra-ui/react';
-import theme from './theme';
+import theme from '../theme';
 
 const App = () => {
   const initialDataState = new Array(25).fill({});
