@@ -17,20 +17,20 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 import React from 'react';
-import {isURL} from 'validator';
+import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
 
-const Header = ({ text, children }) => {
+const Header = ({ text, children, ...props }) => {
   if (children) {
     return (
-      <Heading fontSize="sm" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
+      <Heading fontSize="sm" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }} {...props}>
         {text}
         {children}
       </Heading>
     );
   }
   return (
-    <Heading fontSize="sm" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }}>
+    <Heading fontSize="sm" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }} {...props}>
       <Text>{text}</Text>
     </Heading>
   );
@@ -64,8 +64,6 @@ const Company = ({ name, values }) => {
     active,
     corrections = '',
     detentionSource = '',
-    detentionInvolvement,
-    divestment,
     employees = 'N/A',
     executive = 'N/A',
     exposure = 'N/A',
@@ -73,7 +71,6 @@ const Company = ({ name, values }) => {
     fiscalYear = 'N/A',
     harmScore = 'N/A',
     laborSource = '',
-    laborInvolvement,
     notes,
     other = '',
     owner = 'N/A',
@@ -101,14 +98,10 @@ const Company = ({ name, values }) => {
       </Heading>
     );
 
-  const templateWithoutChart = `"a a a a"
-                                "b b b b"
-                                "c d f g"`;
-
-  const templateWithChart = `"a a a a"
-                             "b b b b"
-                             "c d e e"
-                             "f g e e"`;
+  const template = `"a a a a"
+                    "b b b b"
+                    "c d e e"
+                    `;
 
   return (
     <>
@@ -118,7 +111,7 @@ const Company = ({ name, values }) => {
       <Modal isOpen={isOpen} onClose={onClose} size="6xl" scrollBehavior="inside">
         <ModalOverlay />
         <ModalCloseButton />
-        <ModalContent bgColor="white">
+        <ModalContent bgColor="white" overflow="hidden">
           <ModalHeader color="black" pt="24px" pb="0">
             {website ? (
               <Link href={website}>
@@ -132,13 +125,8 @@ const Company = ({ name, values }) => {
             )}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb="24px">
-            <Grid
-              templateAreas={stock ? templateWithChart : templateWithoutChart}
-              templateRows={`20px 80px 280px ${stock ? '110px' : ''}`}
-              templateColumns="repeat(4, 1fr)"
-              gap="28px"
-            >
+          <ModalBody pb="72px">
+            <Grid templateAreas={template} templateRows={`20px 80px 336px`} templateColumns="repeat(4, 1fr)" gap="28px">
               <GridItem gridArea="a" display="flex" gap="28px">
                 <Text>
                   <Text as="span" fontWeight="bold" fontSize="sm" textTransform="uppercase" fontFamily="heading">
@@ -260,30 +248,29 @@ const Company = ({ name, values }) => {
                 </Box>
               </GridItem>
               <GridItem gridArea="e">{stock && <TradingViewWidget stockTicker={stock} />}</GridItem>
-              {notes && (
-                <GridItem gridArea="f" display="flex" flexDir="column" justifyContent={stock ? 'flex-end' : 'initial'}>
-                  <Header text="Notes" />
-                  <Text fontStyle="italic" fontSize="sm">
-                    {notes}
-                  </Text>
-                </GridItem>
-              )}
-              {hasSources && (
-                <GridItem
-                  gridArea={notes ? 'g' : 'f'}
-                  display="flex"
-                  flexDir="column"
-                  justifyContent={stock ? 'flex-end' : 'initial'}
-                >
-                  <Header text="Sources" />
-                  <Source source={corrections} name="Corrections" />
-                  <Source source={laborSource} name="Prison Labor" />
-                  <Source source={detentionSource} name="Immigration Detention" />
-                  <Source source={financials} name="Financials" />
-                  <Source source={other} name="Other" />
-                </GridItem>
-              )}
             </Grid>
+            {(notes || hasSources) && (
+              <Flex position="absolute" bottom="0" height="48px" bgColor="soft.gray" width="100%" ml="-24px" alignItems="center" justifyContent="space-evenly">
+                {notes && (
+                  <Flex alignItems="center">
+                    <Header text="Notes" pr="5px"/>
+                    <Text fontStyle="italic" fontSize="sm">
+                      {notes}
+                    </Text>
+                  </Flex>
+                )}
+                {hasSources && (
+                  <Flex alignItems="center">
+                    <Header text="Sources" pr="5px"/>
+                    <Source source={corrections} name="Corrections" />
+                    <Source source={laborSource} name="Prison Labor" />
+                    <Source source={detentionSource} name="Immigration Detention" />
+                    <Source source={financials} name="Financials" />
+                    <Source source={other} name="Other" />
+                  </Flex>
+                )}
+              </Flex>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>

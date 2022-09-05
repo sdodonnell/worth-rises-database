@@ -279,20 +279,27 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         rowSpan={1}
         p="15px"
         borderBottom="1px solid"
-        bgColor="black"
+        bgColor="normal.purple"
         display="flex"
         alignItems="center"
       >
         <Flex alignItems="center" gap="20px">
           <Link href="https://worthrises.org" isExternal>
-            <Image src="logo-white.png" h="42px" mx="20px" mt="-8px" />
+            <Image src="logo-white-vertical.png" ml="33px" />
           </Link>
-          <Heading color="white" fontSize="2xl">
-            Prison Industry
-          </Heading>
-          <Heading color="white" fontSize="2xl" fontWeight="light">
-            Private Sector Players
-          </Heading>
+          <Flex flexDir="column">
+            <Flex gap="10px">
+              <Heading color="white" fontSize="22px">
+                Prison Industry Database
+              </Heading>
+              <Heading color="white" fontSize="22px" fontWeight="light">
+                Private Sector Players
+              </Heading>
+            </Flex>
+            <Text color="white" fontSize="12px">
+              The prison industry is a $80 billion industry with thousands of corporations. Here’s who they are.
+            </Text>
+          </Flex>
         </Flex>
       </GridItem>
       <GridItem
@@ -305,13 +312,22 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         overflow="scroll"
       >
         <Flex flexDir="column" gap="36px">
-          <Text fontSize="sm" fontWeight="light">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.
-            <Link href="https://worthrises.org/theprisonindustry2020" isExternal>
-                See our methodology here <ExternalLinkIcon />
+          <Box>
+            <Text fontSize="sm" fontWeight="light">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua.
+            </Text>
+            <Link
+              href="https://worthrises.org/theprisonindustry2020"
+              isExternal
+              textDecor="underline"
+              fontWeight="bold"
+              fontSize="sm"
+              color="normal.purple"
+            >
+              See our methodology here.
             </Link>
-          </Text>
+          </Box>
           <Filters
             setGlobalFilter={setGlobalFilter}
             globalFilter={globalFilter}
