@@ -149,7 +149,7 @@ const Company = ({ name, values }) => {
                 pb="28px"
               >
                 <Box>
-                  <Header text="Year Founded" />
+                  <Header text="Founded" />
                   <Text>{yearFounded}</Text>
                 </Box>
                 <Box>
@@ -161,7 +161,7 @@ const Company = ({ name, values }) => {
                   <Text>{employeeCount}</Text>
                 </Box>
                 <Box>
-                  <Header text="Lead Executive" />
+                  <Header text="Chief Executive" />
                   <Text>{executive}</Text>
                 </Box>
                 <Grid templateColumns="280px 30px" templateRows="44px 22px">
@@ -207,20 +207,20 @@ const Company = ({ name, values }) => {
               </GridItem>
               <GridItem gridArea="c" display="flex" flexDir="column" justifyContent="space-between">
                 <Box>
+                  <Header text="Public Market Exposure" />
+                  <Text>{exposure}</Text>
+                </Box>
+                <Box>
                   <Header text="Parent Company" />
                   <Text>{parent}</Text>
                 </Box>
                 <Box>
-                  <Header text="Major Investor" />
+                  <Header text="Ownership Investor" />
                   <Text>{owner}</Text>
                 </Box>
                 <Box>
                   <Header text="Last Acquired" />
                   <Text>{acquired}</Text>
-                </Box>
-                <Box>
-                  <Header text="Public Market Exposure" />
-                  <Text>{exposure}</Text>
                 </Box>
               </GridItem>
               <GridItem gridArea="d" display="flex" flexDir="column" justifyContent="space-between">
@@ -236,7 +236,7 @@ const Company = ({ name, values }) => {
                 </Box>
                 <Box>
                   <Header text="Prison Industry Revenue Only" />
-                  <Text>{revenueOnly ? 'Y' : 'N'}</Text>
+                  <Text>{revenueOnly ? 'Yes' : 'No'}</Text>
                 </Box>
                 <Box>
                   <Header text="Political Spending">
@@ -251,8 +251,17 @@ const Company = ({ name, values }) => {
                 {stock ? (
                   <TradingViewWidget stockTicker={stock} />
                 ) : (
-                  <Flex border="1px solid" borderColor="soft.gray" borderRadius="4px" height="100%" justifyContent="center" alignItems="center">
-                    <Text fontStyle="italic" color="normal.gray">This company is not publicly traded.</Text>
+                  <Flex
+                    border="1px solid"
+                    borderColor="soft.gray"
+                    borderRadius="4px"
+                    height="100%"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Text fontStyle="italic" color="normal.gray">
+                      This company is not publicly traded.
+                    </Text>
                   </Flex>
                 )}
               </GridItem>
