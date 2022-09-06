@@ -247,13 +247,30 @@ const Company = ({ name, values }) => {
                   <Text>{politicalSpending === 'N/A' ? 'N/A' : `$${politicalSpending}`}</Text>
                 </Box>
               </GridItem>
-              <GridItem gridArea="e">{stock && <TradingViewWidget stockTicker={stock} />}</GridItem>
+              <GridItem gridArea="e">
+                {stock ? (
+                  <TradingViewWidget stockTicker={stock} />
+                ) : (
+                  <Flex border="1px solid" borderColor="soft.gray" borderRadius="4px" height="100%" justifyContent="center" alignItems="center">
+                    <Text fontStyle="italic" color="normal.gray">This company is not publicly traded.</Text>
+                  </Flex>
+                )}
+              </GridItem>
             </Grid>
             {(notes || hasSources) && (
-              <Flex position="absolute" bottom="0" height="48px" bgColor="soft.gray" width="100%" ml="-24px" alignItems="center" justifyContent="space-evenly">
+              <Flex
+                position="absolute"
+                bottom="0"
+                height="48px"
+                bgColor="soft.gray"
+                width="100%"
+                ml="-24px"
+                alignItems="center"
+                justifyContent="space-evenly"
+              >
                 {notes && (
                   <Flex alignItems="center">
-                    <Header text="Notes" pr="5px"/>
+                    <Header text="Notes" pr="5px" />
                     <Text fontStyle="italic" fontSize="sm">
                       {notes}
                     </Text>
@@ -261,7 +278,7 @@ const Company = ({ name, values }) => {
                 )}
                 {hasSources && (
                   <Flex alignItems="center">
-                    <Header text="Sources" pr="5px"/>
+                    <Header text="Sources" pr="5px" />
                     <Source source={corrections} name="Corrections" />
                     <Source source={laborSource} name="Prison Labor" />
                     <Source source={detentionSource} name="Immigration Detention" />
