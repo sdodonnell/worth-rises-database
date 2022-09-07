@@ -7,19 +7,18 @@ import DownloadButton from './DownloadButton';
 import Company from './Company';
 import Filters from './Filters';
 import SectorTag from './SectorTag';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
-  const filterArray = useCallback((rows, id, filterValue) => {
-    if (!filterValue || !Array.isArray(filterValue) || filterValue.length === 0) {
-      return rows;
-    }
+  // const filterArray = useCallback((rows, id, filterValue) => {
+  //   if (!filterValue || !Array.isArray(filterValue) || filterValue.length === 0) {
+  //     return rows;
+  //   }
 
-    return rows.filter((row) => {
-      const rowValue = row.values[id];
-      return filterValue.includes(rowValue);
-    });
-  }, []);
+  //   return rows.filter((row) => {
+  //     const rowValue = row.values[id];
+  //     return filterValue.includes(rowValue);
+  //   });
+  // }, []);
 
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
@@ -52,15 +51,17 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Sectors',
         accessor: 'Primary Sector',
         id: 'primarySector',
-        filter: filterArray,
-        Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="primary" />,
+        // filter: filterArray,
+        Cell: ({ value, setAllFilters }) => {
+          return <SectorTag sector={value} setAllFilters={setAllFilters} variant="primary" />;
+        },
       },
       {
         Header: 'Subsectors',
         accessor: 'Primary Sub-sector',
         id: 'subsector',
-        filter: filterArray,
-        Cell: ({ value }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />,
+        // filter: filterArray,
+        Cell: ({ value, setAllFilters }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />,
       },
       {
         Header: 'Harm Score',
@@ -311,7 +312,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         p="24px"
         overflow="scroll"
       >
-        <Flex flexDir="column" gap="36px">
+        <Flex flexDir="column" gap="36px" overflow="hidden">
           <Box>
             <Text fontSize="sm" fontWeight="light">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et

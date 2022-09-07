@@ -23,7 +23,6 @@ function useEntries() {
 }
 
 const getVisitedCookie = () => {
-  console.log(Cookies.get('wr_db_visited'));
   return !Cookies.get('wr_db_visited');
 }
 
