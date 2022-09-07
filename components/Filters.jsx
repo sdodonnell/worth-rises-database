@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState, useRef } from 'react';
 import {
   Box,
   Button,
@@ -73,6 +73,9 @@ const sectorMapping = {
 };
 
 const Filters = ({ setAllFilters, setSearchTerm }) => {
+  const [resetDisabled, setResetDisabled] = useState(true);
+  const shouldToggleResetButton = useRef(true);
+
   const { register, reset, control, watch, setValue } = useForm({
     defaultValues: { maxHarmScore: 15, sector: [], subsector: [] },
   });
@@ -108,6 +111,12 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
       filters.push({ id: 'harmScore', value: [Number(minHarmScore), Number(maxHarmScore)] });
     }
 
+    if (shouldToggleResetButton.current) {
+      shouldToggleResetButton.current = false;
+    } else {
+      setResetDisabled(false);
+    }
+
     setAllFilters(filters);
     setSearchTerm(keyword);
   };
@@ -116,6 +125,9 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     setAllFilters([]);
     setSearchTerm(null);
     reset();
+
+    shouldToggleResetButton.current = true;
+    setResetDisabled(true);
   };
 
   const updateSector = (sectors) => {
@@ -144,7 +156,6 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
               <Menu closeOnSelect={false}>
                 <MenuButton
                   as={Button}
-                  placeholder="Select sector"
                   bgColor="white"
                   fontWeight="normal"
                   color="black"
@@ -176,7 +187,6 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
               <Menu closeOnSelect={false}>
                 <MenuButton
                   as={Button}
-                  placeholder="Select sector"
                   isDisabled={!sector.length}
                   bgColor="white"
                   fontWeight="normal"
@@ -328,7 +338,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
           </Flex>
         </FormControl>
       </form>
-      <Button colorScheme="brand" onClick={resetFilters}>
+      <Button colorScheme="brand" onClick={resetFilters} isDisabled={resetDisabled}>
         Reset Filters
       </Button>
     </Flex>
