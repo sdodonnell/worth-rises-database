@@ -78,8 +78,11 @@ const Company = ({ name, values }) => {
     parent = 'N/A',
     politicalSpending = 'N/A',
     primarySector,
+    responsibility,
+    responsiveness,
     revenueOnly,
     revenues,
+    salience,
     state,
     stock,
     subsector,
@@ -195,13 +198,13 @@ const Company = ({ name, values }) => {
                   </GridItem>
                   <GridItem display="flex" mt="6px" alignItems="center" overflow="hidden">
                     <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                      Salience: ?
+                      Salience: {salience}
                     </Text>
                     <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                      Responsibility: ?
+                      Responsibility: {responsibility}
                     </Text>
                     <Text fontSize="sm" px="5px">
-                      Responsive: ?
+                      Responsive: {responsiveness}
                     </Text>
                   </GridItem>
                 </Grid>
