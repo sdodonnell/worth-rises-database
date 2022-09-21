@@ -19,7 +19,7 @@ import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-
 import React from 'react';
 import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
-import { HARM_SCORE_TEXT } from './copyUtils';
+import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './copyUtils';
 
 const Header = ({ text, children, ...props }) => {
   if (children) {
@@ -241,7 +241,7 @@ const Company = ({ name, values }) => {
                 </Box>
                 <Box>
                   <Header text="Political Spending">
-                    <Tooltip label="Cumulative Since 2010" fontSize="md">
+                    <Tooltip label={POLITICAL_SPENDING_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
                       <QuestionOutlineIcon ml="5px" mt="-3px" />
                     </Tooltip>
                   </Header>
