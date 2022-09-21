@@ -4,7 +4,7 @@ export default async (req, res) => {
     res.setHeader('Cache-Control', 's-maxage=86400');
 
     try {
-      const base = new Airtable({ apiKey: process.env.API_KEY }).base('appNAH2NzKzc4R9Fe');
+      const base = new Airtable({ apiKey: process.env.API_KEY }).base('appuZlplPKjKPkFBR');
       const values = await checkAirtable(base);
   
       res.status(200).json(values);
@@ -39,21 +39,18 @@ export default async (req, res) => {
 
   const checkAirtable = base => {
     const results = [];
-    const primarySectors = {};
 
     return new Promise((resolve, reject) => {
-      base('Sheet1')
+      base('tblgyzaJvuz4Udat3')
         .select({
           view: 'Grid view',
+          returnFieldsByFieldId: true
         })
         .eachPage(
           (records, fetchNextPage) => {
             try {
               // Remove unnecessary fields from records objects
               const cleanedRecords = cleanRecords(records);
-
-              // 'Primary Sector' is a reference to another table, so these cells need to be cross-referenced
-              parsePrimarySector(cleanedRecords, base, primarySectors);
 
               // This function (`page`) will get called for each page of records.
               results.push(cleanedRecords);

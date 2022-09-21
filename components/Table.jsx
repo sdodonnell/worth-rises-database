@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
 import { Box, Flex, Grid, GridItem, Heading, Image, Link, Text, useToast } from '@chakra-ui/react';
 import TableUI from './TableUI';
@@ -21,36 +21,38 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   //   });
   // }, []);
 
+  console.log(data);
+
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
       {
         Header: 'Corporate Name',
-        accessor: 'Company',
+        accessor: 'fld8eXd7ySetKd4X3',
         id: 'company',
         Cell: ({ value, row: { values } }) => <Company name={value || '--'} values={values} />,
       },
       {
         Header: 'Parent Company',
-        accessor: 'Parent Company',
+        accessor: 'fldw832i7sKHSioYO',
         id: 'parent',
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
         Header: 'Major Investor',
-        accessor: 'Owner/Major Investor',
+        accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
         Header: 'Stock Ticker',
-        accessor: 'Parent Stock Ticker',
+        accessor: 'fldxUScw6juEHQ4Bn',
         id: 'stock',
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
         Header: 'Sector',
-        accessor: 'Primary Sector',
+        accessor: 'fldjEW6owmKk8OMlX',
         id: 'primarySector',
         // filter: filterArray,
         Cell: ({ value, setAllFilters }) => {
@@ -59,7 +61,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Subsectors',
-        accessor: 'Primary Sub-sector',
+        accessor: 'fld2YdygbDUIbFxv4',
         id: 'subsector',
         // filter: filterArray,
         Cell: ({ value, setAllFilters }) => (
@@ -68,14 +70,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Harm Score',
-        accessor: 'Harm Score',
+        accessor: 'fldvURpMuHYQno2Ov',
         id: 'harmScore',
         filter: 'between',
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
         Header: 'Divestment Target',
-        accessor: 'Divestment (Y/N)',
+        accessor: 'fldkvqcyO7SQLSWQD',
         id: 'divestment',
         Cell: ({ value }) => (
           <Box minHeight="16px" textAlign="center">
@@ -85,7 +87,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Prison Labor',
-        accessor: 'Supports Prison Labor',
+        accessor: 'fldwPeONqYRZGmZCi',
         id: 'laborInvolvement',
         Cell: ({ value }) => (
           <Box minHeight="16px" textAlign="center">
@@ -95,7 +97,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Immigration Detention',
-        accessor: 'Immigration Detention Involvement',
+        accessor: 'fldCwqMsXdV3icjcV',
         id: 'detentionInvolvement',
         Cell: ({ value }) => (
           <Box minHeight="16px" textAlign="center">
@@ -105,76 +107,88 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       // Hidden columns; only necessary for company profile modal
       {
+        accessor: 'fld0y2NV1JILitqDo',
+        id: 'salience',
+      },
+      {
+        accessor: 'fldy2XjDq3zdH2Lru',
+        id: 'responsibility',
+      },
+      {
+        accessor: 'fldxxAWkjIXDjaEVH',
+        id: 'responsiveness',
+      },
+      {
         Header: 'Active?',
-        accessor: 'Active Brand (Y/N)',
+        accessor: 'fldsfpUZ0ffXdPWRn',
         id: 'active',
       },
       {
-        accessor: 'Founded',
+        accessor: 'fldtzfIjlWilLHerb',
         id: 'yearFounded',
       },
       {
-        accessor: 'Last Acquired',
+        accessor: 'fldziq1j5ISHdl39I',
         id: 'acquired',
       },
       {
-        accessor: 'Employees',
+        accessor: 'fldxvbSVSA45rk6U0',
         id: 'employees',
       },
       {
-        accessor: 'Prison Industry Revenue Only(Y/N)',
+        accessor: 'fldfq1uEOvvHPGtvV',
         id: 'revenueOnly',
       },
       {
-        accessor: 'Parent Public Exposure',
+        accessor: 'fldEheyoZ5BIhvxTg',
         id: 'exposure',
       },
       {
-        accessor: 'Lead Executive',
+        accessor: 'fldNEb9oxXo2iRE7j',
         id: 'executive',
       },
       {
-        accessor: 'Annual Revenues (Mn) - original',
+        accessor: 'flddJDntfysxbxzES',
         id: 'revenues',
       },
       {
-        accessor: 'Headquarters',
+        accessor: 'fldX8YGq5L0tj8pnW',
         id: 'state',
       },
       {
-        accessor: 'Revenue Fiscal Year',
+        accessor: 'fldO5boHTuMns429O',
         id: 'fiscalYear',
       },
       {
-        accessor: 'Political Spending (Cumalative Since 2010)',
+        accessor: 'fldost1x5rtMTzGgb',
         id: 'politicalSpending',
       },
       {
-        accessor: 'Notes',
+        accessor: 'fldj3HcrNuA52r2Wj',
         id: 'notes',
       },
       {
-        accessor: 'Website',
+        accessor: 'fldUm9IdFDzIylngB',
         id: 'website',
       },
       {
-        accessor: 'Corrections',
+        accessor: 'fldrWMXPLVrKTedlx',
         id: 'corrections',
       },
       {
-        accessor: 'Immigration Detention',
+        accessor: 'fld0ZQ2ffWfx9vP6e',
         id: 'detentionSource',
       },
       {
-        accessor: 'Prison Labor',
+        accessor: 'fldH3cErjmanHljuM',
         id: 'laborSource',
       },
       {
-        accessor: 'Financials',
+        accessor: 'fldL5Uu9CFlIGLynB',
         id: 'financials',
       },
       {
-        accessor: 'Other',
+        accessor: 'fldfd54TBvL7YnGL7',
         id: 'other',
       },
     ],
@@ -214,8 +228,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'notes',
           'other',
           'politicalSpending',
+          'responsibility',
+          'responsiveness',
           'revenueOnly',
           'revenues',
+          'salience',
           'state',
           'subsector',
           'website',
