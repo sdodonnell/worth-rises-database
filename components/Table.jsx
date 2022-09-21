@@ -7,6 +7,7 @@ import DownloadButton from './DownloadButton';
 import Company from './Company';
 import Filters from './Filters';
 import SectorTag from './SectorTag';
+import { INTRO_TEXT } from './copyUtils';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   // const filterArray = useCallback((rows, id, filterValue) => {
@@ -48,7 +49,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value }) => (value ? String(value) : '--'),
       },
       {
-        Header: 'Sectors',
+        Header: 'Sector',
         accessor: 'Primary Sector',
         id: 'primarySector',
         // filter: filterArray,
@@ -61,7 +62,9 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'Primary Sub-sector',
         id: 'subsector',
         // filter: filterArray,
-        Cell: ({ value, setAllFilters }) => <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />,
+        Cell: ({ value, setAllFilters }) => (
+          <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />
+        ),
       },
       {
         Header: 'Harm Score',
@@ -214,6 +217,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'revenueOnly',
           'revenues',
           'state',
+          'subsector',
           'website',
           'yearFounded',
         ],
@@ -286,7 +290,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       >
         <Flex alignItems="center" gap="20px">
           <Link href="https://worthrises.org" isExternal>
-            <Image src="logo-white-vertical.png" ml="33px" />
+            <Image src="logo-white-vertical.png" ml="33px" w="55px" />
           </Link>
           <Flex flexDir="column">
             <Flex gap="10px">
@@ -315,8 +319,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         <Flex flexDir="column" gap="36px" overflow="hidden">
           <Box>
             <Text fontSize="sm" fontWeight="light">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua.
+              {INTRO_TEXT}
             </Text>
             <Link
               href="https://worthrises.org/theprisonindustry2020"

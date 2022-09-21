@@ -20,6 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { Controller, useForm } from 'react-hook-form';
 import { ChevronDownIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
+import { HARM_SCORE_TEXT } from './copyUtils';
 
 const sectorMapping = {
   'Community Corrections': [
@@ -223,7 +224,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
             <Box>
               <Heading size="sm" color="black">
                 Harm Score
-                <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
+                <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
                   <QuestionOutlineIcon ml="5px" mt="-3px" color="black" />
                 </Tooltip>
               </Heading>
@@ -262,11 +263,11 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 </Heading>
               </FormLabel>
               <Select id="exposure" placeholder="Select market exposure tier" bgColor="white" {...register('exposure')}>
-                <option>Tier 1a - Publicly Traded - Targeted Correctional Exposure</option>
-                <option>Tier 1b - Publicly Traded - Other</option>
-                <option>Tier 2 - Investment Firm-Owned</option>
-                <option>Tier 4 - Small Privately-Owned</option>
-                <option>Tier 3 - Large Privately-Owned, requires outside financing</option>
+                <option>Tier 1a (Publicly Traded - Targeted Exposure)</option>
+                <option>Tier 1b (Publicly Traded - Other Exposure)</option>
+                <option>Tier 2 (Investment Firm-Owned)</option>
+                <option>Tier 3 (Large Privately-Owned)</option>
+                <option>Tier 4 (Small Privately-Owned)</option>
               </Select>
             </Box>
             <Box>

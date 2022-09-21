@@ -5,7 +5,7 @@ const TradingViewWidget = ({ stockTicker }) => {
     if (window.TradingView) {
       new window.TradingView.widget({
         autosize: true,
-        symbol: `NYSE:${stockTicker}`,
+        symbol: stockTicker,
         interval: 'W',
         timezone: 'Etc/UTC',
         theme: 'light',

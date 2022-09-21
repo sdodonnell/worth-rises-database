@@ -41,7 +41,7 @@ const WelcomeModal = ({ isFirstTime, setVisitedCookie }) => {
             dolore magna aliqua.
           </ModalBody>
           <ModalFooter p="0" mt="30px" justifyContent="flex-start">
-            <Button bgColor="normal.purple" mr={3} onClick={handleClose} px="40px" borderRadius="4px">
+            <Button bgColor="normal.purple" m="0 auto" onClick={handleClose} px="40px" borderRadius="4px">
               Continue
             </Button>
           </ModalFooter>

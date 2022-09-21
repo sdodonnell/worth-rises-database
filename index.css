@@ -45,3 +45,11 @@ html, body {
     src: url("/fonts/Helvetica-Neue/HelveticaNeueLTPro-Bd.otf");
 }
 
+.source-list p.source::after, .source-list a.source p::after {
+    content: "|";
+    padding: 0 2px 0 8px;
+}
+
+.source-list > .source:last-child::after, .source-list > .source:last-child > p::after {
+    content: none;
+}

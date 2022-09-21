@@ -19,6 +19,7 @@ import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-
 import React from 'react';
 import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
+import { HARM_SCORE_TEXT } from './copyUtils';
 
 const Header = ({ text, children, ...props }) => {
   if (children) {
@@ -41,7 +42,7 @@ const Source = ({ source, name }) => {
 
   if (isURL(source)) {
     return (
-      <Link href={source} isExternal>
+      <Link href={source} isExternal className="source">
         <Text fontSize="sm" fontStyle="italic" textDecor="underline">
           {name} <ExternalLinkIcon mx="2px" />
         </Text>
@@ -50,7 +51,7 @@ const Source = ({ source, name }) => {
   }
 
   return (
-    <Text fontSize="sm" fontStyle="italic">
+    <Text fontSize="sm" fontStyle="italic" className="source">
       {name}: {source}
     </Text>
   );
@@ -114,7 +115,7 @@ const Company = ({ name, values }) => {
         <ModalContent bgColor="white" overflow="hidden">
           <ModalHeader color="black" pt="24px" pb="0">
             {website ? (
-              <Link href={website}>
+              <Link href={website} isExternal>
                 <Flex alignItems="baseline" gap="5px">
                   {companyHeading}
                   <ExternalLinkIcon mx="2px" />
@@ -188,7 +189,7 @@ const Company = ({ name, values }) => {
                     </Flex>
                   </GridItem>
                   <GridItem display="flex" alignItems="center" justifyContent="center">
-                    <Tooltip label="Include a tooltip here about what a harm score is" fontSize="md">
+                    <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
                       <InfoOutlineIcon ml="5px" mt="-3px" />
                     </Tooltip>
                   </GridItem>
@@ -267,27 +268,22 @@ const Company = ({ name, values }) => {
               </GridItem>
             </Grid>
             {(notes || hasSources) && (
-              <Flex
-                position="absolute"
-                bottom="0"
-                height="48px"
-                bgColor="soft.gray"
-                width="100%"
-                ml="-24px"
-                alignItems="center"
-                justifyContent="space-evenly"
-              >
+              <Flex position="relative" bottom="-72px" width="100%" flexDir="column" p="10px 0">
                 {notes && (
-                  <Flex alignItems="center">
-                    <Header text="Notes" pr="5px" />
+                  <Flex gap="5px">
+                    <Text fontStyle="italic" fontSize="sm">
+                      Notes:
+                    </Text>
                     <Text fontStyle="italic" fontSize="sm">
                       {notes}
                     </Text>
                   </Flex>
                 )}
                 {hasSources && (
-                  <Flex alignItems="center">
-                    <Header text="Sources" pr="5px" />
+                  <Flex gap="5px" className="source-list">
+                    <Text fontSize="sm" fontStyle="italic">
+                      Sources:
+                    </Text>
                     <Source source={corrections} name="Corrections" />
                     <Source source={laborSource} name="Prison Labor" />
                     <Source source={detentionSource} name="Immigration Detention" />
