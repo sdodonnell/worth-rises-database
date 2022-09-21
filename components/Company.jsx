@@ -248,7 +248,7 @@ const Company = ({ name, values }) => {
                       <QuestionOutlineIcon ml="5px" mt="-3px" />
                     </Tooltip>
                   </Header>
-                  <Text>{politicalSpending === 'N/A' ? 'N/A' : `$${politicalSpending}`}</Text>
+                  <Text>{politicalSpending === 'N/A' ? 'N/A' : `$${politicalSpending.toLocaleString('en-US')}`}</Text>
                 </Box>
               </GridItem>
               <GridItem gridArea="e">

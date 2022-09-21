@@ -21,8 +21,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   //   });
   // }, []);
 
-  console.log(data);
-
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
@@ -331,7 +329,8 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         borderColor="soft.gray"
         bgColor="softer.gray"
         p="24px"
-        overflow="scroll"
+        overflowY="scroll"
+        overflowX="hidden"
       >
         <Flex flexDir="column" gap="36px" overflow="hidden">
           <Box>
