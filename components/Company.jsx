@@ -24,14 +24,26 @@ import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './copyUtils';
 const Header = ({ text, children, ...props }) => {
   if (children) {
     return (
-      <Heading fontSize="sm" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }} {...props}>
+      <Heading
+        fontSize="sm"
+        color="normal.gray"
+        textTransform="uppercase"
+        _notFirst={{ marginTop: '10px' }}
+        {...props}
+      >
         {text}
         {children}
       </Heading>
     );
   }
   return (
-    <Heading fontSize="sm" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }} {...props}>
+    <Heading
+      fontSize="sm"
+      color="normal.gray"
+      textTransform="uppercase"
+      _notFirst={{ marginTop: '10px' }}
+      {...props}
+    >
       <Text>{text}</Text>
     </Heading>
   );
@@ -57,7 +69,7 @@ const Source = ({ source, name }) => {
   );
 };
 
-const Company = ({ name, values }) => {
+const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
@@ -109,10 +121,19 @@ const Company = ({ name, values }) => {
 
   return (
     <>
-      <Text fontWeight="bold" _hover={{ textDecor: 'underline', cursor: 'pointer' }} onClick={onOpen}>
+      <Text
+        fontWeight="bold"
+        _hover={{ textDecor: 'underline', cursor: 'pointer' }}
+        onClick={(e) => handleModalOpen(e, name, onOpen)}
+      >
         {name}
       </Text>
-      <Modal isOpen={isOpen} onClose={onClose} size="6xl" scrollBehavior="inside">
+      <Modal
+        isOpen={isOpen}
+        onClose={(e) => handleModalClose(e, onClose)}
+        size="6xl"
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalCloseButton />
         <ModalContent bgColor="white" overflow="hidden">
@@ -130,16 +151,33 @@ const Company = ({ name, values }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb="72px">
-            <Grid templateAreas={template} templateRows={`20px 80px 336px`} templateColumns="repeat(4, 1fr)" gap="28px">
+            <Grid
+              templateAreas={template}
+              templateRows={`20px 80px 336px`}
+              templateColumns="repeat(4, 1fr)"
+              gap="28px"
+            >
               <GridItem gridArea="a" display="flex" gap="28px">
                 <Text>
-                  <Text as="span" fontWeight="bold" fontSize="sm" textTransform="uppercase" fontFamily="heading">
+                  <Text
+                    as="span"
+                    fontWeight="bold"
+                    fontSize="sm"
+                    textTransform="uppercase"
+                    fontFamily="heading"
+                  >
                     Sector:{' '}
                   </Text>
                   {primarySector}
                 </Text>
                 <Text>
-                  <Text as="span" fontWeight="bold" fontSize="sm" textTransform="uppercase" fontFamily="heading">
+                  <Text
+                    as="span"
+                    fontWeight="bold"
+                    fontSize="sm"
+                    textTransform="uppercase"
+                    fontFamily="heading"
+                  >
                     Subsector:{' '}
                   </Text>
                   {subsector}
@@ -192,7 +230,13 @@ const Company = ({ name, values }) => {
                     </Flex>
                   </GridItem>
                   <GridItem display="flex" alignItems="center" justifyContent="center">
-                    <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" fontWeight="normal" bgColor="soft.gray" placement="auto-start">
+                    <Tooltip
+                      label={HARM_SCORE_TEXT}
+                      fontSize="sm"
+                      fontWeight="normal"
+                      bgColor="soft.gray"
+                      placement="auto-start"
+                    >
                       <InfoOutlineIcon ml="5px" mt="-3px" />
                     </Tooltip>
                   </GridItem>
@@ -230,7 +274,10 @@ const Company = ({ name, values }) => {
               <GridItem gridArea="d" display="flex" flexDir="column" justifyContent="space-between">
                 <Box>
                   <Header text="Annual Revenue" />
-                  <Text fontSize={revenues ? '5xl' : 'md'} fontWeight={revenues ? 'light' : 'normal'}>
+                  <Text
+                    fontSize={revenues ? '5xl' : 'md'}
+                    fontWeight={revenues ? 'light' : 'normal'}
+                  >
                     {revenues ? `${revenues} M` : 'N/A'}
                   </Text>
                 </Box>
@@ -244,11 +291,21 @@ const Company = ({ name, values }) => {
                 </Box>
                 <Box>
                   <Header text="Political Spending">
-                    <Tooltip label={POLITICAL_SPENDING_TEXT} fontSize="sm" fontWeight="normal" bgColor="soft.gray" placement="auto-start">
+                    <Tooltip
+                      label={POLITICAL_SPENDING_TEXT}
+                      fontSize="sm"
+                      fontWeight="normal"
+                      bgColor="soft.gray"
+                      placement="auto-start"
+                    >
                       <QuestionOutlineIcon ml="5px" mt="-3px" />
                     </Tooltip>
                   </Header>
-                  <Text>{politicalSpending === 'N/A' ? 'N/A' : `$${politicalSpending.toLocaleString('en-US')}`}</Text>
+                  <Text>
+                    {politicalSpending === 'N/A'
+                      ? 'N/A'
+                      : `$${politicalSpending.toLocaleString('en-US')}`}
+                  </Text>
                 </Box>
               </GridItem>
               <GridItem gridArea="e">

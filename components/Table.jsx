@@ -8,6 +8,7 @@ import Company from './Company';
 import Filters from './Filters';
 import SectorTag from './SectorTag';
 import { INTRO_TEXT } from './copyUtils';
+import { useRouter } from 'next/router';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   // const filterArray = useCallback((rows, id, filterValue) => {
@@ -21,6 +22,16 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   //   });
   // }, []);
 
+  const router = useRouter();
+  const handleModalOpen = (e, name, onOpen) => {
+    onOpen(e);
+    router.push(`/?${name}`, undefined, { shallow: true });
+  };
+  const handleModalClose = (e, onClose) => {
+    onClose(e);
+    router.push(`/`, undefined, { shallow: true });
+  };
+
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
@@ -29,39 +40,34 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'fld8eXd7ySetKd4X3',
         id: 'company',
         getHeaderProps: () => ({
-          textAlign: 'center'
+          textAlign: 'center',
         }),
-        Cell: ({ value, row: { values } }) => <Company name={value || '--'} values={values} />,
+        Cell: ({ value, row: { values } }) => (
+          <Company
+            name={value || '--'}
+            values={values}
+            handleModalClose={handleModalClose}
+            handleModalOpen={handleModalOpen}
+          />
+        ),
       },
       {
         Header: 'Parent Company',
         accessor: 'fldw832i7sKHSioYO',
         id: 'parent',
-        Cell: ({ value }) => (
-          <Box textAlign="center">
-            {value ? String(value) : '--'}
-          </Box>
-          ),
+        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
       },
       {
         Header: 'Major Investor',
         accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
-        Cell: ({ value }) => (
-          <Box textAlign="center">
-            {value ? String(value) : '--'}
-          </Box>
-          ),
+        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
       },
       {
         Header: 'Stock Ticker',
         accessor: 'fldxUScw6juEHQ4Bn',
         id: 'stock',
-        Cell: ({ value }) => (
-          <Box textAlign="center">
-            {value ? String(value) : '--'}
-          </Box>
-          ),
+        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
       },
       {
         Header: 'Sector',
@@ -86,11 +92,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'fldvURpMuHYQno2Ov',
         id: 'harmScore',
         filter: 'between',
-        Cell: ({ value }) => (
-          <Box textAlign="center">
-            {value ? String(value) : '--'}
-          </Box>
-          ),
+        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
       },
       {
         Header: 'Divestment Target',
@@ -324,7 +326,8 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
               </Heading>
             </Flex>
             <Text color="white" fontSize="12px">
-              The prison industry is a $80 billion industry with thousands of corporations. Here’s who they are.
+              The prison industry is a $80 billion industry with thousands of corporations. Here’s
+              who they are.
             </Text>
           </Flex>
         </Flex>
@@ -374,7 +377,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           isLoading={isLoading}
           isError={isError}
         />
-        <Flex justify="flex-start" align="center" p="1rem" bgColor="softer.gray" color="white" h="50">
+        <Flex
+          justify="flex-start"
+          align="center"
+          p="1rem"
+          bgColor="softer.gray"
+          color="white"
+          h="50"
+        >
           <Pagination
             previousPage={previousPage}
             nextPage={nextPage}
