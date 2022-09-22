@@ -192,7 +192,7 @@ const Company = ({ name, values }) => {
                     </Flex>
                   </GridItem>
                   <GridItem display="flex" alignItems="center" justifyContent="center">
-                    <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
+                    <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" fontWeight="normal" bgColor="soft.gray" placement="auto-start">
                       <InfoOutlineIcon ml="5px" mt="-3px" />
                     </Tooltip>
                   </GridItem>
@@ -244,7 +244,7 @@ const Company = ({ name, values }) => {
                 </Box>
                 <Box>
                   <Header text="Political Spending">
-                    <Tooltip label={POLITICAL_SPENDING_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
+                    <Tooltip label={POLITICAL_SPENDING_TEXT} fontSize="sm" fontWeight="normal" bgColor="soft.gray" placement="auto-start">
                       <QuestionOutlineIcon ml="5px" mt="-3px" />
                     </Tooltip>
                   </Header>

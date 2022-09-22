@@ -28,25 +28,40 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Corporate Name',
         accessor: 'fld8eXd7ySetKd4X3',
         id: 'company',
+        getHeaderProps: () => ({
+          textAlign: 'center'
+        }),
         Cell: ({ value, row: { values } }) => <Company name={value || '--'} values={values} />,
       },
       {
         Header: 'Parent Company',
         accessor: 'fldw832i7sKHSioYO',
         id: 'parent',
-        Cell: ({ value }) => (value ? String(value) : '--'),
+        Cell: ({ value }) => (
+          <Box textAlign="center">
+            {value ? String(value) : '--'}
+          </Box>
+          ),
       },
       {
         Header: 'Major Investor',
         accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
-        Cell: ({ value }) => (value ? String(value) : '--'),
+        Cell: ({ value }) => (
+          <Box textAlign="center">
+            {value ? String(value) : '--'}
+          </Box>
+          ),
       },
       {
         Header: 'Stock Ticker',
         accessor: 'fldxUScw6juEHQ4Bn',
         id: 'stock',
-        Cell: ({ value }) => (value ? String(value) : '--'),
+        Cell: ({ value }) => (
+          <Box textAlign="center">
+            {value ? String(value) : '--'}
+          </Box>
+          ),
       },
       {
         Header: 'Sector',
@@ -71,37 +86,26 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'fldvURpMuHYQno2Ov',
         id: 'harmScore',
         filter: 'between',
-        Cell: ({ value }) => (value ? String(value) : '--'),
+        Cell: ({ value }) => (
+          <Box textAlign="center">
+            {value ? String(value) : '--'}
+          </Box>
+          ),
       },
       {
         Header: 'Divestment Target',
         accessor: 'fldkvqcyO7SQLSWQD',
         id: 'divestment',
-        Cell: ({ value }) => (
-          <Box minHeight="16px" textAlign="center">
-            {value ? '✓' : ''}
-          </Box>
-        ),
       },
       {
         Header: 'Prison Labor',
         accessor: 'fldwPeONqYRZGmZCi',
         id: 'laborInvolvement',
-        Cell: ({ value }) => (
-          <Box minHeight="16px" textAlign="center">
-            {value ? '✓' : ''}
-          </Box>
-        ),
       },
       {
         Header: 'Immigration Detention',
         accessor: 'fldCwqMsXdV3icjcV',
         id: 'detentionInvolvement',
-        Cell: ({ value }) => (
-          <Box minHeight="16px" textAlign="center">
-            {value ? '✓' : ''}
-          </Box>
-        ),
       },
       // Hidden columns; only necessary for company profile modal
       {
@@ -216,12 +220,15 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'acquired',
           'active',
           'corrections',
+          'detentionInvolvement',
           'detentionSource',
+          'divestment',
           'employees',
           'executive',
           'exposure',
           'financials',
           'fiscalYear',
+          'laborInvolvement',
           'laborSource',
           'notes',
           'other',
@@ -284,8 +291,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         description: 'This may take a minute.',
         status: 'info',
         duration: null,
-        position: 'top',
-        colorScheme: 'brand',
+        position: 'bottom-right',
       });
     } else {
       toast.closeAll();
@@ -293,15 +299,16 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   }, [isCacheMiss, isLoading]);
 
   return (
-    <Grid h="full" w="full" templateRows="80px calc(100vh - 130px) 50px" templateColumns="300px 1fr">
+    <Grid h="full" w="full" templateRows="80px calc(100vh - 80px)" templateColumns="300px 1fr">
       <GridItem
-        colSpan={3}
+        colSpan={2}
         rowSpan={1}
         p="15px"
         borderBottom="1px solid"
         bgColor="normal.purple"
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
       >
         <Flex alignItems="center" gap="20px">
           <Link href="https://worthrises.org" isExternal>
@@ -321,10 +328,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             </Text>
           </Flex>
         </Flex>
+        <DownloadButton rows={rows} />
       </GridItem>
       <GridItem
         colSpan={1}
-        rowSpan={2}
+        rowSpan={1}
         borderRight="2px"
         borderColor="soft.gray"
         bgColor="softer.gray"
@@ -366,9 +374,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           isLoading={isLoading}
           isError={isError}
         />
-      </GridItem>
-      <GridItem colSpan={2} colStart={2}>
-        <Flex justify="space-between" align="center" p="1rem" bgColor="softer.gray" color="white" h="50">
+        <Flex justify="flex-start" align="center" p="1rem" bgColor="softer.gray" color="white" h="50">
           <Pagination
             previousPage={previousPage}
             nextPage={nextPage}
@@ -379,7 +385,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             isPreviousPage={canPreviousPage}
             isNextPage={canNextPage}
           />
-          <DownloadButton rows={rows} />
         </Flex>
       </GridItem>
     </Grid>

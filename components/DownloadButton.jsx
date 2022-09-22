@@ -19,7 +19,7 @@ const DownloadButton = ({ rows }) => {
   };
 
   return (
-    <Button size="sm" colorScheme="brand">
+    <Button size="sm" colorScheme="brand" border="1px solid">
       <CSVLink
         data={getData()}
         asyncOnClick={true}

@@ -105,7 +105,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     ];
 
     if (active) {
-      filters.push({ id: 'active', value: 'Y' });
+      filters.push({ id: 'active', value: true });
     }
 
     if (minHarmScore && maxHarmScore) {
@@ -224,7 +224,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
             <Box>
               <Heading size="sm" color="black">
                 Harm Score
-                <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
+                <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" fontWeight="normal" bgColor="soft.gray" placement="auto-start">
                   <QuestionOutlineIcon ml="5px" mt="-3px" color="black" />
                 </Tooltip>
               </Heading>

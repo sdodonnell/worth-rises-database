@@ -19,6 +19,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                     py="10px"
                     color="normal.gray"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
+                    title="Sort by"
                   >
                     {
                       // Render the header
