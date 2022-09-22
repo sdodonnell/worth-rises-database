@@ -23,10 +23,12 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   // }, []);
 
   const router = useRouter();
+
   const handleModalOpen = (e, name, onOpen) => {
     onOpen(e);
-    router.push(`/?${name}`, undefined, { shallow: true });
+    router.push(`/?id=${name}`, undefined, { shallow: true });
   };
+  
   const handleModalClose = (e, onClose) => {
     onClose(e);
     router.push(`/`, undefined, { shallow: true });
@@ -44,7 +46,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         }),
         Cell: ({ value, row: { values } }) => (
           <Company
-            name={value || '--'}
+            name={value?.trim() || '--'}
             values={values}
             handleModalClose={handleModalClose}
             handleModalOpen={handleModalOpen}

@@ -16,10 +16,11 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
 import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './copyUtils';
+import { useRouter } from 'next/router';
 
 const Header = ({ text, children, ...props }) => {
   if (children) {
@@ -118,6 +119,18 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                     "b b b b"
                     "c d e e"
                     `;
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const safeId = decodeURIComponent(router.query.id);
+    if (!isOpen && safeId === name) {
+      console.log('trying to open')
+      onOpen();
+    } else if (isOpen && safeId !== name) {
+      onClose();
+    }
+  }, [router.query.id]);
 
   return (
     <>
