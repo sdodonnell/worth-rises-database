@@ -125,7 +125,6 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
   useEffect(() => {
     const safeId = decodeURIComponent(router.query.id);
     if (!isOpen && safeId === name) {
-      console.log('trying to open')
       onOpen();
     } else if (isOpen && safeId !== name) {
       onClose();
