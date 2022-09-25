@@ -9,6 +9,7 @@ import Filters from './Filters';
 import SectorTag from './SectorTag';
 import { INTRO_TEXT } from './copyUtils';
 import { useRouter } from 'next/router';
+import SectorTagList from './SectorTagList';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   // const filterArray = useCallback((rows, id, filterValue) => {
@@ -72,12 +73,16 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
       },
       {
-        Header: 'Sector',
         accessor: 'fldjEW6owmKk8OMlX',
         id: 'primarySector',
-        // filter: filterArray,
+        // filter: filterArray
+      },
+      {
+        Header: 'Sector',
+        accessor: 'fldTcs1OaGwdUsHiW',
+        id: 'sectors',
         Cell: ({ value, setAllFilters }) => {
-          return <SectorTag sector={value} setAllFilters={setAllFilters} variant="primary" />;
+          return <SectorTagList sectors={value} setAllFilters={setAllFilters} />;
         },
       },
       {
@@ -237,6 +242,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'notes',
           'other',
           'politicalSpending',
+          'primarySector',
           'responsibility',
           'responsiveness',
           'revenueOnly',
