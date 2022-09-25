@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import * as NextLink from 'next/link';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
 import { Box, Flex, Grid, GridItem, Heading, Image, Link, Text, useToast } from '@chakra-ui/react';
 import TableUI from './TableUI';
@@ -7,7 +8,7 @@ import DownloadButton from './DownloadButton';
 import Company from './Company';
 import Filters from './Filters';
 import SectorTag from './SectorTag';
-import { INTRO_TEXT } from './copyUtils';
+import { HEADER_TEXT, INTRO_TEXT } from './copyUtils';
 import { useRouter } from 'next/router';
 import SectorTagList from './SectorTagList';
 
@@ -29,7 +30,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     onOpen(e);
     router.push(`/?id=${name}`, undefined, { shallow: true });
   };
-  
+
   const handleModalClose = (e, onClose) => {
     onClose(e);
     router.push(`/`, undefined, { shallow: true });
@@ -81,7 +82,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Sector',
         accessor: 'fldTcs1OaGwdUsHiW',
         id: 'sectors',
-        filter: 'arrIncludesAll',
+        filter: 'includesAll',
         Cell: ({ value, setAllFilters }) => {
           return <SectorTagList sectors={value} setAllFilters={setAllFilters} />;
         },
@@ -100,7 +101,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'fldvURpMuHYQno2Ov',
         id: 'harmScore',
         filter: 'between',
-        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
+        Cell: ({ value }) => (
+          <Box textAlign="center" fontWeight="bold">
+            {value ? String(value) : '--'}
+          </Box>
+        ),
       },
       {
         Header: 'Divestment Target',
@@ -323,7 +328,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       >
         <Flex alignItems="center" gap="20px">
           <Link href="https://worthrises.org" isExternal>
-            <Image src="logo-white-vertical.png" ml="33px" w="55px" />
+            <Image src="logo-white-vertical.png" ml="9px" w="55px" />
           </Link>
           <Flex flexDir="column">
             <Flex gap="10px">
@@ -335,8 +340,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
               </Heading>
             </Flex>
             <Text color="white" fontSize="12px">
-              The prison industry is a $80 billion industry with thousands of corporations. Here’s
-              who they are.
+              {HEADER_TEXT}
             </Text>
           </Flex>
         </Flex>
@@ -387,7 +391,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           isError={isError}
         />
         <Flex
-          justify="flex-start"
+          justify="space-between"
           align="center"
           p="1rem"
           bgColor="softer.gray"
@@ -404,6 +408,13 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             isPreviousPage={canPreviousPage}
             isNextPage={canNextPage}
           />
+          <Text color="black" fontSize="9px" w="230px" textAlign="right">
+            <Link color="normal.green" fontWeight="bold" as={NextLink} href="/">Prison Industry Database: Private Sector Players</Link> © 2022 by{' '}
+            <Link color="normal.green" fontWeight="bold" href="https://worthrises.org">Worth Rises</Link> is licensed under{' '}
+            <Link color="normal.green" fontWeight="bold" href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1">
+              CC BY-NC-SA 4.0​
+            </Link>
+          </Text>
         </Flex>
       </GridItem>
     </Grid>

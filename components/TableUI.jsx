@@ -12,7 +12,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
             <Tr {...headerGroup.getHeaderGroupProps()}>
               {
                 // Loop over the headers in each row
-                headerGroup.headers.map((column) => (
+                headerGroup.headers.map((column, i) => (
                   // Apply the header cell props
                   <Th
                     whiteSpace="nowrap"
@@ -20,6 +20,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                     color="normal.gray"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     title="Sort by"
+                    textAlign={i > 0 ? "center" : "left"}
                   >
                     {
                       // Render the header

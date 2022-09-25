@@ -50,16 +50,27 @@ const Header = ({ text, children, ...props }) => {
   );
 };
 
-const Source = ({ source, name }) => {
+const Source = ({ source, name, website = '' }) => {
   if (!source) return null;
 
   if (isURL(source)) {
     return (
       <Link href={source} isExternal className="source">
-        <Text fontSize="sm" fontStyle="italic" textDecor="underline">
+        <Text fontSize="sm" fontStyle="italic">
           {name} <ExternalLinkIcon mx="2px" />
         </Text>
       </Link>
+    );
+  }
+
+  if (name === 'Corrections' && source === 'See website') {
+    return (
+      <Text fontSize="sm" fontStyle="italic" className="source">
+        {name}: See{' '}
+        <Link href={website} isExternal>
+          website <ExternalLinkIcon mx="2px" />
+        </Link>
+      </Text>
     );
   }
 
@@ -356,7 +367,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                     <Text fontSize="sm" fontStyle="italic">
                       Sources:
                     </Text>
-                    <Source source={corrections} name="Corrections" />
+                    <Source source={corrections} name="Corrections" website={website} />
                     <Source source={laborSource} name="Prison Labor" />
                     <Source source={detentionSource} name="Immigration Detention" />
                     <Source source={financials} name="Financials" />

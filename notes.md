@@ -18,8 +18,6 @@ wrapping
 as either primary or other. It currently looks like it’s pulling only if it’s listed as primary
 - Main database screen - data box
   - Linking parents
-  - Did we address the invalid stock tickers for corps trading on an international market?
-Will need to reflect in corporate profile as well
 - Corporate profiles
   - In the Sources section, when it says “Correction: See website,” would it be possible for
 “website” to hyperlink to the corporate website?
