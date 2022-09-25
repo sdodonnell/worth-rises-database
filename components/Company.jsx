@@ -1,5 +1,6 @@
 import {
   Box,
+  CloseButton,
   Flex,
   Grid,
   GridItem,
@@ -117,15 +118,6 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
   const hasSources = detentionSource || corrections || laborSource || other || financials;
 
-  const companyHeading =
-    active === 'Y' ? (
-      <Heading size="lg">{name}</Heading>
-    ) : (
-      <Heading size="lg">
-        {name} <span style={{ fontSize: '16px' }}>(brand not active)</span>
-      </Heading>
-    );
-
   const template = `"a a a a"
                     "b b b b"
                     "c d e e"
@@ -158,21 +150,33 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
         scrollBehavior="inside"
       >
         <ModalOverlay />
-        <ModalCloseButton />
-        <ModalContent bgColor="white" overflow="hidden">
+        <ModalContent bgColor="white" overflow="visible">
           <ModalHeader color="black" pt="24px" pb="0">
-            {website ? (
-              <Link href={website} isExternal>
-                <Flex alignItems="baseline" gap="5px">
-                  {companyHeading}
-                  <ExternalLinkIcon mx="2px" />
-                </Flex>
-              </Link>
-            ) : (
-              companyHeading
-            )}
+            <Flex>
+              {website ? (
+                <Link href={website} isExternal>
+                  <Flex alignItems="baseline" gap="5px">
+                    <Heading size="lg">{name}</Heading>
+                    <ExternalLinkIcon mx="2px" />
+                  </Flex>
+                </Link>
+              ) : (
+                <Heading size="lg">{name}</Heading>
+              )}
+              {!active && (
+                <Heading size="sm" color="normal.red">
+                  BRAND INACTIVE
+                </Heading>
+              )}
+            </Flex>
           </ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton
+            top="-10px"
+            right="-10px"
+            bgColor="softer.gray"
+            _hover={{ bgColor: 'soft.gray' }}
+            _active={{ bgColor: 'soft.gray' }}
+          />
           <ModalBody pb="72px">
             <Grid
               templateAreas={template}
