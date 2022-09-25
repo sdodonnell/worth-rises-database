@@ -81,6 +81,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Sector',
         accessor: 'fldTcs1OaGwdUsHiW',
         id: 'sectors',
+        filter: 'arrIncludesAll',
         Cell: ({ value, setAllFilters }) => {
           return <SectorTagList sectors={value} setAllFilters={setAllFilters} />;
         },
