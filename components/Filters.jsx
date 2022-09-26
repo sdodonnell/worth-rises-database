@@ -43,9 +43,19 @@ const sectorMapping = {
     'IT & Communications Infrastructure & Services',
     'Medical Records Systems',
   ],
-  Equipment: ['Furnishings, Supplies, & Other Facility Equipment', 'Security Equipment', 'Security Technology'],
+  Equipment: [
+    'Furnishings, Supplies, & Other Facility Equipment',
+    'Security Equipment',
+    'Security Technology',
+  ],
   'Financial Services': ['Agency Payment Processing', 'Money Transfers', 'Cash & Release Cards'],
-  'Food & Commissary': ['Care Packages', 'Commissary', 'Kitchen Equipment', 'Prison Food', 'Vending Machines'],
+  'Food & Commissary': [
+    'Care Packages',
+    'Commissary',
+    'Kitchen Equipment',
+    'Prison Food',
+    'Vending Machines',
+  ],
   Healthcare: [
     'Ambulance Services',
     'Medical Equipment',
@@ -92,11 +102,21 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
   }, [data]);
 
   const submitSearch = (data) => {
-    const { active, detention, divestment, exposure, keyword, labor, maxHarmScore, minHarmScore, sector, subsector } =
-      data;
+    const {
+      active,
+      detention,
+      divestment,
+      exposure,
+      keyword,
+      labor,
+      maxHarmScore,
+      minHarmScore,
+      sector,
+      subsector,
+    } = data;
 
     const filters = [
-      { id: 'primarySector', value: sector },
+      { id: 'sectors', value: sector },
       { id: 'subsector', value: subsector },
       { id: 'exposure', value: exposure },
       { id: 'detentionInvolvement', value: detention },
@@ -105,7 +125,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     ];
 
     if (active) {
-      filters.push({ id: 'active', value: 'Y' });
+      filters.push({ id: 'active', value: true });
     }
 
     if (minHarmScore && maxHarmScore) {
@@ -148,7 +168,12 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
               <FormLabel color="black" htmlFor="keyword">
                 <Heading size="sm">Keyword</Heading>
               </FormLabel>
-              <Input placeholder="Enter Keyword" bgColor="white" {...register('keyword')} />
+              <Input
+                placeholder="Enter Keyword"
+                bgColor="white"
+                focusBorderColor="soft.purple"
+                {...register('keyword')}
+              />
             </Box>
             <Box>
               <FormLabel color="black" htmlFor="sector">
@@ -224,13 +249,24 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
             <Box>
               <Heading size="sm" color="black">
                 Harm Score
-                <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
+                <Tooltip
+                  label={HARM_SCORE_TEXT}
+                  fontSize="sm"
+                  fontWeight="normal"
+                  bgColor="soft.gray"
+                  placement="auto-start"
+                >
                   <QuestionOutlineIcon ml="5px" mt="-3px" color="black" />
                 </Tooltip>
               </Heading>
               <Flex pt="5px" alignItems="center">
                 <Box>
-                  <Select id="minHarmScore" bgColor="white" maxWidth="70px" {...register('minHarmScore')}>
+                  <Select
+                    id="minHarmScore"
+                    bgColor="white"
+                    maxWidth="70px"
+                    {...register('minHarmScore')}
+                  >
                     {Array(13)
                       .fill()
                       .map((_, i) => (
@@ -259,10 +295,15 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
             <Box>
               <FormLabel htmlFor="exposure">
                 <Heading size="sm" color="black">
-                  Public Markets Exposure
+                  Capital Markets Exposure
                 </Heading>
               </FormLabel>
-              <Select id="exposure" placeholder="Select market exposure tier" bgColor="white" {...register('exposure')}>
+              <Select
+                id="exposure"
+                placeholder="Select market exposure tier"
+                bgColor="white"
+                {...register('exposure')}
+              >
                 <option>Tier 1a (Publicly Traded - Targeted Exposure)</option>
                 <option>Tier 1b (Publicly Traded - Other Exposure)</option>
                 <option>Tier 2 (Investment Firm-Owned)</option>
@@ -311,7 +352,6 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       id="detention"
                       isChecked={value}
                       borderColor="black"
-                      colorScheme="brand"
                       onChange={(e) => onChange(e.target.checked)}
                     >
                       Involved in Immigration Detention
@@ -327,7 +367,6 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       id="active"
                       isChecked={value}
                       borderColor="black"
-                      colorScheme="brand"
                       onChange={(e) => onChange(e.target.checked)}
                     >
                       Active Brands Only

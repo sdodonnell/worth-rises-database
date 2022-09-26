@@ -1,0 +1,10 @@
+- General
+  - Hosting solution / hooking up to data.worthrises.org
+- Styling
+  - See mock-up (+comments) for styling guidance - Bianca and Luke will send by Friday
+  - Where are we with mobile design?
+  - Remove horizontal scroll bar on drop down menus in filters
+  - Make font size and style in filter box match that of the data – both headers and data
+- Main database screen - filter box
+  - Have we addressed the export formatting?
+  - Sector names should show up in the box when you select it

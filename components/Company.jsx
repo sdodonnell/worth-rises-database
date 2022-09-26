@@ -16,37 +16,62 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
-import React from 'react';
+import React, { useEffect } from 'react';
+import * as NextLink from 'next/link';
 import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
 import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './copyUtils';
+import { useRouter } from 'next/router';
 
 const Header = ({ text, children, ...props }) => {
   if (children) {
     return (
-      <Heading fontSize="sm" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }} {...props}>
+      <Heading
+        fontSize="sm"
+        color="normal.gray"
+        textTransform="uppercase"
+        _notFirst={{ marginTop: '10px' }}
+        {...props}
+      >
         {text}
         {children}
       </Heading>
     );
   }
   return (
-    <Heading fontSize="sm" color="normal.gray" textTransform="uppercase" _notFirst={{ marginTop: '10px' }} {...props}>
+    <Heading
+      fontSize="sm"
+      color="normal.gray"
+      textTransform="uppercase"
+      _notFirst={{ marginTop: '10px' }}
+      {...props}
+    >
       <Text>{text}</Text>
     </Heading>
   );
 };
 
-const Source = ({ source, name }) => {
+const Source = ({ source, name, website = '' }) => {
   if (!source) return null;
 
   if (isURL(source)) {
     return (
       <Link href={source} isExternal className="source">
-        <Text fontSize="sm" fontStyle="italic" textDecor="underline">
+        <Text fontSize="sm" fontStyle="italic">
           {name} <ExternalLinkIcon mx="2px" />
         </Text>
       </Link>
+    );
+  }
+
+  if (name === 'Corrections' && source === 'See website') {
+    return (
+      <Text fontSize="sm" fontStyle="italic" className="source">
+        {name}: See{' '}
+        <Link href={website} isExternal>
+          website <ExternalLinkIcon mx="2px" />
+        </Link>
+      </Text>
     );
   }
 
@@ -57,7 +82,7 @@ const Source = ({ source, name }) => {
   );
 };
 
-const Company = ({ name, values }) => {
+const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
@@ -71,11 +96,13 @@ const Company = ({ name, values }) => {
     financials = '',
     fiscalYear = 'N/A',
     harmScore = 'N/A',
+    id,
     laborSource = '',
     notes,
     other = '',
     owner = 'N/A',
-    parent = 'N/A',
+    parentName = 'N/A',
+    parentRecord,
     politicalSpending = 'N/A',
     primarySector,
     responsibility,
@@ -93,119 +120,177 @@ const Company = ({ name, values }) => {
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
   const hasSources = detentionSource || corrections || laborSource || other || financials;
 
-  const companyHeading =
-    active === 'Y' ? (
-      <Heading size="lg">{name}</Heading>
-    ) : (
-      <Heading size="lg">
-        {name} <span style={{ fontSize: '16px' }}>(brand not active)</span>
-      </Heading>
-    );
-
   const template = `"a a a a"
-                    "b b b b"
                     "c d e e"
                     `;
 
+  const router = useRouter();
+
+  useEffect(() => {
+    const safeId = decodeURIComponent(router.query.id);
+    if (!isOpen && safeId === id) {
+      onOpen();
+    } else if (isOpen && safeId !== id) {
+      onClose();
+    }
+  }, [router.query.id]);
+
   return (
     <>
-      <Text fontWeight="bold" _hover={{ textDecor: 'underline', cursor: 'pointer' }} onClick={onOpen}>
+      <Text
+        fontWeight="bold"
+        _hover={{ textDecor: 'underline', cursor: 'pointer' }}
+        onClick={(e) => handleModalOpen(e, id, onOpen)}
+      >
         {name}
       </Text>
-      <Modal isOpen={isOpen} onClose={onClose} size="6xl" scrollBehavior="inside">
+      <Modal
+        isOpen={isOpen}
+        onClose={(e) => handleModalClose(e, onClose)}
+        size="6xl"
+        scrollBehavior="inside"
+        blockScrollOnMount={false}
+      >
         <ModalOverlay />
-        <ModalCloseButton />
-        <ModalContent bgColor="white" overflow="hidden">
+        <ModalContent bgColor="white" overflow="visible">
           <ModalHeader color="black" pt="24px" pb="0">
-            {website ? (
-              <Link href={website} isExternal>
-                <Flex alignItems="baseline" gap="5px">
-                  {companyHeading}
-                  <ExternalLinkIcon mx="2px" />
-                </Flex>
-              </Link>
-            ) : (
-              companyHeading
-            )}
+            <Flex justifyContent="space-between" alignItems="baseline">
+              {website ? (
+                <Link href={website} isExternal>
+                  <Flex alignItems="baseline" gap="5px">
+                    <Heading size="lg">{name}</Heading>
+                    <ExternalLinkIcon mx="2px" />
+                  </Flex>
+                </Link>
+              ) : (
+                <Heading size="lg">{name}</Heading>
+              )}
+              {!active && (
+                <Heading size="sm" color="normal.red">
+                  BRAND INACTIVE
+                </Heading>
+              )}
+            </Flex>
           </ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton
+            top="-10px"
+            right="-10px"
+            borderRadius="20px"
+            bgColor="softer.gray"
+            _hover={{ bgColor: 'soft.gray' }}
+            _active={{ bgColor: 'soft.gray' }}
+          />
           <ModalBody pb="72px">
-            <Grid templateAreas={template} templateRows={`20px 80px 336px`} templateColumns="repeat(4, 1fr)" gap="28px">
-              <GridItem gridArea="a" display="flex" gap="28px">
-                <Text>
-                  <Text as="span" fontWeight="bold" fontSize="sm" textTransform="uppercase" fontFamily="heading">
-                    Sector:{' '}
-                  </Text>
-                  {primarySector}
-                </Text>
-                <Text>
-                  <Text as="span" fontWeight="bold" fontSize="sm" textTransform="uppercase" fontFamily="heading">
-                    Subsector:{' '}
-                  </Text>
-                  {subsector}
-                </Text>
-              </GridItem>
-              <GridItem
-                gridArea="b"
-                display="flex"
-                justifyContent="space-between"
-                borderBottom="1px solid black"
-                pb="28px"
-              >
-                <Box>
-                  <Header text="Founded" />
-                  <Text>{yearFounded}</Text>
-                </Box>
-                <Box>
-                  <Header text="Headquarters" />
-                  <Text>{state}</Text>
-                </Box>
-                <Box>
-                  <Header text="Employees" />
-                  <Text>{employeeCount}</Text>
-                </Box>
-                <Box>
-                  <Header text="Chief Executive" />
-                  <Text>{executive}</Text>
-                </Box>
-                <Grid templateColumns="280px 30px" templateRows="44px 22px">
+            <Grid
+              templateAreas={template}
+              templateRows={`160px 336px`}
+              templateColumns="repeat(4, 1fr)"
+              gap="28px"
+            >
+              <GridItem gridArea="a">
+                <Grid
+                  gridTemplateColumns="2fr 1fr"
+                  height="100%"
+                  padding="20px 0"
+                  borderTop="1px solid black"
+                  borderBottom="1px solid black"
+                  gap="20px"
+                >
                   <GridItem
-                    display="flex"
-                    id="harm-score"
-                    w="280px"
-                    h="44px"
-                    borderRadius="5px"
-                    overflow="hidden"
-                    fontFamily="heading"
-                    fontWeight="bold"
-                    border="1px solid black"
+                    display="grid"
+                    gridTemplateColumns="repeat(4, 1fr)"
+                    gridTemplateRows="1fr 1fr"
+                    borderRight="1px solid black"
                   >
-                    <Flex bgColor="soft.gray" w="228px" justifyContent="center" alignItems="center">
-                      <Text textTransform="uppercase" fontSize="sm">
-                        Harm Score
-                      </Text>
-                    </Flex>
-                    <Flex bgColor="black" w="52px" justifyContent="center" alignItems="center">
-                      <Text color="white" fontSize="22px">
-                        {harmScore}
-                      </Text>
-                    </Flex>
+                    <Box>
+                      <Header text="Founded" />
+                      <Text>{yearFounded}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Headquarters" />
+                      <Text>{state}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Employees" />
+                      <Text>{employeeCount}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Chief Executive" />
+                      <Text>{executive}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Parent Company" />
+                      {parentRecord ? (
+                        <Text _hover={{ textDecoration: 'underline' }}>
+                          <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                            {parentName[0]}
+                          </Link>
+                        </Text>
+                      ) : (
+                        <Text>{parentName}</Text>
+                      )}
+                    </Box>
+                    <Box>
+                      <Header text="Ownership Investor" />
+                      <Text>{owner}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Last Acquired" />
+                      <Text>{acquired}</Text>
+                    </Box>
                   </GridItem>
-                  <GridItem display="flex" alignItems="center" justifyContent="center">
-                    <Tooltip label={HARM_SCORE_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
-                      <InfoOutlineIcon ml="5px" mt="-3px" />
-                    </Tooltip>
-                  </GridItem>
-                  <GridItem display="flex" mt="6px" alignItems="center" overflow="hidden">
-                    <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                      Salience: {salience}
-                    </Text>
-                    <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                      Responsibility: {responsibility}
-                    </Text>
-                    <Text fontSize="sm" px="5px">
-                      Responsive: {responsiveness}
-                    </Text>
+                  <GridItem>
+                    <Grid templateColumns="280px 30px" templateRows="44px 22px">
+                      <GridItem
+                        display="flex"
+                        id="harm-score"
+                        w="280px"
+                        h="44px"
+                        borderRadius="5px"
+                        overflow="hidden"
+                        fontFamily="heading"
+                        fontWeight="bold"
+                        border="1px solid black"
+                      >
+                        <Flex
+                          bgColor="soft.gray"
+                          w="228px"
+                          justifyContent="center"
+                          alignItems="center"
+                        >
+                          <Text textTransform="uppercase" fontSize="sm">
+                            Harm Score
+                          </Text>
+                        </Flex>
+                        <Flex bgColor="black" w="52px" justifyContent="center" alignItems="center">
+                          <Text color="white" fontSize="22px">
+                            {harmScore}
+                          </Text>
+                        </Flex>
+                      </GridItem>
+                      <GridItem display="flex" alignItems="center" justifyContent="center">
+                        <Tooltip
+                          label={HARM_SCORE_TEXT}
+                          fontSize="sm"
+                          fontWeight="normal"
+                          bgColor="soft.gray"
+                          placement="auto-start"
+                        >
+                          <InfoOutlineIcon ml="5px" mt="-3px" />
+                        </Tooltip>
+                      </GridItem>
+                      <GridItem display="flex" mt="6px" alignItems="center" overflow="hidden">
+                        <Text fontSize="sm" borderRight="1px solid black" px="5px">
+                          Salience: {salience}
+                        </Text>
+                        <Text fontSize="sm" borderRight="1px solid black" px="5px">
+                          Responsibility: {responsibility}
+                        </Text>
+                        <Text fontSize="sm" px="5px">
+                          Responsive: {responsiveness}
+                        </Text>
+                      </GridItem>
+                    </Grid>
                   </GridItem>
                 </Grid>
               </GridItem>
@@ -216,7 +301,15 @@ const Company = ({ name, values }) => {
                 </Box>
                 <Box>
                   <Header text="Parent Company" />
-                  <Text>{parent}</Text>
+                  {parentRecord ? (
+                    <Text _hover={{ textDecoration: 'underline' }}>
+                      <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                        {parentName[0]}
+                      </Link>
+                    </Text>
+                  ) : (
+                    <Text>{parentName}</Text>
+                  )}
                 </Box>
                 <Box>
                   <Header text="Ownership Investor" />
@@ -230,7 +323,10 @@ const Company = ({ name, values }) => {
               <GridItem gridArea="d" display="flex" flexDir="column" justifyContent="space-between">
                 <Box>
                   <Header text="Annual Revenue" />
-                  <Text fontSize={revenues ? '5xl' : 'md'} fontWeight={revenues ? 'light' : 'normal'}>
+                  <Text
+                    fontSize={revenues ? '5xl' : 'md'}
+                    fontWeight={revenues ? 'light' : 'normal'}
+                  >
                     {revenues ? `${revenues} M` : 'N/A'}
                   </Text>
                 </Box>
@@ -244,11 +340,21 @@ const Company = ({ name, values }) => {
                 </Box>
                 <Box>
                   <Header text="Political Spending">
-                    <Tooltip label={POLITICAL_SPENDING_TEXT} fontSize="sm" bgColor="soft.gray" placement="auto-start">
+                    <Tooltip
+                      label={POLITICAL_SPENDING_TEXT}
+                      fontSize="sm"
+                      fontWeight="normal"
+                      bgColor="soft.gray"
+                      placement="auto-start"
+                    >
                       <QuestionOutlineIcon ml="5px" mt="-3px" />
                     </Tooltip>
                   </Header>
-                  <Text>{politicalSpending === 'N/A' ? 'N/A' : `$${politicalSpending.toLocaleString('en-US')}`}</Text>
+                  <Text>
+                    {politicalSpending === 'N/A'
+                      ? 'N/A'
+                      : `$${politicalSpending.toLocaleString('en-US')}`}
+                  </Text>
                 </Box>
               </GridItem>
               <GridItem gridArea="e">
@@ -287,7 +393,7 @@ const Company = ({ name, values }) => {
                     <Text fontSize="sm" fontStyle="italic">
                       Sources:
                     </Text>
-                    <Source source={corrections} name="Corrections" />
+                    <Source source={corrections} name="Corrections" website={website} />
                     <Source source={laborSource} name="Prison Labor" />
                     <Source source={detentionSource} name="Immigration Detention" />
                     <Source source={financials} name="Financials" />

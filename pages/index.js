@@ -4,6 +4,7 @@ import useSWR from 'swr';
 import Table from '../components/Table';
 import WelcomeModal from '../components/WelcomeModal';
 import Cookies from 'js-cookie';
+import Head from 'next/head';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -24,11 +25,11 @@ function useEntries() {
 
 const getVisitedCookie = () => {
   return !Cookies.get('wr_db_visited');
-}
+};
 
 const setVisitedCookie = () => {
   Cookies.set('wr_db_visited', '1');
-}
+};
 
 const App = () => {
   const initialDataState = new Array(25).fill({});
@@ -42,8 +43,16 @@ const App = () => {
 
   return (
     <>
+      <Head>
+        <title>Worth Rises Database</title>
+      </Head>
       <WelcomeModal isFirstTime={isFirstTime} setVisitedCookie={setVisitedCookie} />
-      <Table data={data || initialDataState} isLoading={isLoading} isError={isError} isCacheMiss={isLoadingSlowly} />
+      <Table
+        data={data || initialDataState}
+        isLoading={isLoading}
+        isError={isError}
+        isCacheMiss={isLoadingSlowly}
+      />
     </>
   );
 };

@@ -1,13 +1,27 @@
 import React, { useEffect, useMemo } from 'react';
+import * as NextLink from 'next/link';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
-import { Box, Flex, Grid, GridItem, Heading, Image, Link, Text, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Image,
+  Link,
+  Show,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 import Company from './Company';
 import Filters from './Filters';
-import SectorTag from './SectorTag';
-import { INTRO_TEXT } from './copyUtils';
+import { HEADER_TEXT, INTRO_TEXT } from './copyUtils';
+import { useRouter } from 'next/router';
+import SectorTagList from './SectorTagList';
+import FilterModal from './FilterModal';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   // const filterArray = useCallback((rows, id, filterValue) => {
@@ -21,6 +35,18 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   //   });
   // }, []);
 
+  const router = useRouter();
+
+  const handleModalOpen = (e, id, onOpen) => {
+    onOpen(e);
+    router.push(`/?id=${id}`, undefined, { shallow: true });
+  };
+
+  const handleModalClose = (e, onClose) => {
+    onClose(e);
+    router.push(`/`, undefined, { shallow: true });
+  };
+
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
@@ -28,80 +54,100 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Corporate Name',
         accessor: 'fld8eXd7ySetKd4X3',
         id: 'company',
-        Cell: ({ value, row: { values } }) => <Company name={value || '--'} values={values} />,
+        getHeaderProps: () => ({
+          textAlign: 'center',
+        }),
+        Cell: ({ value, row: { values } }) => (
+          <Company
+            name={value?.trim() || '--'}
+            values={values}
+            handleModalClose={handleModalClose}
+            handleModalOpen={handleModalOpen}
+          />
+        ),
       },
       {
         Header: 'Parent Company',
-        accessor: 'fldw832i7sKHSioYO',
-        id: 'parent',
-        Cell: ({ value }) => (value ? String(value) : '--'),
+        accessor: 'fldCHnO5AgJL6lOlP',
+        id: 'parentName',
+        Cell: ({
+          value,
+          row: {
+            values: { parentRecord },
+          },
+        }) => (
+          <Box textAlign="center" _hover={{ textDecor: 'underline' }}>
+            {value ? (
+              <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                {value[0]}
+              </Link>
+            ) : (
+              '--'
+            )}
+          </Box>
+        ),
+      },
+      {
+        accessor: 'fldyzMDmZLns6BNxS',
+        id: 'parentRecord',
       },
       {
         Header: 'Major Investor',
         accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
-        Cell: ({ value }) => (value ? String(value) : '--'),
+        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
       },
       {
         Header: 'Stock Ticker',
         accessor: 'fldxUScw6juEHQ4Bn',
         id: 'stock',
-        Cell: ({ value }) => (value ? String(value) : '--'),
+        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
+      },
+      {
+        accessor: 'fldjEW6owmKk8OMlX',
+        id: 'primarySector',
+        // filter: filterArray
       },
       {
         Header: 'Sector',
-        accessor: 'fldjEW6owmKk8OMlX',
-        id: 'primarySector',
-        // filter: filterArray,
+        accessor: 'fldTcs1OaGwdUsHiW',
+        id: 'sectors',
+        filter: 'includesAll',
         Cell: ({ value, setAllFilters }) => {
-          return <SectorTag sector={value} setAllFilters={setAllFilters} variant="primary" />;
+          return value ? <SectorTagList sectors={value} setAllFilters={setAllFilters} /> : '--';
         },
       },
       {
         Header: 'Subsectors',
         accessor: 'fld2YdygbDUIbFxv4',
         id: 'subsector',
-        // filter: filterArray,
-        Cell: ({ value, setAllFilters }) => (
-          <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />
-        ),
+        filter: 'includesAll',
       },
       {
         Header: 'Harm Score',
         accessor: 'fldvURpMuHYQno2Ov',
         id: 'harmScore',
         filter: 'between',
-        Cell: ({ value }) => (value ? String(value) : '--'),
+        Cell: ({ value }) => (
+          <Box textAlign="center" fontWeight="bold">
+            {value ? String(value) : '--'}
+          </Box>
+        ),
       },
       {
         Header: 'Divestment Target',
         accessor: 'fldkvqcyO7SQLSWQD',
         id: 'divestment',
-        Cell: ({ value }) => (
-          <Box minHeight="16px" textAlign="center">
-            {value ? '✓' : ''}
-          </Box>
-        ),
       },
       {
         Header: 'Prison Labor',
         accessor: 'fldwPeONqYRZGmZCi',
         id: 'laborInvolvement',
-        Cell: ({ value }) => (
-          <Box minHeight="16px" textAlign="center">
-            {value ? '✓' : ''}
-          </Box>
-        ),
       },
       {
         Header: 'Immigration Detention',
         accessor: 'fldCwqMsXdV3icjcV',
         id: 'detentionInvolvement',
-        Cell: ({ value }) => (
-          <Box minHeight="16px" textAlign="center">
-            {value ? '✓' : ''}
-          </Box>
-        ),
       },
       // Hidden columns; only necessary for company profile modal
       {
@@ -189,6 +235,10 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'fldfd54TBvL7YnGL7',
         id: 'other',
       },
+      {
+        accessor: 'id',
+        id: 'id',
+      },
     ],
     []
   );
@@ -216,16 +266,22 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'acquired',
           'active',
           'corrections',
+          'detentionInvolvement',
           'detentionSource',
+          'divestment',
           'employees',
           'executive',
           'exposure',
           'financials',
           'fiscalYear',
+          'id',
+          'laborInvolvement',
           'laborSource',
           'notes',
           'other',
+          'parentRecord',
           'politicalSpending',
+          'primarySector',
           'responsibility',
           'responsiveness',
           'revenueOnly',
@@ -285,7 +341,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         status: 'info',
         duration: null,
         position: 'top',
-        colorScheme: 'brand',
       });
     } else {
       toast.closeAll();
@@ -293,70 +348,91 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   }, [isCacheMiss, isLoading]);
 
   return (
-    <Grid h="full" w="full" templateRows="80px calc(100vh - 130px) 50px" templateColumns="300px 1fr">
+    <Grid
+      h="full"
+      w="full"
+      templateRows={['80px 80px calc(100vh - 160px)', '80px calc(100vh - 80px)']}
+      templateColumns={['100%', '300px 1fr']}
+    >
       <GridItem
-        colSpan={3}
+        colSpan={[1, 2]}
         rowSpan={1}
         p="15px"
         borderBottom="1px solid"
         bgColor="normal.purple"
         display="flex"
         alignItems="center"
+        justifyContent="space-between"
       >
         <Flex alignItems="center" gap="20px">
           <Link href="https://worthrises.org" isExternal>
-            <Image src="logo-white-vertical.png" ml="33px" w="55px" />
+            <Image src="logo-white-vertical.png" ml="9px" w="55px" />
           </Link>
           <Flex flexDir="column">
-            <Flex gap="10px">
-              <Heading color="white" fontSize="22px">
+            <Flex gap={['0', '10px']} flexDirection={['column', 'row']}>
+              <Heading color="white" fontSize={['20px', '22px']}>
                 Prison Industry Database
               </Heading>
-              <Heading color="white" fontSize="22px" fontWeight="light">
+              <Heading color="white" fontSize={['20px', '22px']} fontWeight="light">
                 Private Sector Players
               </Heading>
             </Flex>
-            <Text color="white" fontSize="12px">
-              The prison industry is a $80 billion industry with thousands of corporations. Here’s who they are.
-            </Text>
+            <Show above="sm">
+              <Text color="white" fontSize="12px">
+                {HEADER_TEXT}
+              </Text>
+            </Show>
           </Flex>
         </Flex>
+        <Show above="sm">
+          <DownloadButton rows={rows} />
+        </Show>
       </GridItem>
       <GridItem
         colSpan={1}
-        rowSpan={2}
+        rowSpan={1}
         borderRight="2px"
         borderColor="soft.gray"
         bgColor="softer.gray"
-        p="24px"
-        overflowY="scroll"
+        p={['10px', '24px']}
+        overflowY={['hidden', 'scroll']}
         overflowX="hidden"
       >
-        <Flex flexDir="column" gap="36px" overflow="hidden">
-          <Box>
+        <Show above="sm">
+          <Flex flexDir="column" gap="36px" overflow="hidden">
+            <Box>
+              <Text fontSize="sm" fontWeight="light">
+                {INTRO_TEXT}
+              </Text>
+              <Link
+                href="https://worthrises.org/theprisonindustry2020"
+                isExternal
+                textDecor="underline"
+                fontWeight="bold"
+                fontSize="sm"
+                color="normal.purple"
+              >
+                See our methodology here.
+              </Link>
+            </Box>
+            <Filters
+              setGlobalFilter={setGlobalFilter}
+              globalFilter={globalFilter}
+              setAllFilters={setAllFilters}
+              setSearchTerm={setGlobalFilter}
+            />
+          </Flex>
+        </Show>
+        <Show below="md">
+          <Flex overflow="hidden" gap="20px" alignItems="center" overflow="hidden">
             <Text fontSize="sm" fontWeight="light">
               {INTRO_TEXT}
             </Text>
-            <Link
-              href="https://worthrises.org/theprisonindustry2020"
-              isExternal
-              textDecor="underline"
-              fontWeight="bold"
-              fontSize="sm"
-              color="normal.purple"
-            >
-              See our methodology here.
-            </Link>
-          </Box>
-          <Filters
-            setGlobalFilter={setGlobalFilter}
-            globalFilter={globalFilter}
-            setAllFilters={setAllFilters}
-            setSearchTerm={setGlobalFilter}
-          />
-        </Flex>
+            <FilterModal setAllFilters={setAllFilters} setSearchTerm={setGlobalFilter} />
+          </Flex>
+        </Show>
       </GridItem>
-      <GridItem overflow="scroll">
+      <GridItem overflow="scroll" pb={['50px', '0']}>
         <TableUI
           getTableProps={getTableProps}
           headerGroups={headerGroups}
@@ -366,9 +442,17 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           isLoading={isLoading}
           isError={isError}
         />
-      </GridItem>
-      <GridItem colSpan={2} colStart={2}>
-        <Flex justify="space-between" align="center" p="1rem" bgColor="softer.gray" color="white" h="50">
+        <Flex
+          position={['fixed', 'relative']}
+          bottom="0"
+          width={['100%', 'auto']}
+          justify="space-between"
+          align="center"
+          p="1rem"
+          bgColor="softer.gray"
+          color="white"
+          h="50"
+        >
           <Pagination
             previousPage={previousPage}
             nextPage={nextPage}
@@ -379,7 +463,23 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             isPreviousPage={canPreviousPage}
             isNextPage={canNextPage}
           />
-          <DownloadButton rows={rows} />
+          <Text color="black" fontSize="9px" w="230px" textAlign="right">
+            <Link color="normal.green" fontWeight="bold" as={NextLink} href="/">
+              Prison Industry Database: Private Sector Players
+            </Link>{' '}
+            © 2022 by{' '}
+            <Link color="normal.green" fontWeight="bold" href="https://worthrises.org">
+              Worth Rises
+            </Link>{' '}
+            is licensed under{' '}
+            <Link
+              color="normal.green"
+              fontWeight="bold"
+              href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1"
+            >
+              CC BY-NC-SA 4.0​
+            </Link>
+          </Text>
         </Flex>
       </GridItem>
     </Grid>
