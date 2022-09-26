@@ -1,7 +1,18 @@
 import React, { useEffect, useMemo } from 'react';
 import * as NextLink from 'next/link';
 import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
-import { Box, Flex, Grid, GridItem, Heading, Image, Link, Text, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Image,
+  Link,
+  Show,
+  Text,
+  useToast,
+} from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
@@ -10,6 +21,7 @@ import Filters from './Filters';
 import { HEADER_TEXT, INTRO_TEXT } from './copyUtils';
 import { useRouter } from 'next/router';
 import SectorTagList from './SectorTagList';
+import FilterModal from './FilterModal';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   // const filterArray = useCallback((rows, id, filterValue) => {
@@ -315,7 +327,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         description: 'Please try again or contact info@worthrises.org.',
         status: 'error',
         duration: 9000,
-        position: 'bottom-right',
+        position: 'top',
       });
     }
   }, [isError]);
@@ -327,7 +339,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         description: 'This may take a minute.',
         status: 'info',
         duration: null,
-        position: 'bottom-right',
+        position: 'top',
       });
     } else {
       toast.closeAll();
@@ -335,9 +347,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   }, [isCacheMiss, isLoading]);
 
   return (
-    <Grid h="full" w="full" templateRows="80px calc(100vh - 80px)" templateColumns="300px 1fr">
+    <Grid
+      h="full"
+      w="full"
+      templateRows={['80px 80px calc(100vh - 160px)', '80px calc(100vh - 80px)']}
+      templateColumns={['100%', '300px 1fr']}
+    >
       <GridItem
-        colSpan={2}
+        colSpan={[1, 2]}
         rowSpan={1}
         p="15px"
         borderBottom="1px solid"
@@ -351,20 +368,24 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             <Image src="logo-white-vertical.png" ml="9px" w="55px" />
           </Link>
           <Flex flexDir="column">
-            <Flex gap="10px">
-              <Heading color="white" fontSize="22px">
+            <Flex gap={['0', '10px']} flexDirection={['column', 'row']}>
+              <Heading color="white" fontSize={['20px', '22px']}>
                 Prison Industry Database
               </Heading>
-              <Heading color="white" fontSize="22px" fontWeight="light">
+              <Heading color="white" fontSize={['20px', '22px']} fontWeight="light">
                 Private Sector Players
               </Heading>
             </Flex>
-            <Text color="white" fontSize="12px">
-              {HEADER_TEXT}
-            </Text>
+            <Show above="sm">
+              <Text color="white" fontSize="12px">
+                {HEADER_TEXT}
+              </Text>
+            </Show>
           </Flex>
         </Flex>
-        <DownloadButton rows={rows} />
+        <Show above="sm">
+          <DownloadButton rows={rows} />
+        </Show>
       </GridItem>
       <GridItem
         colSpan={1}
@@ -372,35 +393,45 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         borderRight="2px"
         borderColor="soft.gray"
         bgColor="softer.gray"
-        p="24px"
-        overflowY="scroll"
+        p={['10px', '24px']}
+        overflowY={['hidden', 'scroll']}
         overflowX="hidden"
       >
-        <Flex flexDir="column" gap="36px" overflow="hidden">
-          <Box>
+        <Show above="sm">
+          <Flex flexDir="column" gap="36px" overflow="hidden">
+            <Box>
+              <Text fontSize="sm" fontWeight="light">
+                {INTRO_TEXT}
+              </Text>
+              <Link
+                href="https://worthrises.org/theprisonindustry2020"
+                isExternal
+                textDecor="underline"
+                fontWeight="bold"
+                fontSize="sm"
+                color="normal.purple"
+              >
+                See our methodology here.
+              </Link>
+            </Box>
+            <Filters
+              setGlobalFilter={setGlobalFilter}
+              globalFilter={globalFilter}
+              setAllFilters={setAllFilters}
+              setSearchTerm={setGlobalFilter}
+            />
+          </Flex>
+        </Show>
+        <Show below="md">
+          <Flex overflow="hidden" gap="20px" alignItems="center" overflow="hidden">
             <Text fontSize="sm" fontWeight="light">
               {INTRO_TEXT}
             </Text>
-            <Link
-              href="https://worthrises.org/theprisonindustry2020"
-              isExternal
-              textDecor="underline"
-              fontWeight="bold"
-              fontSize="sm"
-              color="normal.purple"
-            >
-              See our methodology here.
-            </Link>
-          </Box>
-          <Filters
-            setGlobalFilter={setGlobalFilter}
-            globalFilter={globalFilter}
-            setAllFilters={setAllFilters}
-            setSearchTerm={setGlobalFilter}
-          />
-        </Flex>
+            <FilterModal setAllFilters={setAllFilters} setSearchTerm={setGlobalFilter} />
+          </Flex>
+        </Show>
       </GridItem>
-      <GridItem overflow="scroll">
+      <GridItem overflow="scroll" pb={['50px', '0']}>
         <TableUI
           getTableProps={getTableProps}
           headerGroups={headerGroups}
@@ -411,6 +442,9 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           isError={isError}
         />
         <Flex
+          position={['fixed', 'block']}
+          bottom="0"
+          width={['100%', 'auto']}
           justify="space-between"
           align="center"
           p="1rem"

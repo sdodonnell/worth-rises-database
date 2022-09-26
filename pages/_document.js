@@ -6,7 +6,6 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta name="google" content="notranslate" />
-        <title>Worth Rises Database</title>
         <link rel="shortcut icon" href="/favicon.jpeg" />
         <script type="text/javascript" async src="https://s3.tradingview.com/tv.js" />
       </Head>
