@@ -121,7 +121,6 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
   const hasSources = detentionSource || corrections || laborSource || other || financials;
 
   const template = `"a a a a"
-                    "b b b b"
                     "c d e e"
                     `;
 
@@ -184,103 +183,114 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
           <ModalBody pb="72px">
             <Grid
               templateAreas={template}
-              templateRows={`20px 80px 336px`}
+              templateRows={`160px 336px`}
               templateColumns="repeat(4, 1fr)"
               gap="28px"
             >
-              <GridItem gridArea="a" display="flex" gap="28px">
-                <Text>
-                  <Text
-                    as="span"
-                    fontWeight="bold"
-                    fontSize="sm"
-                    textTransform="uppercase"
-                    fontFamily="heading"
-                  >
-                    Sector:{' '}
-                  </Text>
-                  {primarySector}
-                </Text>
-                <Text>
-                  <Text
-                    as="span"
-                    fontWeight="bold"
-                    fontSize="sm"
-                    textTransform="uppercase"
-                    fontFamily="heading"
-                  >
-                    Subsector:{' '}
-                  </Text>
-                  {subsector}
-                </Text>
-              </GridItem>
-              <GridItem
-                gridArea="b"
-                display="flex"
-                justifyContent="space-between"
-                borderBottom="1px solid black"
-                pb="28px"
-              >
-                <Box>
-                  <Header text="Founded" />
-                  <Text>{yearFounded}</Text>
-                </Box>
-                <Box>
-                  <Header text="Headquarters" />
-                  <Text>{state}</Text>
-                </Box>
-                <Box>
-                  <Header text="Employees" />
-                  <Text>{employeeCount}</Text>
-                </Box>
-                <Box>
-                  <Header text="Chief Executive" />
-                  <Text>{executive}</Text>
-                </Box>
-                <Grid templateColumns="280px 30px" templateRows="44px 22px">
+              <GridItem gridArea="a">
+                <Grid
+                  gridTemplateColumns="2fr 1fr"
+                  height="100%"
+                  padding="20px 0"
+                  borderTop="1px solid black"
+                  borderBottom="1px solid black"
+                  gap="20px"
+                >
                   <GridItem
-                    display="flex"
-                    id="harm-score"
-                    w="280px"
-                    h="44px"
-                    borderRadius="5px"
-                    overflow="hidden"
-                    fontFamily="heading"
-                    fontWeight="bold"
-                    border="1px solid black"
+                    display="grid"
+                    gridTemplateColumns="repeat(4, 1fr)"
+                    gridTemplateRows="1fr 1fr"
+                    borderRight="1px solid black"
                   >
-                    <Flex bgColor="soft.gray" w="228px" justifyContent="center" alignItems="center">
-                      <Text textTransform="uppercase" fontSize="sm">
-                        Harm Score
-                      </Text>
-                    </Flex>
-                    <Flex bgColor="black" w="52px" justifyContent="center" alignItems="center">
-                      <Text color="white" fontSize="22px">
-                        {harmScore}
-                      </Text>
-                    </Flex>
+                    <Box>
+                      <Header text="Founded" />
+                      <Text>{yearFounded}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Headquarters" />
+                      <Text>{state}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Employees" />
+                      <Text>{employeeCount}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Chief Executive" />
+                      <Text>{executive}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Parent Company" />
+                      {parentRecord ? (
+                        <Text _hover={{ textDecoration: 'underline' }}>
+                          <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                            {parentName[0]}
+                          </Link>
+                        </Text>
+                      ) : (
+                        <Text>{parentName}</Text>
+                      )}
+                    </Box>
+                    <Box>
+                      <Header text="Ownership Investor" />
+                      <Text>{owner}</Text>
+                    </Box>
+                    <Box>
+                      <Header text="Last Acquired" />
+                      <Text>{acquired}</Text>
+                    </Box>
                   </GridItem>
-                  <GridItem display="flex" alignItems="center" justifyContent="center">
-                    <Tooltip
-                      label={HARM_SCORE_TEXT}
-                      fontSize="sm"
-                      fontWeight="normal"
-                      bgColor="soft.gray"
-                      placement="auto-start"
-                    >
-                      <InfoOutlineIcon ml="5px" mt="-3px" />
-                    </Tooltip>
-                  </GridItem>
-                  <GridItem display="flex" mt="6px" alignItems="center" overflow="hidden">
-                    <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                      Salience: {salience}
-                    </Text>
-                    <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                      Responsibility: {responsibility}
-                    </Text>
-                    <Text fontSize="sm" px="5px">
-                      Responsive: {responsiveness}
-                    </Text>
+                  <GridItem>
+                    <Grid templateColumns="280px 30px" templateRows="44px 22px">
+                      <GridItem
+                        display="flex"
+                        id="harm-score"
+                        w="280px"
+                        h="44px"
+                        borderRadius="5px"
+                        overflow="hidden"
+                        fontFamily="heading"
+                        fontWeight="bold"
+                        border="1px solid black"
+                      >
+                        <Flex
+                          bgColor="soft.gray"
+                          w="228px"
+                          justifyContent="center"
+                          alignItems="center"
+                        >
+                          <Text textTransform="uppercase" fontSize="sm">
+                            Harm Score
+                          </Text>
+                        </Flex>
+                        <Flex bgColor="black" w="52px" justifyContent="center" alignItems="center">
+                          <Text color="white" fontSize="22px">
+                            {harmScore}
+                          </Text>
+                        </Flex>
+                      </GridItem>
+                      <GridItem display="flex" alignItems="center" justifyContent="center">
+                        <Tooltip
+                          label={HARM_SCORE_TEXT}
+                          fontSize="sm"
+                          fontWeight="normal"
+                          bgColor="soft.gray"
+                          placement="auto-start"
+                        >
+                          <InfoOutlineIcon ml="5px" mt="-3px" />
+                        </Tooltip>
+                      </GridItem>
+                      <GridItem display="flex" mt="6px" alignItems="center" overflow="hidden">
+                        <Text fontSize="sm" borderRight="1px solid black" px="5px">
+                          Salience: {salience}
+                        </Text>
+                        <Text fontSize="sm" borderRight="1px solid black" px="5px">
+                          Responsibility: {responsibility}
+                        </Text>
+                        <Text fontSize="sm" px="5px">
+                          Responsive: {responsiveness}
+                        </Text>
+                      </GridItem>
+                    </Grid>
                   </GridItem>
                 </Grid>
               </GridItem>
@@ -292,7 +302,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                 <Box>
                   <Header text="Parent Company" />
                   {parentRecord ? (
-                    <Text _hover={{ textDecoration: "underline" }}>
+                    <Text _hover={{ textDecoration: 'underline' }}>
                       <Link as={NextLink} href={`/?id=${parentRecord}`}>
                         {parentName[0]}
                       </Link>
