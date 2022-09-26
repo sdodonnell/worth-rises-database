@@ -121,6 +121,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Subsectors',
         accessor: 'fld2YdygbDUIbFxv4',
         id: 'subsector',
+        filter: 'includesAll',
       },
       {
         Header: 'Harm Score',

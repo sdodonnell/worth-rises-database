@@ -5,26 +5,39 @@ const SectorTag = ({ sector, setAllFilters, variant, isLast }) => {
   const sortBySector = (e) => {
     e.preventDefault();
 
-    setAllFilters([{ id: 'primarySector', value: e.target.innerText }]);
+    const cleanSector = e.target.innerText.trim().replace(/;$/, '');
+    setAllFilters([{ id: 'sectors', value: [cleanSector] }]);
   };
 
   const sortBySubsector = (e) => {
     e.preventDefault();
 
-    setAllFilters([{ id: 'subsector', value: e.target.innerText }]);
+    setAllFilters([{ id: 'subsector', value: [e.target.innerText] }]);
   };
 
   if (variant === 'primary') {
     return (
-      <Text minHeight="16px" as="span" onClick={sortBySector} _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
-        {sector}{isLast ? '' : '; '}
+      <Text
+        minHeight="16px"
+        as="span"
+        onClick={sortBySector}
+        _hover={{ cursor: 'pointer', textDecoration: 'underline' }}
+      >
+        {sector}
+        {isLast ? '' : '; '}
       </Text>
     );
   }
 
   return (
-    <Text minHeight="16px" as="span" onClick={sortBySubsector} _hover={{ cursor: 'pointer', textDecoration: 'underline' }}>
-      {sector}{isLast ? '' : '; '}
+    <Text
+      minHeight="16px"
+      as="span"
+      onClick={sortBySubsector}
+      _hover={{ cursor: 'pointer', textDecoration: 'underline' }}
+    >
+      {sector}
+      {isLast ? '' : '; '}
     </Text>
   );
 };
