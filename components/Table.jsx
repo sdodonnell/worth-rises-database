@@ -442,7 +442,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           isError={isError}
         />
         <Flex
-          position={['fixed', 'block']}
+          position={['fixed', 'relative']}
           bottom="0"
           width={['100%', 'auto']}
           justify="space-between"

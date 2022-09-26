@@ -176,6 +176,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
           <ModalCloseButton
             top="-10px"
             right="-10px"
+            borderRadius="20px"
             bgColor="softer.gray"
             _hover={{ bgColor: 'soft.gray' }}
             _active={{ bgColor: 'soft.gray' }}

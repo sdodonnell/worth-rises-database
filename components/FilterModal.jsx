@@ -16,26 +16,26 @@ const FilterModal = ({ setAllFilters, setSearchTerm }) => {
 
   return (
     <>
-      <Button width="150px" variant="outline" colorScheme="black" fontWeight="normal">
+      <Button
+        width="150px"
+        variant="outline"
+        colorScheme="black"
+        fontWeight="normal"
+        onClick={onOpen}
+      >
         Filters
       </Button>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        size="6xl"
-        scrollBehavior="inside"
-        blockScrollOnMount={false}
-      >
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="xl">
         <ModalOverlay />
-        <ModalContent bgColor="white" overflow="visible">
+        <ModalContent bgColor="white" mx="16px">
           <ModalCloseButton
             top="-10px"
             right="-10px"
+            borderRadius="20px"
             bgColor="softer.gray"
-            _hover={{ bgColor: 'soft.gray' }}
             _active={{ bgColor: 'soft.gray' }}
           />
-          <ModalBody>
+          <ModalBody p="24px">
             <Filters setAllFilters={setAllFilters} setSearchTerm={setSearchTerm} />
           </ModalBody>
         </ModalContent>
