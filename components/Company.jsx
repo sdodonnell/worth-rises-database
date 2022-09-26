@@ -1,6 +1,5 @@
 import {
   Box,
-  CloseButton,
   Flex,
   Grid,
   GridItem,
@@ -18,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
 import React, { useEffect } from 'react';
+import * as NextLink from 'next/link';
 import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
 import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './copyUtils';
@@ -96,11 +96,13 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
     financials = '',
     fiscalYear = 'N/A',
     harmScore = 'N/A',
+    id,
     laborSource = '',
     notes,
     other = '',
     owner = 'N/A',
-    parent = 'N/A',
+    parentName = 'N/A',
+    parentRecord,
     politicalSpending = 'N/A',
     primarySector,
     responsibility,
@@ -127,9 +129,9 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
 
   useEffect(() => {
     const safeId = decodeURIComponent(router.query.id);
-    if (!isOpen && safeId === name) {
+    if (!isOpen && safeId === id) {
       onOpen();
-    } else if (isOpen && safeId !== name) {
+    } else if (isOpen && safeId !== id) {
       onClose();
     }
   }, [router.query.id]);
@@ -139,7 +141,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
       <Text
         fontWeight="bold"
         _hover={{ textDecor: 'underline', cursor: 'pointer' }}
-        onClick={(e) => handleModalOpen(e, name, onOpen)}
+        onClick={(e) => handleModalOpen(e, id, onOpen)}
       >
         {name}
       </Text>
@@ -148,11 +150,12 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
         onClose={(e) => handleModalClose(e, onClose)}
         size="6xl"
         scrollBehavior="inside"
+        blockScrollOnMount={false}
       >
         <ModalOverlay />
         <ModalContent bgColor="white" overflow="visible">
           <ModalHeader color="black" pt="24px" pb="0">
-            <Flex>
+            <Flex justifyContent="space-between" alignItems="baseline">
               {website ? (
                 <Link href={website} isExternal>
                   <Flex alignItems="baseline" gap="5px">
@@ -287,7 +290,15 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                 </Box>
                 <Box>
                   <Header text="Parent Company" />
-                  <Text>{parent}</Text>
+                  {parentRecord ? (
+                    <Text _hover={{ textDecoration: "underline" }}>
+                      <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                        {parentName[0]}
+                      </Link>
+                    </Text>
+                  ) : (
+                    <Text>{parentName}</Text>
+                  )}
                 </Box>
                 <Box>
                   <Header text="Ownership Investor" />

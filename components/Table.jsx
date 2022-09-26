@@ -7,7 +7,6 @@ import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 import Company from './Company';
 import Filters from './Filters';
-import SectorTag from './SectorTag';
 import { HEADER_TEXT, INTRO_TEXT } from './copyUtils';
 import { useRouter } from 'next/router';
 import SectorTagList from './SectorTagList';
@@ -26,9 +25,9 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
 
   const router = useRouter();
 
-  const handleModalOpen = (e, name, onOpen) => {
+  const handleModalOpen = (e, id, onOpen) => {
     onOpen(e);
-    router.push(`/?id=${name}`, undefined, { shallow: true });
+    router.push(`/?id=${id}`, undefined, { shallow: true });
   };
 
   const handleModalClose = (e, onClose) => {
@@ -57,9 +56,28 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Parent Company',
-        accessor: 'fldw832i7sKHSioYO',
-        id: 'parent',
-        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
+        accessor: 'fldCHnO5AgJL6lOlP',
+        id: 'parentName',
+        Cell: ({
+          value,
+          row: {
+            values: { parentRecord },
+          },
+        }) => (
+          <Box textAlign="center" _hover={{ textDecor: 'underline' }}>
+            {value ? (
+              <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                {value[0]}
+              </Link>
+            ) : (
+              '--'
+            )}
+          </Box>
+        ),
+      },
+      {
+        accessor: 'fldyzMDmZLns6BNxS',
+        id: 'parentRecord',
       },
       {
         Header: 'Major Investor',
@@ -84,17 +102,13 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         id: 'sectors',
         filter: 'includesAll',
         Cell: ({ value, setAllFilters }) => {
-          return <SectorTagList sectors={value} setAllFilters={setAllFilters} />;
+          return value ? <SectorTagList sectors={value} setAllFilters={setAllFilters} /> : '--';
         },
       },
       {
         Header: 'Subsectors',
         accessor: 'fld2YdygbDUIbFxv4',
         id: 'subsector',
-        // filter: filterArray,
-        Cell: ({ value, setAllFilters }) => (
-          <SectorTag sector={value} setAllFilters={setAllFilters} variant="secondary" />
-        ),
       },
       {
         Header: 'Harm Score',
@@ -208,6 +222,10 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'fldfd54TBvL7YnGL7',
         id: 'other',
       },
+      {
+        accessor: 'id',
+        id: 'id',
+      },
     ],
     []
   );
@@ -243,10 +261,12 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'exposure',
           'financials',
           'fiscalYear',
+          'id',
           'laborInvolvement',
           'laborSource',
           'notes',
           'other',
+          'parentRecord',
           'politicalSpending',
           'primarySector',
           'responsibility',
@@ -295,7 +315,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         description: 'Please try again or contact info@worthrises.org.',
         status: 'error',
         duration: 9000,
-        position: 'top',
+        position: 'bottom-right',
       });
     }
   }, [isError]);
@@ -409,9 +429,19 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             isNextPage={canNextPage}
           />
           <Text color="black" fontSize="9px" w="230px" textAlign="right">
-            <Link color="normal.green" fontWeight="bold" as={NextLink} href="/">Prison Industry Database: Private Sector Players</Link> © 2022 by{' '}
-            <Link color="normal.green" fontWeight="bold" href="https://worthrises.org">Worth Rises</Link> is licensed under{' '}
-            <Link color="normal.green" fontWeight="bold" href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1">
+            <Link color="normal.green" fontWeight="bold" as={NextLink} href="/">
+              Prison Industry Database: Private Sector Players
+            </Link>{' '}
+            © 2022 by{' '}
+            <Link color="normal.green" fontWeight="bold" href="https://worthrises.org">
+              Worth Rises
+            </Link>{' '}
+            is licensed under{' '}
+            <Link
+              color="normal.green"
+              fontWeight="bold"
+              href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1"
+            >
               CC BY-NC-SA 4.0​
             </Link>
           </Text>

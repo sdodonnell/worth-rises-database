@@ -6,10 +6,11 @@ const SectorTagList = ({ sectors = [], setAllFilters }) => {
   return (
     <Text>
       {sectors.map((sector, i) => {
+        const rand = Math.random();
         if (i === sectors.length - 1) {
-          return <SectorTag sector={sector} setAllFilters={setAllFilters} isLast />;
+          return <SectorTag key={`${sector}_${rand}`} sector={sector} setAllFilters={setAllFilters} isLast />;
         } else {
-          return <SectorTag sector={sector} setAllFilters={setAllFilters} />;
+          return <SectorTag key={`${sector}_${rand}`} sector={sector} setAllFilters={setAllFilters} />;
         }
       })}
     </Text>

@@ -1,5 +1,4 @@
 import Airtable from 'airtable';
-import values from './data.json';
 // TODO: move field/record ids into single file for resuability
 const PRIMARY_SECTOR_ID = 'fldjEW6owmKk8OMlX';
 const OTHER_SECTORS_ID = 'fldTcs1OaGwdUsHiW';
@@ -8,13 +7,10 @@ export default async (req, res) => {
   res.setHeader('Cache-Control', 's-maxage=86400');
 
   try {
-    // const base = new Airtable({ apiKey: process.env.API_KEY }).base('appuZlplPKjKPkFBR');
-    // const values = await checkAirtable(base);
+    const base = new Airtable({ apiKey: process.env.API_KEY }).base('appuZlplPKjKPkFBR');
+    const values = await checkAirtable(base);
 
-    let flatValues = values.flat();
-    flatValues = parseSectors(flatValues);
-
-    res.status(200).json(flatValues);
+    res.status(200).json(values);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -35,7 +31,7 @@ const parseSectors = (records) => {
 };
 
 const cleanRecords = (records) => {
-  return records.map((record) => record.fields);
+  return records.map((record) => ({ ...record.fields, id: record.id }));
 };
 
 const checkAirtable = (base) => {

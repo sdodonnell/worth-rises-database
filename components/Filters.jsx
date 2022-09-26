@@ -115,8 +115,6 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
       subsector,
     } = data;
 
-    console.log('filtering by sectors: ', sector);
-
     const filters = [
       { id: 'sectors', value: sector },
       { id: 'subsector', value: subsector },

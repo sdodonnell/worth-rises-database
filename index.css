@@ -55,6 +55,6 @@ html, body {
 }
 
 .chakra-toast .chakra-alert, .chakra-toast .chakra-alert .chakra-alert__icon {
-    background: #3a0058; 
-    color: #e8e6ef
+    background: #AE88EB; 
+    color: #fff;
 }
