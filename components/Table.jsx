@@ -231,22 +231,10 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     []
   );
 
-  // const getSubRows = useCallback((row) => {
-  //   const parent = row['Parent Company'] || null;
-
-  //   if (parent) {
-  //     const ret = tableData.filter((el) => el['Company'] === parent);
-  //     return ret;
-  //   }
-
-  //   return [];
-  // }, []);
-
   const tableInstance = useTable(
     {
       columns,
       data: tableData,
-      // getSubRows,
       initialState: {
         pageSize: 50,
         pageIndex: 0,
