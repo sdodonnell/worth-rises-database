@@ -142,13 +142,13 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
   // Helper function to update sector value stored in react-hook-form state
   const updateSector = (sectors) => {
     const sectorNames = sectors.map((el) => el.value);
-    setValue('sector', sectorNames);
+    setValue('sectors', sectorNames);
   };
 
   // Helper function to update subsector value stored in react-hook-form state
   const updateSubsector = (subsectors) => {
     const subsectorNames = subsectors.map((el) => el.value);
-    setValue('subsector', subsectorNames);
+    setValue('subsectors', subsectorNames);
   };
 
   const updateExposure = (exposure) => {
