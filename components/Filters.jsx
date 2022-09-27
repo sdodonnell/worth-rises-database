@@ -219,7 +219,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     <Flex direction="column" gap={5} overflow="hidden">
       <form id="filter-form">
         <FormControl>
-          <Flex direction="column" gap="12px" overflow="hidden">
+          <Flex direction="column" gap="12px" overflow="visible">
             <Box>
               <FormLabel color="black" htmlFor="keyword">
                 <Heading size="sm">Keyword</Heading>

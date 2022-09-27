@@ -2,6 +2,8 @@ import Airtable from 'airtable';
 // TODO: move field/record ids into single file for resuability
 const PRIMARY_SECTOR_ID = 'fldjEW6owmKk8OMlX';
 const OTHER_SECTORS_ID = 'fldTcs1OaGwdUsHiW';
+const PRIMARY_SUBSECTOR_ID = 'fld2YdygbDUIbFxv4';
+const OTHER_SUBSECTORS_ID = 'fldH1GqbAoe33w0GK';
 
 export default async (req, res) => {
   res.setHeader('Cache-Control', 's-maxage=86400');
@@ -20,13 +22,20 @@ const parseSectors = (records) => {
   return records.map((record) => {
     const primarySector = record?.[PRIMARY_SECTOR_ID];
     const sectors = record?.[OTHER_SECTORS_ID] || [];
+    const primarySubsector = record?.[PRIMARY_SUBSECTOR_ID];
+    const subsectors = record?.[OTHER_SUBSECTORS_ID] || [];
 
-    let sectorsCopy = sectors;
+    let newSectors = sectors;
     if (primarySector) {
-      sectorsCopy = [primarySector, ...sectors];
+      newSectors = [primarySector, ...sectors];
     }
 
-    return { ...record, [OTHER_SECTORS_ID]: sectorsCopy };
+    let newSubsectors = subsectors;
+    if (primarySector) {
+      newSubsectors = [primarySubsector, ...subsectors];
+    }
+
+    return { ...record, [OTHER_SECTORS_ID]: newSectors, [OTHER_SUBSECTORS_ID]: newSubsectors };
   });
 };
 
@@ -40,7 +49,7 @@ const checkAirtable = (base) => {
   return new Promise((resolve, reject) => {
     base('tblgyzaJvuz4Udat3')
       .select({
-        view: 'Grid view',
+        view: 'All companies',
         returnFieldsByFieldId: true,
       })
       .eachPage(

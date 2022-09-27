@@ -119,7 +119,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Subsectors',
-        accessor: 'fld2YdygbDUIbFxv4',
+        accessor: 'fldH1GqbAoe33w0GK',
         id: 'subsector',
         filter: 'includesAll',
       },
