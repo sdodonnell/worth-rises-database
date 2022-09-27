@@ -9,7 +9,7 @@ export default extendTheme(withDefaultColorScheme({ colorScheme: 'purple' }), {
     brand: {
       100: 'rgba(241, 214, 255, 0.5)',
       500: '#3a0058',
-      600: 'rgba(241, 214, 255, 0.2)',
+      600: '#AE88EB'
     },
     normal: {
       yellow: '#dfef0b',

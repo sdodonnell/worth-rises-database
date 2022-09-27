@@ -8,18 +8,14 @@ import {
   FormLabel,
   Heading,
   Input,
-  Menu,
-  MenuButton,
-  MenuItemOption,
-  MenuList,
-  MenuOptionGroup,
   Select,
   Stack,
   Text,
   Tooltip,
 } from '@chakra-ui/react';
 import { Controller, useForm } from 'react-hook-form';
-import { ChevronDownIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
+import ReactSelect from 'react-select';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 import { HARM_SCORE_TEXT } from './copyUtils';
 
 const sectorMapping = {
@@ -83,18 +79,50 @@ const sectorMapping = {
   Transportation: ['Agency Transportation', 'Prison Transportation', 'Visitor Transportation'],
 };
 
+const exposureOptions = [
+  {
+    value: 'Tier 1a (Publicly Traded - Targeted Exposure)',
+    label: 'Tier 1a (Publicly Traded - Targeted Exposure)',
+  },
+  {
+    value: 'Tier 1b (Publicly Traded - Other Exposure)',
+    label: 'Tier 1b (Publicly Traded - Other Exposure)',
+  },
+  { value: 'Tier 2 (Investment Firm-Owned)', label: 'Tier 2 (Investment Firm-Owned)' },
+  { value: 'Tier 3 (Large Privately-Owned)', label: 'Tier 3 (Large Privately-Owned)' },
+  { value: 'Tier 4 (Small Privately-Owned)', label: 'Tier 4 (Small Privately-Owned)' },
+];
+
+const selectStyles = {
+  control: (styles, { isFocused, isSelected }) => {
+    return {
+      ...styles,
+      borderColor: isFocused || isSelected ? '#f1d6ff' : '',
+      boxShadow: isFocused ? '0 0 0 1px #f1d6ff' : '',
+
+      ':hover': {
+        ...styles[':hover'],
+        borderColor: '#f1d6ff',
+      },
+    };
+  },
+};
+
 const Filters = ({ setAllFilters, setSearchTerm }) => {
   const [resetDisabled, setResetDisabled] = useState(true);
   const shouldToggleResetButton = useRef(true);
 
   const { register, reset, control, watch, setValue } = useForm({
-    defaultValues: { maxHarmScore: 15, sector: [], subsector: [] },
+    defaultValues: { maxHarmScore: 15, sector: [], subsector: [], exposure: null },
   });
 
   register('sector');
   register('subsector');
+  register('exposure');
 
   const sector = watch('sector');
+  const subsector = watch('subsector');
+  const exposure = watch('exposure');
   const data = watch();
 
   useEffect(() => {
@@ -151,12 +179,40 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     setResetDisabled(true);
   };
 
+  // Options for the sector select, formatted according to react-select rules
+  const sectorOptions = Object.keys(sectorMapping).map((sector) => {
+    return {
+      value: sector,
+      label: sector,
+    };
+  });
+
+  // Options for the subsector select, formatted according to react-select rules
+  const subsectorOptions = Object.entries(sectorMapping)
+    .map(([k, v]) => {
+      if (sector.includes(k)) {
+        return v.map((subsector) => ({ label: subsector, value: subsector }));
+      }
+
+      return [];
+    })
+    .flat()
+    .sort((a, b) => (a.value.toUpperCase() < b.value.toUpperCase() ? -1 : 1));
+
+  // Helper function to update sector value stored in react-hook-form state
   const updateSector = (sectors) => {
-    setValue('sector', sectors);
+    const sectorNames = sectors.map((el) => el.value);
+    setValue('sector', sectorNames);
   };
 
+  // Helper function to update subsector value stored in react-hook-form state
   const updateSubsector = (subsectors) => {
-    setValue('subsector', subsectors);
+    const subsectorNames = subsectors.map((el) => el.value);
+    setValue('subsector', subsectorNames);
+  };
+
+  const updateExposure = (exposure) => {
+    setValue('exposure', exposure.value);
   };
 
   return (
@@ -172,6 +228,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 placeholder="Enter Keyword"
                 bgColor="white"
                 focusBorderColor="soft.purple"
+                borderRadius="4px"
                 {...register('keyword')}
               />
             </Box>
@@ -179,72 +236,28 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
               <FormLabel color="black" htmlFor="sector">
                 <Heading size="sm">Sector</Heading>
               </FormLabel>
-              <Menu closeOnSelect={false}>
-                <MenuButton
-                  as={Button}
-                  bgColor="white"
-                  fontWeight="normal"
-                  color="black"
-                  width="100%"
-                  textAlign="left"
-                  _hover={{ bg: 'white' }}
-                  _active={{ bg: 'white' }}
-                  _focus={{ bg: 'white' }}
-                  _expanded={{ bg: 'white' }}
-                  rightIcon={<ChevronDownIcon />}
-                >
-                  Select Sector
-                </MenuButton>
-                <MenuList maxWidth="200px" height="200px" overflow="scroll">
-                  <MenuOptionGroup type="checkbox" onChange={updateSector}>
-                    {Object.keys(sectorMapping).map((sector) => (
-                      <MenuItemOption key={sector} value={sector}>
-                        {sector}
-                      </MenuItemOption>
-                    ))}
-                  </MenuOptionGroup>
-                </MenuList>
-              </Menu>
+              <ReactSelect
+                options={sectorOptions}
+                isMulti
+                onChange={updateSector}
+                placeholder="Select sector"
+                styles={selectStyles}
+                value={sector.map((el) => ({ value: el, label: el }))}
+              />
             </Box>
             <Box>
               <FormLabel color="black" htmlFor="subsector">
                 <Heading size="sm">Sub-sector</Heading>
               </FormLabel>
-              <Menu closeOnSelect={false}>
-                <MenuButton
-                  as={Button}
-                  isDisabled={!sector.length}
-                  bgColor="white"
-                  fontWeight="normal"
-                  color="black"
-                  width="100%"
-                  textAlign="left"
-                  _hover={{ bg: 'white' }}
-                  _active={{ bg: 'white' }}
-                  _focus={{ bg: 'white' }}
-                  _expanded={{ bg: 'white' }}
-                  rightIcon={<ChevronDownIcon />}
-                >
-                  Select Subsector
-                </MenuButton>
-                <MenuList maxWidth="200px">
-                  <MenuOptionGroup type="checkbox" onChange={updateSubsector}>
-                    {Object.entries(sectorMapping)
-                      .map(([k, v]) => {
-                        if (sector.includes(k)) {
-                          return v.map((subsector) => (
-                            <MenuItemOption key={subsector} value={subsector}>
-                              {subsector}
-                            </MenuItemOption>
-                          ));
-                        }
-
-                        return [];
-                      })
-                      .flat()}
-                  </MenuOptionGroup>
-                </MenuList>
-              </Menu>
+              <ReactSelect
+                options={subsectorOptions}
+                isMulti
+                onChange={updateSubsector}
+                isDisabled={!sector.length}
+                placeholder="Select subsector"
+                styles={selectStyles}
+                value={subsector.map((el) => ({ value: el, label: el }))}
+              />
             </Box>
             <Box>
               <Heading size="sm" color="black">
@@ -298,18 +311,13 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                   Capital Markets Exposure
                 </Heading>
               </FormLabel>
-              <Select
-                id="exposure"
-                placeholder="Select market exposure tier"
-                bgColor="white"
-                {...register('exposure')}
-              >
-                <option>Tier 1a (Publicly Traded - Targeted Exposure)</option>
-                <option>Tier 1b (Publicly Traded - Other Exposure)</option>
-                <option>Tier 2 (Investment Firm-Owned)</option>
-                <option>Tier 3 (Large Privately-Owned)</option>
-                <option>Tier 4 (Small Privately-Owned)</option>
-              </Select>
+              <ReactSelect
+                options={exposureOptions}
+                styles={selectStyles}
+                onChange={updateExposure}
+                value={exposure ? { value: exposure, label: exposure } : null}
+                placeholder="Select capital exposure tier"
+              />
             </Box>
             <Box>
               <Stack spacing={3} direction="column">
