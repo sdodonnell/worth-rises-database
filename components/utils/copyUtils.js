@@ -1,4 +1,4 @@
-export const INTRO_TEXT = 'A database of corporations that do businesses with corrections and immigration detention in the U.S.'; 
+export const INTRO_TEXT = 'A database of corporations that do business with corrections and immigration detention in the U.S.'; 
 
 export const HARM_SCORE_TEXT =
   'Measures the engagement of each corporation in human rights violations along three criteria: the salience or gravity of the violation, their responsibility for the violation, and their responsiveness to advocacy. Each criterion is scored on a scale from 1 to 5, making the overall harm score range 3 to 15.';

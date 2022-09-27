@@ -48,6 +48,7 @@ html, body {
 .source-list p.source::after, .source-list a.source p::after {
     content: "|";
     padding: 0 2px 0 8px;
+    font-style: normal;
 }
 
 .source-list > .source:last-child::after, .source-list > .source:last-child > p::after {

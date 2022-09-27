@@ -4,7 +4,9 @@ import {
   Grid,
   GridItem,
   Heading,
+  Icon,
   Link,
+  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,15 +15,18 @@ import {
   ModalOverlay,
   Text,
   Tooltip,
+  UnorderedList,
   useDisclosure,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
+import { MdCheckBoxOutlineBlank, MdCheckBox } from 'react-icons/md';
 import React, { useEffect } from 'react';
 import * as NextLink from 'next/link';
 import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
-import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './copyUtils';
+import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './utils/copyUtils';
 import { useRouter } from 'next/router';
+import { sectorMapping } from './utils/dataUtils';
 
 const Header = ({ text, children, ...props }) => {
   if (children) {
@@ -56,9 +61,9 @@ const Source = ({ source, name, website = '' }) => {
 
   if (isURL(source)) {
     return (
-      <Link href={source} isExternal className="source">
+      <Link href={source} isExternal className="source" textDecoration="underline">
         <Text fontSize="sm" fontStyle="italic">
-          {name} <ExternalLinkIcon mx="2px" />
+          {name}
         </Text>
       </Link>
     );
@@ -68,8 +73,8 @@ const Source = ({ source, name, website = '' }) => {
     return (
       <Text fontSize="sm" fontStyle="italic" className="source">
         {name}: See{' '}
-        <Link href={website} isExternal>
-          website <ExternalLinkIcon mx="2px" />
+        <Link href={website} isExternal textDecoration="underline">
+          website
         </Link>
       </Text>
     );
@@ -89,14 +94,17 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
     acquired = 'N/A',
     active,
     corrections = '',
+    detentionInvolvement,
     detentionSource = '',
+    divestment,
     employees = 'N/A',
     executive = 'N/A',
     exposure = 'N/A',
     financials = '',
-    fiscalYear = 'N/A',
+    fiscalYear,
     harmScore = 'N/A',
     id,
+    laborInvolvement,
     laborSource = '',
     notes,
     other = '',
@@ -104,15 +112,15 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
     parentName = 'N/A',
     parentRecord,
     politicalSpending = 'N/A',
-    primarySector,
     responsibility,
     responsiveness,
     revenueOnly,
     revenues,
     salience,
+    sectors = [],
     state,
     stock,
-    subsector,
+    subsectors = [],
     website,
     yearFounded = 'N/A',
   } = values;
@@ -166,7 +174,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                 <Heading size="lg">{name}</Heading>
               )}
               {!active && (
-                <Heading size="sm" color="normal.red">
+                <Heading size="sm" color="normal.red" whiteSpace="nowrap">
                   BRAND INACTIVE
                 </Heading>
               )}
@@ -183,7 +191,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
           <ModalBody pb="72px">
             <Grid
               templateAreas={template}
-              templateRows={`160px 336px`}
+              templateRows="200px 290px"
               templateColumns="repeat(4, 1fr)"
               gap="28px"
             >
@@ -239,7 +247,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                       <Text>{acquired}</Text>
                     </Box>
                   </GridItem>
-                  <GridItem>
+                  <GridItem px="24px">
                     <Grid templateColumns="280px 30px" templateRows="44px 22px">
                       <GridItem
                         display="flex"
@@ -291,52 +299,114 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                         </Text>
                       </GridItem>
                     </Grid>
+                    <Flex flexDirection="column" pt="10px">
+                      <Text
+                        display="flex"
+                        alignItems="center"
+                        gap="5px"
+                        color={divestment ? 'normal.red' : 'black'}
+                        fontWeight={divestment ? 'bold' : 'normal'}
+                      >
+                        {divestment ? (
+                          <Icon as={MdCheckBox} />
+                        ) : (
+                          <Icon as={MdCheckBoxOutlineBlank} />
+                        )}
+                        Divestment Target
+                      </Text>
+                      <Text
+                        display="flex"
+                        alignItems="center"
+                        gap="5px"
+                        color={laborInvolvement ? 'normal.red' : 'black'}
+                        fontWeight={laborInvolvement ? 'bold' : 'normal'}
+                      >
+                        {laborInvolvement ? (
+                          <Icon as={MdCheckBox} />
+                        ) : (
+                          <Icon as={MdCheckBoxOutlineBlank} />
+                        )}
+                        Supports Prison Labor
+                      </Text>
+                      <Text
+                        display="flex"
+                        alignItems="center"
+                        gap="5px"
+                        color={detentionInvolvement ? 'normal.red' : 'black'}
+                        fontWeight={detentionInvolvement ? 'bold' : 'normal'}
+                      >
+                        {detentionInvolvement ? (
+                          <Icon as={MdCheckBox} />
+                        ) : (
+                          <Icon as={MdCheckBoxOutlineBlank} />
+                        )}
+                        Involved in Immigration Detention
+                      </Text>
+                    </Flex>
                   </GridItem>
                 </Grid>
               </GridItem>
               <GridItem gridArea="c" display="flex" flexDir="column" justifyContent="space-between">
                 <Box>
-                  <Header text="Public Market Exposure" />
-                  <Text>{exposure}</Text>
-                </Box>
-                <Box>
-                  <Header text="Parent Company" />
-                  {parentRecord ? (
-                    <Text _hover={{ textDecoration: 'underline' }}>
-                      <Link as={NextLink} href={`/?id=${parentRecord}`}>
-                        {parentName[0]}
-                      </Link>
-                    </Text>
-                  ) : (
-                    <Text>{parentName}</Text>
-                  )}
-                </Box>
-                <Box>
-                  <Header text="Ownership Investor" />
-                  <Text>{owner}</Text>
-                </Box>
-                <Box>
-                  <Header text="Last Acquired" />
-                  <Text>{acquired}</Text>
+                  <Header text="Sector" />
+                  {sectors.map((sectorName) => {
+                    return (
+                      <>
+                        <Text fontSize="md" fontWeight="bold">
+                          {sectorName}
+                        </Text>
+                        <UnorderedList marginInlineStart="2em">
+                          {sectorMapping[sectorName].map((subsectorName) => {
+                            if (subsectors.includes(subsectorName)) {
+                              return <ListItem>{subsectorName}</ListItem>;
+                            }
+                          })}
+                        </UnorderedList>
+                      </>
+                    );
+                  })}
                 </Box>
               </GridItem>
               <GridItem gridArea="d" display="flex" flexDir="column" justifyContent="space-between">
+                <Flex flexDirection="column" justifyContent="space-between">
+                  <Header text="Annual Revenue">
+                    {fiscalYear && (
+                      <Text as="span" fontSize="sm" fontWeight="normal" ml="6px">
+                        ({fiscalYear})
+                      </Text>
+                    )}
+                  </Header>
+                  {revenues ? (
+                    <>
+                      <Text fontSize="5xl" fontWeight="light">
+                        {revenues} M{' '}
+                      </Text>
+                      {revenueOnly && (
+                        <Text display="flex" alignItems="center" gap="5px" color="normal.red">
+                          <Icon as={MdCheckBox} />
+                          Prison Industry Revenue Only
+                        </Text>
+                      )}
+                    </>
+                  ) : (
+                    <Text fontSize="md" fontWeight="normal">
+                      N/A
+                    </Text>
+                  )}
+                </Flex>
                 <Box>
-                  <Header text="Annual Revenue" />
-                  <Text
-                    fontSize={revenues ? '5xl' : 'md'}
-                    fontWeight={revenues ? 'light' : 'normal'}
-                  >
-                    {revenues ? `${revenues} M` : 'N/A'}
-                  </Text>
-                </Box>
-                <Box>
-                  <Header text="Revenue Fiscal Year" />
-                  <Text>{fiscalYear}</Text>
-                </Box>
-                <Box>
-                  <Header text="Prison Industry Revenue Only" />
-                  <Text>{revenueOnly ? 'Yes' : 'No'}</Text>
+                  <Header text="Capital Markets Exposure">
+                    <Tooltip
+                      label={POLITICAL_SPENDING_TEXT}
+                      fontSize="sm"
+                      fontWeight="normal"
+                      bgColor="soft.gray"
+                      placement="auto-start"
+                    >
+                      <QuestionOutlineIcon ml="5px" mt="-3px" />
+                    </Tooltip>
+                  </Header>
+                  <Text>{exposure}</Text>
                 </Box>
                 <Box>
                   <Header text="Political Spending">

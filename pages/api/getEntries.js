@@ -4,6 +4,7 @@ const PRIMARY_SECTOR_ID = 'fldjEW6owmKk8OMlX';
 const OTHER_SECTORS_ID = 'fldTcs1OaGwdUsHiW';
 const PRIMARY_SUBSECTOR_ID = 'fld2YdygbDUIbFxv4';
 const OTHER_SUBSECTORS_ID = 'fldH1GqbAoe33w0GK';
+const HARM_SCORE_ID = 'fldvURpMuHYQno2Ov';
 
 export default async (req, res) => {
   res.setHeader('Cache-Control', 's-maxage=86400');
@@ -40,7 +41,10 @@ const parseSectors = (records) => {
 };
 
 const cleanRecords = (records) => {
-  return records.map((record) => ({ ...record.fields, id: record.id }));
+  return records.map((record) => ({
+    ...record.fields,
+    id: record.id,
+  }));
 };
 
 const checkAirtable = (base) => {

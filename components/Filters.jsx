@@ -16,68 +16,8 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import ReactSelect from 'react-select';
 import { QuestionOutlineIcon } from '@chakra-ui/icons';
-import { HARM_SCORE_TEXT } from './copyUtils';
-
-const sectorMapping = {
-  'Community Corrections': [
-    'Bail & Surety',
-    'Day Reporting Center',
-    'Electronic Monitoring',
-    'Outpatient Programs',
-    'Residential Programs',
-  ],
-  'Construction & Maintenance': [
-    'Architecture & Engineering',
-    'Construction',
-    'Maintenance Services',
-    'Utility/Energy',
-  ],
-  'Data & Information Systems': [
-    'Arrest, Court, & Probation Data Systems',
-    'Corrections Data Systems',
-    'Immigration Data Systems',
-    'IT & Communications Infrastructure & Services',
-    'Medical Records Systems',
-  ],
-  Equipment: [
-    'Furnishings, Supplies, & Other Facility Equipment',
-    'Security Equipment',
-    'Security Technology',
-  ],
-  'Financial Services': ['Agency Payment Processing', 'Money Transfers', 'Cash & Release Cards'],
-  'Food & Commissary': [
-    'Care Packages',
-    'Commissary',
-    'Kitchen Equipment',
-    'Prison Food',
-    'Vending Machines',
-  ],
-  Healthcare: [
-    'Ambulance Services',
-    'Medical Equipment',
-    'Medical Healthcare',
-    'Mental Health Services',
-    'Medical Records Systems',
-    'Pharmacy',
-    'Substance Abuse Treatment',
-    'Third Party Staffing',
-  ],
-  Investor: [],
-  'Operations & Management': [
-    'Immigration Detention Operator',
-    'Private Prison Operator',
-    'Procurement, Contracting, & Other Admin Services',
-  ],
-  Other: [],
-  Personnel: ['Staff Management System', 'Staff Training', 'Third Party Staffing'],
-  'Programs & Labor': [
-    'Education Services, Materials, & Technology',
-    'Rehab Programming',
-    'Vocation/Industries (Prison Labor)',
-  ],
-  Telecom: ['Prison Communications', 'Tablets', 'Telecom Surveillance & Security'],
-  Transportation: ['Agency Transportation', 'Prison Transportation', 'Visitor Transportation'],
-};
+import { HARM_SCORE_TEXT } from './utils/copyUtils';
+import { sectorMapping } from './utils/dataUtils';
 
 const exposureOptions = [
   {
@@ -113,15 +53,15 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
   const shouldToggleResetButton = useRef(true);
 
   const { register, reset, control, watch, setValue } = useForm({
-    defaultValues: { maxHarmScore: 15, sector: [], subsector: [], exposure: null },
+    defaultValues: { maxHarmScore: 15, minHarmScore: 0, sectors: [], subsectors: [], exposure: null },
   });
 
-  register('sector');
-  register('subsector');
+  register('sectors');
+  register('subsectors');
   register('exposure');
 
-  const sector = watch('sector');
-  const subsector = watch('subsector');
+  const sectors = watch('sectors');
+  const subsectors = watch('subsectors');
   const exposure = watch('exposure');
   const data = watch();
 
@@ -139,13 +79,13 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
       labor,
       maxHarmScore,
       minHarmScore,
-      sector,
-      subsector,
+      sectors,
+      subsectors,
     } = data;
 
     const filters = [
-      { id: 'sectors', value: sector },
-      { id: 'subsector', value: subsector },
+      { id: 'sectors', value: sectors },
+      { id: 'subsectors', value: subsectors },
       { id: 'exposure', value: exposure },
       { id: 'detentionInvolvement', value: detention },
       { id: 'laborInvolvement', value: labor },
@@ -190,7 +130,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
   // Options for the subsector select, formatted according to react-select rules
   const subsectorOptions = Object.entries(sectorMapping)
     .map(([k, v]) => {
-      if (sector.includes(k)) {
+      if (sectors.includes(k)) {
         return v.map((subsector) => ({ label: subsector, value: subsector }));
       }
 
@@ -240,23 +180,23 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 options={sectorOptions}
                 isMulti
                 onChange={updateSector}
-                placeholder="Select sector"
+                placeholder="Select sectors"
                 styles={selectStyles}
-                value={sector.map((el) => ({ value: el, label: el }))}
+                value={sectors.map((el) => ({ value: el, label: el }))}
               />
             </Box>
             <Box>
               <FormLabel color="black" htmlFor="subsector">
-                <Heading size="sm">Sub-sector</Heading>
+                <Heading size="sm">Subsector</Heading>
               </FormLabel>
               <ReactSelect
                 options={subsectorOptions}
                 isMulti
                 onChange={updateSubsector}
-                isDisabled={!sector.length}
-                placeholder="Select subsector"
+                isDisabled={!sectors.length}
+                placeholder="Select subsectors"
                 styles={selectStyles}
-                value={subsector.map((el) => ({ value: el, label: el }))}
+                value={subsectors.map((el) => ({ value: el, label: el }))}
               />
             </Box>
             <Box>
@@ -277,7 +217,13 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                   <Select
                     id="minHarmScore"
                     bgColor="white"
-                    maxWidth="70px"
+                    maxWidth="90px"
+                    _focus={{
+                      outlineColor: 'soft.purple',
+                    }}
+                    _focusVisible={{
+                      outlineColor: 'soft.purple',
+                    }}
                     {...register('minHarmScore')}
                   >
                     {Array(13)
@@ -294,6 +240,12 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                     bgColor="white"
                     maxWidth="70px"
                     defaultValue="15"
+                    _focus={{
+                      outlineColor: 'soft.purple',
+                    }}
+                    _focusVisible={{
+                      outlineColor: 'soft.purple',
+                    }}
                     {...register('maxHarmScore')}
                   >
                     {Array(13)

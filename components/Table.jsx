@@ -18,23 +18,12 @@ import Pagination from './Pagination';
 import DownloadButton from './DownloadButton';
 import Company from './Company';
 import Filters from './Filters';
-import { HEADER_TEXT, INTRO_TEXT } from './copyUtils';
+import { HEADER_TEXT, INTRO_TEXT } from './utils/copyUtils';
 import { useRouter } from 'next/router';
 import SectorTagList from './SectorTagList';
 import FilterModal from './FilterModal';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
-  // const filterArray = useCallback((rows, id, filterValue) => {
-  //   if (!filterValue || !Array.isArray(filterValue) || filterValue.length === 0) {
-  //     return rows;
-  //   }
-
-  //   return rows.filter((row) => {
-  //     const rowValue = row.values[id];
-  //     return filterValue.includes(rowValue);
-  //   });
-  // }, []);
-
   const router = useRouter();
 
   const handleModalOpen = (e, id, onOpen) => {
@@ -92,7 +81,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         id: 'parentRecord',
       },
       {
-        Header: 'Major Investor',
+        Header: 'Ownership Investor',
         accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
         Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
@@ -106,7 +95,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       {
         accessor: 'fldjEW6owmKk8OMlX',
         id: 'primarySector',
-        // filter: filterArray
       },
       {
         Header: 'Sector',
@@ -120,7 +108,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       {
         Header: 'Subsectors',
         accessor: 'fldH1GqbAoe33w0GK',
-        id: 'subsector',
+        id: 'subsectors',
         filter: 'includesAll',
       },
       {
@@ -288,7 +276,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'revenues',
           'salience',
           'state',
-          'subsector',
+          'subsectors',
           'website',
           'yearFounded',
         ],

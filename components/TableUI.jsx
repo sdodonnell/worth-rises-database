@@ -1,7 +1,15 @@
 import { Skeleton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepareRow, isLoading, isError }) => {
+const TableUI = ({
+  getTableProps,
+  headerGroups,
+  getTableBodyProps,
+  page,
+  prepareRow,
+  isLoading,
+  isError,
+}) => {
   return (
     <Table {...getTableProps()} size="sm">
       <Thead pos="sticky" top="0" bgColor="soft.gray" boxShadow="sm">
@@ -20,7 +28,7 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
                     color="normal.gray"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     title="Sort by"
-                    textAlign={i > 0 ? "center" : "left"}
+                    textAlign={i > 0 ? 'center' : 'left'}
                   >
                     {
                       // Render the header
@@ -45,10 +53,14 @@ const TableUI = ({ getTableProps, headerGroups, getTableBodyProps, page, prepare
               <Tr {...row.getRowProps()} _hover={{ bgColor: 'purple.50' }}>
                 {
                   // Loop over the rows cells
-                  row.cells.map((cell) => {
+                  row.cells.map((cell, i) => {
                     // Apply the cell props
                     return (
-                      <Td {...cell.getCellProps()} w={cell.column.minWidth || null}>
+                      <Td
+                        {...cell.getCellProps()}
+                        w={cell.column.minWidth || null}
+                        textAlign={i > 0 ? 'center' : 'left'}
+                      >
                         <Skeleton isLoaded={!isLoading} speed={isError ? 0 : 0.8}>
                           {
                             // Render the cell contents
