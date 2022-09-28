@@ -1,10 +1,10 @@
 import Airtable from 'airtable';
+import uniq from 'lodash/uniq';
 // TODO: move field/record ids into single file for resuability
 const PRIMARY_SECTOR_ID = 'fldjEW6owmKk8OMlX';
 const OTHER_SECTORS_ID = 'fldTcs1OaGwdUsHiW';
 const PRIMARY_SUBSECTOR_ID = 'fld2YdygbDUIbFxv4';
 const OTHER_SUBSECTORS_ID = 'fldH1GqbAoe33w0GK';
-const HARM_SCORE_ID = 'fldvURpMuHYQno2Ov';
 
 export default async (req, res) => {
   res.setHeader('Cache-Control', 's-maxage=86400');
@@ -28,12 +28,12 @@ const parseSectors = (records) => {
 
     let newSectors = sectors;
     if (primarySector) {
-      newSectors = [primarySector, ...sectors];
+      newSectors = uniq([primarySector, ...sectors]);
     }
 
     let newSubsectors = subsectors;
     if (primarySector) {
-      newSubsectors = [primarySubsector, ...subsectors];
+      newSubsectors = uniq([primarySubsector, ...subsectors]);
     }
 
     return { ...record, [OTHER_SECTORS_ID]: newSectors, [OTHER_SUBSECTORS_ID]: newSubsectors };
