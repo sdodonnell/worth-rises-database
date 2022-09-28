@@ -128,9 +128,14 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
   const hasSources = detentionSource || corrections || laborSource || other || financials;
 
-  const template = `"a a a a"
-                    "c d e e"
-                    `;
+  const desktopTemplate = `"a a a a"
+                           "c d e e"
+                          `;
+
+  const mobileTemplate = `"a"
+                          "c"
+                          "d"
+                          "e"`;
 
   const router = useRouter();
 
@@ -160,9 +165,15 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
         blockScrollOnMount={false}
       >
         <ModalOverlay />
-        <ModalContent bgColor="white" overflow="visible">
+        <ModalContent bgColor="white" overflow="visible" mx="16px">
           <ModalHeader color="black" pt="24px" pb="0">
-            <Flex justifyContent="space-between" alignItems="baseline">
+            <Flex
+              flexDirection={['column', 'row']}
+              justifyContent="space-between"
+              alignItems="baseline"
+              gap={['8px', 0]}
+              mb={['8px', 0]}
+            >
               {website ? (
                 <Link href={website} isExternal>
                   <Flex alignItems="baseline" gap="5px">
@@ -188,27 +199,28 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
             _hover={{ bgColor: 'soft.gray' }}
             _active={{ bgColor: 'soft.gray' }}
           />
-          <ModalBody pb="72px">
+          <ModalBody pb="72px" overflowX="hidden">
             <Grid
-              templateAreas={template}
-              templateRows="200px 290px"
-              templateColumns="repeat(4, 1fr)"
+              templateAreas={[mobileTemplate, desktopTemplate]}
+              templateRows={['auto', '200px 290px']}
+              templateColumns={['auto', 'repeat(4, 1fr)']}
               gap="28px"
             >
               <GridItem gridArea="a">
                 <Grid
-                  gridTemplateColumns="2fr 1fr"
+                  gridTemplateColumns={['auto', '2fr 1fr']}
                   height="100%"
-                  padding="20px 0"
-                  borderTop="1px solid black"
-                  borderBottom="1px solid black"
-                  gap="20px"
+                  padding={[0, '20px 0']}
+                  borderTop={['none', '1px solid black']}
+                  borderBottom={['none', '1px solid black']}
+                  gap={["20px", 0, 0, "20px"]}
                 >
                   <GridItem
                     display="grid"
-                    gridTemplateColumns="repeat(4, 1fr)"
-                    gridTemplateRows="1fr 1fr"
-                    borderRight="1px solid black"
+                    gridTemplateColumns={['auto', 'repeat(4, 1fr)']}
+                    gridTemplateRows={['auto', '80px 80px']}
+                    borderRight={['none', '1px solid black']}
+                    gap={['12px', 0]}
                   >
                     <Box>
                       <Header text="Founded" />
@@ -247,12 +259,12 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                       <Text>{acquired}</Text>
                     </Box>
                   </GridItem>
-                  <GridItem px="24px">
-                    <Grid templateColumns="280px 30px" templateRows="44px 22px">
+                  <GridItem px={['0', '24px']}>
+                    <Grid templateColumns="auto 30px" templateRows="44px 22px">
                       <GridItem
                         display="flex"
                         id="harm-score"
-                        w="280px"
+                        w={['auto', '280px']}
                         h="44px"
                         borderRadius="5px"
                         overflow="hidden"
@@ -270,7 +282,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                             Harm Score
                           </Text>
                         </Flex>
-                        <Flex bgColor="black" w="52px" justifyContent="center" alignItems="center">
+                        <Flex bgColor="black" justifyContent="center" alignItems="center" flex="1">
                           <Text color="white" fontSize="22px">
                             {harmScore}
                           </Text>
@@ -287,7 +299,13 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                           <InfoOutlineIcon ml="5px" mt="-3px" />
                         </Tooltip>
                       </GridItem>
-                      <GridItem display="flex" mt="6px" alignItems="center" overflow="hidden">
+                      <GridItem
+                        display="flex"
+                        mt="6px"
+                        alignItems="center"
+                        justifyContent="center"
+                        overflow="hidden"
+                      >
                         <Text fontSize="sm" borderRight="1px solid black" px="5px">
                           Salience: {salience}
                         </Text>
@@ -367,7 +385,13 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                   })}
                 </Box>
               </GridItem>
-              <GridItem gridArea="d" display="flex" flexDir="column" justifyContent="space-between">
+              <GridItem
+                gridArea="d"
+                display="flex"
+                flexDir="column"
+                justifyContent="space-between"
+                gap={['12px', 0]}
+              >
                 <Flex flexDirection="column" justifyContent="space-between">
                   <Header text="Annual Revenue">
                     {fiscalYear && (
@@ -427,7 +451,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                   </Text>
                 </Box>
               </GridItem>
-              <GridItem gridArea="e">
+              <GridItem gridArea="e" height={['300px', 'auto']}>
                 {stock ? (
                   <TradingViewWidget stockTicker={stock} />
                 ) : (
