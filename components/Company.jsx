@@ -213,7 +213,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                   padding={[0, '20px 0']}
                   borderTop={['none', '1px solid black']}
                   borderBottom={['none', '1px solid black']}
-                  gap={["20px", 0, 0, "20px"]}
+                  gap={['20px', 0, 0, '20px']}
                 >
                   <GridItem
                     display="grid"
@@ -369,18 +369,22 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                   <Header text="Sector" />
                   {sectors.map((sectorName) => {
                     return (
-                      <>
+                      <React.Fragment key={`${name}_${sectorName}`}>
                         <Text fontSize="md" fontWeight="bold">
                           {sectorName}
                         </Text>
                         <UnorderedList marginInlineStart="2em">
                           {sectorMapping[sectorName].map((subsectorName) => {
                             if (subsectors.includes(subsectorName)) {
-                              return <ListItem>{subsectorName}</ListItem>;
+                              return (
+                                <ListItem key={`${name}_${subsectorName}`}>
+                                  {subsectorName}
+                                </ListItem>
+                              );
                             }
                           })}
                         </UnorderedList>
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </Box>

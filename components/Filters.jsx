@@ -53,16 +53,25 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
   const shouldToggleResetButton = useRef(true);
 
   const { register, reset, control, watch, setValue } = useForm({
-    defaultValues: { maxHarmScore: 15, minHarmScore: 0, sectors: [], subsectors: [], exposure: null },
+    defaultValues: {
+      keyword: '',
+      maxHarmScore: 15,
+      minHarmScore: 0,
+      sectors: [],
+      subsectors: [],
+      exposure: null,
+    },
   });
 
   register('sectors');
   register('subsectors');
   register('exposure');
+  register('keyword');
 
   const sectors = watch('sectors');
   const subsectors = watch('subsectors');
   const exposure = watch('exposure');
+  const keyword = watch('keyword');
   const data = watch();
 
   useEffect(() => {
@@ -155,6 +164,10 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     setValue('exposure', exposure.value);
   };
 
+  const updateKeyword = (e) => {
+    setValue('keyword', e.target.value);
+  };
+
   return (
     <Flex direction="column" gap={5} overflow="hidden">
       <form id="filter-form">
@@ -169,7 +182,8 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 bgColor="white"
                 focusBorderColor="soft.purple"
                 borderRadius="4px"
-                {...register('keyword')}
+                onChange={updateKeyword}
+                value={keyword}
               />
             </Box>
             <Box>
