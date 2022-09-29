@@ -340,21 +340,21 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Flex alignItems="center" gap="20px">
+        <Flex alignItems="center" gap="28px">
           <Link href="https://worthrises.org" isExternal>
             <Image src="logo-white-vertical.png" ml="9px" w="55px" />
           </Link>
           <Flex flexDir="column">
             <Flex gap={['0', '10px']} flexDirection={['column', 'row']}>
-              <Heading color="white" fontSize={['20px', '22px']}>
-                Prison Industry Database
+              <Heading color="white" fontSize={['20px', '24px']}>
+                The Prison Industry
               </Heading>
-              <Heading color="white" fontSize={['20px', '22px']} fontWeight="light">
-                Private Sector Players
+              <Heading color="white" fontSize={['20px', '24px']} fontWeight="light">
+                Corporate Database
               </Heading>
             </Flex>
             <Show above="sm">
-              <Text color="white" fontSize="12px">
+              <Text color="white" fontSize="14px">
                 {HEADER_TEXT}
               </Text>
             </Show>

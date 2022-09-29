@@ -19,7 +19,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon, InfoOutlineIcon, QuestionOutlineIcon } from '@chakra-ui/icons';
-import { MdCheckBoxOutlineBlank, MdCheckBox } from 'react-icons/md';
+import { MdCheckBox } from 'react-icons/md';
 import React, { useEffect } from 'react';
 import * as NextLink from 'next/link';
 import { isURL } from 'validator';
@@ -199,7 +199,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
             _hover={{ bgColor: 'soft.gray' }}
             _active={{ bgColor: 'soft.gray' }}
           />
-          <ModalBody pb="72px" overflowX="hidden">
+          <ModalBody pb="72px" pt="18px" overflowX="hidden">
             <Grid
               templateAreas={[mobileTemplate, desktopTemplate]}
               templateRows={['auto', '200px 290px']}
@@ -318,48 +318,39 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                       </GridItem>
                     </Grid>
                     <Flex flexDirection="column" pt="10px">
-                      <Text
-                        display="flex"
-                        alignItems="center"
-                        gap="5px"
-                        color={divestment ? 'normal.red' : 'black'}
-                        fontWeight={divestment ? 'bold' : 'normal'}
-                      >
-                        {divestment ? (
-                          <Icon as={MdCheckBox} />
-                        ) : (
-                          <Icon as={MdCheckBoxOutlineBlank} />
-                        )}
-                        Divestment Target
-                      </Text>
-                      <Text
-                        display="flex"
-                        alignItems="center"
-                        gap="5px"
-                        color={laborInvolvement ? 'normal.red' : 'black'}
-                        fontWeight={laborInvolvement ? 'bold' : 'normal'}
-                      >
-                        {laborInvolvement ? (
-                          <Icon as={MdCheckBox} />
-                        ) : (
-                          <Icon as={MdCheckBoxOutlineBlank} />
-                        )}
-                        Supports Prison Labor
-                      </Text>
-                      <Text
-                        display="flex"
-                        alignItems="center"
-                        gap="5px"
-                        color={detentionInvolvement ? 'normal.red' : 'black'}
-                        fontWeight={detentionInvolvement ? 'bold' : 'normal'}
-                      >
-                        {detentionInvolvement ? (
-                          <Icon as={MdCheckBox} />
-                        ) : (
-                          <Icon as={MdCheckBoxOutlineBlank} />
-                        )}
-                        Involved in Immigration Detention
-                      </Text>
+                      {divestment && (
+                        <Text
+                          display="flex"
+                          alignItems="center"
+                          gap="5px"
+                          color="normal.red"
+                          fontWeight="bold"
+                        >
+                          <Icon as={MdCheckBox} /> Divestment Target
+                        </Text>
+                      )}
+                      {laborInvolvement && (
+                        <Text
+                          display="flex"
+                          alignItems="center"
+                          gap="5px"
+                          color="normal.red"
+                          fontWeight="bold"
+                        >
+                          <Icon as={MdCheckBox} /> Supports Prison Labor
+                        </Text>
+                      )}
+                      {detentionInvolvement && (
+                        <Text
+                          display="flex"
+                          alignItems="center"
+                          gap="5px"
+                          color="normal.red"
+                          fontWeight="bold"
+                        >
+                          <Icon as={MdCheckBox} /> Involved in Immigration Detention
+                        </Text>
+                      )}
                     </Flex>
                   </GridItem>
                 </Grid>
@@ -370,7 +361,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                   {sectors.map((sectorName) => {
                     return (
                       <React.Fragment key={`${name}_${sectorName}`}>
-                        <Text fontSize="md" fontWeight="bold">
+                        <Text fontSize="md">
                           {sectorName}
                         </Text>
                         <UnorderedList marginInlineStart="2em">
@@ -393,8 +384,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                 gridArea="d"
                 display="flex"
                 flexDir="column"
-                justifyContent="space-between"
-                gap={['12px', 0]}
+                gap={['12px', '30px']}
               >
                 <Flex flexDirection="column" justifyContent="space-between">
                   <Header text="Annual Revenue">
@@ -406,11 +396,11 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                   </Header>
                   {revenues ? (
                     <>
-                      <Text fontSize="5xl" fontWeight="light">
+                      <Text fontSize="2xl" fontWeight="light">
                         {revenues} M{' '}
                       </Text>
                       {revenueOnly && (
-                        <Text display="flex" alignItems="center" gap="5px" color="normal.red">
+                        <Text display="flex" alignItems="center" gap="5px" mt="6px" color="normal.red">
                           <Icon as={MdCheckBox} />
                           Prison Industry Revenue Only
                         </Text>

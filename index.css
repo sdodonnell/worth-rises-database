@@ -59,3 +59,7 @@ html, body {
     background: #AE88EB; 
     color: #fff;
 }
+
+.chakra-checkbox:nth-child(3) .chakra-checkbox__control {
+    margin-top: 7px;
+}

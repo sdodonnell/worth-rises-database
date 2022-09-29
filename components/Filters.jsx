@@ -282,7 +282,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                 styles={selectStyles}
                 onChange={updateExposure}
                 value={exposure ? { value: exposure, label: exposure } : null}
-                placeholder="Select capital exposure tier"
+                placeholder="Select tier"
               />
             </Box>
             <Box>
@@ -327,6 +327,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       isChecked={value}
                       borderColor="black"
                       onChange={(e) => onChange(e.target.checked)}
+                      alignItems="flex-start"
                     >
                       Involved in Immigration Detention
                     </Checkbox>

@@ -14,7 +14,7 @@ export default extendTheme(withDefaultColorScheme({ colorScheme: 'purple' }), {
     normal: {
       yellow: '#dfef0b',
       green: '#89c625',
-      red: '#ff1654',
+      red: '#c00000',
       purple: '#3a0058',
       gray: '#211f33',
       black: '#000',
