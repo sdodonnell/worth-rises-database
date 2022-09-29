@@ -60,6 +60,8 @@ html, body {
     color: #fff;
 }
 
-.chakra-checkbox:nth-child(3) .chakra-checkbox__control {
-    margin-top: 7px;
+@media (min-width: 769px) {
+    .chakra-checkbox:nth-child(3) .chakra-checkbox__control {
+        margin-top: 7px;
+    }
 }

@@ -327,7 +327,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       isChecked={value}
                       borderColor="black"
                       onChange={(e) => onChange(e.target.checked)}
-                      alignItems="flex-start"
+                      alignItems={["center", "flex-start"]}
                     >
                       Involved in Immigration Detention
                     </Checkbox>
