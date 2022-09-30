@@ -55,9 +55,10 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
 
   const { register, reset, control, watch, setValue } = useForm({
     defaultValues: {
+      includeMissingHarmScore: true,
       keyword: '',
       maxHarmScore: 15,
-      minHarmScore: 0,
+      minHarmScore: 3,
       sectors: [],
       subsectors: [],
       exposure: null,
@@ -86,6 +87,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
       divestment,
       exposure,
       keyword,
+      includeMissingHarmScore,
       labor,
       maxHarmScore,
       minHarmScore,
@@ -107,7 +109,17 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
     }
 
     if (minHarmScore && maxHarmScore) {
-      filters.push({ id: 'harmScore', value: [Number(minHarmScore), Number(maxHarmScore)] });
+      const possibleValues = [];
+
+      for (let i = Number(minHarmScore); i < Number(maxHarmScore) + 1; i++) {
+        possibleValues.push(i);
+      }
+
+      if (includeMissingHarmScore) {
+        possibleValues.push(0);
+      }
+
+      filters.push({ id: 'harmScore', value: possibleValues });
     }
 
     if (shouldToggleResetButton.current) {
@@ -233,6 +245,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                     id="minHarmScore"
                     bgColor="white"
                     maxWidth="90px"
+                    defaultValue="3"
                     _focus={{
                       outlineColor: 'soft.purple',
                     }}
@@ -241,10 +254,10 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                     }}
                     {...register('minHarmScore')}
                   >
-                    {Array(13)
-                      .fill()
-                      .map((_, i) => (
-                        <option key={i}>{i + 3}</option>
+                    {Array.from({ length: 13 }, (_, i) => i + 3)
+                      .filter((num) => num <= data.maxHarmScore)
+                      .map((num) => (
+                        <option key={`minHarmScore_${num}`}>{num}</option>
                       ))}
                   </Select>
                 </Box>
@@ -263,14 +276,32 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                     }}
                     {...register('maxHarmScore')}
                   >
-                    {Array(13)
-                      .fill()
-                      .map((_, i) => (
-                        <option key={i}>{i + 3}</option>
+                    {Array.from({ length: 13 }, (_, i) => i + 3)
+                      .filter((num) => num >= data.minHarmScore)
+                      .map((num) => (
+                        <option key={`maxHarmScore_${num}`}>{num}</option>
                       ))}
                   </Select>
                 </Box>
               </Flex>
+              <Controller
+                control={control}
+                name="includeMissingHarmScore"
+                defaultValue={true}
+                render={({ field: { value, onChange } }) => (
+                  <Checkbox
+                    id="includeMissingHarmScore"
+                    size="sm"
+                    isChecked={value}
+                    borderColor="black"
+                    onChange={(e) => onChange(e.target.checked)}
+                    mt="5px"
+                    alignItems="flex-start"
+                  >
+                    Include corporations without harm score
+                  </Checkbox>
+                )}
+              />
             </Box>
             <Box>
               <FormLabel htmlFor="exposure">

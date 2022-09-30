@@ -115,7 +115,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Harm Score',
         accessor: 'fldvURpMuHYQno2Ov',
         id: 'harmScore',
-        filter: 'between',
+        filter: 'includesValue',
         Cell: ({ value }) => (
           <Box textAlign="center" fontWeight="bold">
             {value ? String(value) : '--'}

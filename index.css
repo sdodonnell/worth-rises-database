@@ -61,7 +61,11 @@ html, body {
 }
 
 @media (min-width: 769px) {
-    .chakra-checkbox:nth-child(3) .chakra-checkbox__control {
+    input#detention + span {
         margin-top: 7px;
+    }
+
+    input#includeMissingHarmScore + span {
+        margin-top: 5px;
     }
 }

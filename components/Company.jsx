@@ -366,7 +366,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                           {sectorName}
                         </Text>
                         <UnorderedList marginInlineStart="2em">
-                          {sectorMapping[sectorName].map((subsectorName) => {
+                          {sectorMapping?.[sectorName].map((subsectorName) => {
                             if (subsectors.includes(subsectorName)) {
                               return (
                                 <ListItem key={`${name}_${subsectorName}`}>
