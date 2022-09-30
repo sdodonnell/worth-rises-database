@@ -24,9 +24,10 @@ import React, { useEffect } from 'react';
 import * as NextLink from 'next/link';
 import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
-import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './utils/copyUtils';
+import { EXPOSURE_TEXT, HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './utils/copyUtils';
 import { useRouter } from 'next/router';
 import { sectorMapping } from './utils/dataUtils';
+import ExposureTooltip from './ExposureTooltip';
 
 const Header = ({ text, children, ...props }) => {
   if (children) {
@@ -415,7 +416,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                 <Box>
                   <Header text="Capital Markets Exposure">
                     <Tooltip
-                      label={POLITICAL_SPENDING_TEXT}
+                      label={<ExposureTooltip />}
                       fontSize="sm"
                       fontWeight="normal"
                       bgColor="soft.gray"

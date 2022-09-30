@@ -7,3 +7,12 @@ export const POLITICAL_SPENDING_TEXT =
   'Lobbying expenditures and corporate campaign contributions made to federal and state candidates, major party committees, and ballot measure committees since 2010. Data provided only for corporations that derive all their revenues from the prison industry.';
 
 export const HEADER_TEXT = 'The prison industry is worth over $80 billion and includes thousands of corporations. Here they are.'
+
+export const EXPOSURE_TEXT = `
+  The listed corporation’s level of public exposure based of its parent company or investor:
+  • Tier 1a (Publicly Traded - Targeted Exposure): Publicly-traded corporations that have a business segment, sales staff, or marketing that targets the prison industry.
+  • Tier 1b (Publicly Traded - Other Exposure): Publicly-traded corporations that are unintentionally or unknowingly engaged in the prison industry.
+  • Tier 2 (Investment Firm-Owned): Private-equity or hedge fund owned corporations.
+  • Tier 3 (Large Privately-Owned): Privately-owned corporations with $200 million or more in estimated annual revenues that likely require corporate financing for growth.
+  • Tier 4 (Small Privately-Owned): Privately-owned corporations with less than $200 million in estimated annual revenues. 
+`

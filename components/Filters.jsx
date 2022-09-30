@@ -18,6 +18,7 @@ import ReactSelect from 'react-select';
 import { QuestionOutlineIcon } from '@chakra-ui/icons';
 import { HARM_SCORE_TEXT } from './utils/copyUtils';
 import { sectorMapping } from './utils/dataUtils';
+import ExposureTooltip from './ExposureTooltip';
 
 const exposureOptions = [
   {
@@ -275,6 +276,15 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
               <FormLabel htmlFor="exposure">
                 <Heading size="sm" color="black">
                   Capital Markets Exposure
+                  <Tooltip
+                    label={<ExposureTooltip />}
+                    fontSize="sm"
+                    fontWeight="normal"
+                    bgColor="soft.gray"
+                    placement="auto-start"
+                  >
+                    <QuestionOutlineIcon ml="5px" mt="-3px" color="black" />
+                  </Tooltip>
                 </Heading>
               </FormLabel>
               <ReactSelect
@@ -327,7 +337,7 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
                       isChecked={value}
                       borderColor="black"
                       onChange={(e) => onChange(e.target.checked)}
-                      alignItems={["center", "flex-start"]}
+                      alignItems={['center', 'flex-start']}
                     >
                       Involved in Immigration Detention
                     </Checkbox>
