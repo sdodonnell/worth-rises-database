@@ -24,7 +24,7 @@ import React, { useEffect } from 'react';
 import * as NextLink from 'next/link';
 import { isURL } from 'validator';
 import TradingViewWidget from './TradingViewWidget';
-import { EXPOSURE_TEXT, HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './utils/copyUtils';
+import { HARM_SCORE_TEXT, POLITICAL_SPENDING_TEXT } from './utils/copyUtils';
 import { useRouter } from 'next/router';
 import { sectorMapping } from './utils/dataUtils';
 import ExposureTooltip from './ExposureTooltip';
@@ -88,8 +88,21 @@ const Source = ({ source, name, website = '' }) => {
   );
 };
 
-const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
+const Company = ({ name, values }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
+
+  const handleModalOpen = (e, id, onOpen) => {
+    onOpen(e);
+
+    router.push(`/?id=${id}`, undefined, { shallow: true });
+  };
+
+  const handleModalClose = (e, onClose) => {
+    onClose(e);
+
+    router.push(`/`, undefined, { shallow: true });
+  };
 
   const {
     acquired = 'N/A',
@@ -137,8 +150,6 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                           "c"
                           "d"
                           "e"`;
-
-  const router = useRouter();
 
   useEffect(() => {
     const safeId = decodeURIComponent(router.query.id);
@@ -362,9 +373,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                   {sectors.map((sectorName) => {
                     return (
                       <React.Fragment key={`${name}_${sectorName}`}>
-                        <Text fontSize="md">
-                          {sectorName}
-                        </Text>
+                        <Text fontSize="md">{sectorName}</Text>
                         <UnorderedList marginInlineStart="2em">
                           {sectorMapping?.[sectorName].map((subsectorName) => {
                             if (subsectors.includes(subsectorName)) {
@@ -381,12 +390,7 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                   })}
                 </Box>
               </GridItem>
-              <GridItem
-                gridArea="d"
-                display="flex"
-                flexDir="column"
-                gap={['12px', '30px']}
-              >
+              <GridItem gridArea="d" display="flex" flexDir="column" gap={['12px', '30px']}>
                 <Flex flexDirection="column" justifyContent="space-between">
                   <Header text="Annual Revenue">
                     {fiscalYear && (
@@ -401,7 +405,13 @@ const Company = ({ name, values, handleModalOpen, handleModalClose }) => {
                         {revenues} M{' '}
                       </Text>
                       {revenueOnly && (
-                        <Text display="flex" alignItems="center" gap="5px" mt="6px" color="normal.red">
+                        <Text
+                          display="flex"
+                          alignItems="center"
+                          gap="5px"
+                          mt="6px"
+                          color="normal.red"
+                        >
                           <Icon as={MdCheckBox} />
                           Prison Industry Revenue Only
                         </Text>

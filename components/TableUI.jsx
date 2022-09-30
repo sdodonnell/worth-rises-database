@@ -1,5 +1,5 @@
 import { Skeleton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
-import React from 'react';
+import React, { memo } from 'react';
 
 const TableUI = ({
   getTableProps,
@@ -80,4 +80,4 @@ const TableUI = ({
   );
 };
 
-export default TableUI;
+export default memo(TableUI);

@@ -19,23 +19,10 @@ import DownloadButton from './DownloadButton';
 import Company from './Company';
 import Filters from './Filters';
 import { HEADER_TEXT, INTRO_TEXT } from './utils/copyUtils';
-import { useRouter } from 'next/router';
 import SectorTagList from './SectorTagList';
 import FilterModal from './FilterModal';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
-  const router = useRouter();
-
-  const handleModalOpen = (e, id, onOpen) => {
-    onOpen(e);
-    router.push(`/?id=${id}`, undefined, { shallow: true });
-  };
-
-  const handleModalClose = (e, onClose) => {
-    onClose(e);
-    router.push(`/`, undefined, { shallow: true });
-  };
-
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
@@ -47,12 +34,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           textAlign: 'center',
         }),
         Cell: ({ value, row: { values } }) => (
-          <Company
-            name={value?.trim() || '--'}
-            values={values}
-            handleModalClose={handleModalClose}
-            handleModalOpen={handleModalOpen}
-          />
+          <Company name={value?.trim() || '--'} values={values} />
         ),
       },
       {
@@ -400,7 +382,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           </Flex>
         </Show>
         <Show below="md">
-          <Flex overflow="hidden" gap="20px" alignItems="center" overflow="hidden">
+          <Flex overflow="hidden" gap="20px" alignItems="center">
             <Text fontSize="sm" fontWeight="light">
               {INTRO_TEXT}
             </Text>
