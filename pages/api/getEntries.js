@@ -11,9 +11,14 @@ export default async (req, res) => {
 
   try {
     const base = new Airtable({ apiKey: process.env.API_KEY }).base('appuZlplPKjKPkFBR');
-    const values = await checkAirtable(base);
+    let values = await checkAirtable(base);
 
-    res.status(200).json(values);
+    if (!values) {
+      values = [];
+    }
+
+    const flattenedValues = values.flat()
+    res.status(200).json(flattenedValues);
   } catch (error) {
     res.status(500).json({ error });
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import useSWR from 'swr';
 import Table from '../components/Table';
@@ -16,7 +16,7 @@ function useEntries() {
   const [isLoadingSlowly, setIsLoadingSlowly] = useState(false);
 
   return {
-    data: data?.flat(),
+    data,
     isLoading: !error && !data,
     isError: error,
     isLoadingSlowly,
