@@ -82,7 +82,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Sector',
         accessor: 'fldTcs1OaGwdUsHiW',
         id: 'sectors',
-        filter: 'includesAll',
+        filter: 'includesSome',
         Cell: ({ value, setAllFilters }) => {
           return value ? <SectorTagList sectors={value} setAllFilters={setAllFilters} /> : '--';
         },
@@ -91,7 +91,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Header: 'Subsectors',
         accessor: 'fldH1GqbAoe33w0GK',
         id: 'subsectors',
-        filter: 'includesAll',
+        filter: 'includesSome',
       },
       {
         Header: 'Harm Score',
@@ -359,11 +359,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         <Show above="sm">
           <Flex flexDir="column" gap="36px" overflow="hidden">
             <Box>
-              <Text fontSize="sm" fontWeight="light">
+              <Text fontSize="sm" fontWeight="light" color="black">
                 {INTRO_TEXT}
               </Text>
               <Link
-                href="https://worthrises.org/theprisonindustry2020"
+                href="https://worthrises.org/corpdata-methodology"
                 isExternal
                 textDecor="underline"
                 fontWeight="bold"
@@ -425,7 +425,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
               Prison Industry Database: Private Sector Players
             </Link>{' '}
             © 2022 by{' '}
-            <Link color="normal.green" fontWeight="bold" href="https://worthrises.org">
+            <Link color="normal.green" fontWeight="bold" href="https://worthrises.org" isExternal>
               Worth Rises
             </Link>{' '}
             is licensed under{' '}
@@ -433,6 +433,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
               color="normal.green"
               fontWeight="bold"
               href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1"
+              isExternal
             >
               CC BY-NC-SA 4.0​
             </Link>

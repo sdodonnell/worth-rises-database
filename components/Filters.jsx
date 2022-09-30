@@ -329,6 +329,9 @@ const Filters = ({ setAllFilters, setSearchTerm, disableFilters }) => {
               />
             </Box>
             <Box>
+              <Heading size="sm" color="black" mb="6px">
+                Other
+              </Heading>
               <Stack spacing={3} direction="column">
                 <Controller
                   control={control}
@@ -379,7 +382,7 @@ const Filters = ({ setAllFilters, setSearchTerm, disableFilters }) => {
                 <Controller
                   control={control}
                   name="active"
-                  defaultValue={false}
+                  defaultValue={true}
                   render={({ field: { value, onChange } }) => (
                     <Checkbox
                       id="active"

@@ -62,27 +62,36 @@ const Source = ({ source, name, website = '' }) => {
 
   if (isURL(source)) {
     return (
-      <Link href={source} isExternal className="source" textDecoration="underline">
-        <Text fontSize="sm" fontStyle="italic">
-          {name}
-        </Text>
+      <Link
+        href={source}
+        isExternal
+        className="source"
+        textDecoration="underline"
+        fontSize="sm"
+        fontStyle="italic" as="span" ml="6px"
+      >
+        {name}
       </Link>
     );
   }
 
   if (name === 'Corrections' && source === 'See website') {
     return (
-      <Text fontSize="sm" fontStyle="italic" className="source">
-        {name}: See{' '}
-        <Link href={website} isExternal textDecoration="underline">
-          website
-        </Link>
-      </Text>
+      <Link
+        href={website}
+        isExternal
+        textDecoration="underline"
+        fontSize="sm"
+        fontStyle="italic"
+        className="source" as="span" ml="6px"
+      >
+        {name}
+      </Link>
     );
   }
 
   return (
-    <Text fontSize="sm" fontStyle="italic" className="source">
+    <Text fontSize="sm" fontStyle="italic" className="source" as="span" ml="6px">
       {name}: {source}
     </Text>
   );
@@ -294,7 +303,12 @@ const Company = ({ name, values }) => {
                             Harm Score
                           </Text>
                         </Flex>
-                        <Flex bgColor="black" justifyContent="center" alignItems="center" flex="1">
+                        <Flex
+                          bgColor={divestment ? 'normal.red' : 'black'}
+                          justifyContent="center"
+                          alignItems="center"
+                          flex="1"
+                        >
                           <Text color="white" fontSize="22px">
                             {harmScore}
                           </Text>
@@ -479,17 +493,17 @@ const Company = ({ name, values }) => {
               <Flex position="relative" bottom="-72px" width="100%" flexDir="column" p="10px 0">
                 {notes && (
                   <Flex gap="5px">
-                    <Text fontStyle="italic" fontSize="sm">
+                    <Text fontStyle="italic" fontSize="sm" as="span">
                       Notes:
                     </Text>
-                    <Text fontStyle="italic" fontSize="sm">
+                    <Text fontStyle="italic" fontSize="sm" as="span" ml="6px">
                       {notes}
                     </Text>
                   </Flex>
                 )}
                 {hasSources && (
-                  <Flex gap="5px" className="source-list">
-                    <Text fontSize="sm" fontStyle="italic">
+                  <Box className="source-list">
+                    <Text fontSize="sm" fontStyle="italic" as="span">
                       Sources:
                     </Text>
                     <Source source={corrections} name="Corrections" website={website} />
@@ -497,7 +511,7 @@ const Company = ({ name, values }) => {
                     <Source source={detentionSource} name="Immigration Detention" />
                     <Source source={financials} name="Financials" />
                     <Source source={other} name="Other" />
-                  </Flex>
+                  </Box>
                 )}
               </Flex>
             )}
