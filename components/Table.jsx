@@ -374,10 +374,9 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
               </Link>
             </Box>
             <Filters
-              setGlobalFilter={setGlobalFilter}
-              globalFilter={globalFilter}
               setAllFilters={setAllFilters}
               setSearchTerm={setGlobalFilter}
+              disableFilters={isLoading || isError}
             />
           </Flex>
         </Show>

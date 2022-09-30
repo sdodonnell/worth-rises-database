@@ -49,7 +49,7 @@ const selectStyles = {
   },
 };
 
-const Filters = ({ setAllFilters, setSearchTerm }) => {
+const Filters = ({ setAllFilters, setSearchTerm, disableFilters }) => {
   const [resetDisabled, setResetDisabled] = useState(true);
   const shouldToggleResetButton = useRef(true);
 
@@ -77,7 +77,9 @@ const Filters = ({ setAllFilters, setSearchTerm }) => {
   const data = watch();
 
   useEffect(() => {
-    submitSearch(data);
+    if (!disableFilters) {
+      submitSearch(data);
+    }
   }, [data]);
 
   const submitSearch = (data) => {
