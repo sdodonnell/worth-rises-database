@@ -21,8 +21,20 @@ import Filters from './Filters';
 import { HEADER_TEXT, INTRO_TEXT } from './utils/copyUtils';
 import SectorTagList from './SectorTagList';
 import FilterModal from './FilterModal';
+import { useCallback } from 'react';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
+  const alphanumericSort = useCallback((rowA, rowB, id, desc) => {
+    const a = rowA.values[id]?.toLowerCase();
+    const b = rowB.values[id]?.toLowerCase();
+
+    if (!a || !b || !id) {
+      return;
+    }
+
+    return a.localeCompare(b);
+  }, []);
+
   const tableData = useMemo(() => data, [data]);
   const columns = useMemo(
     () => [
@@ -36,10 +48,11 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value, row: { values } }) => (
           <Company name={value?.trim() || '--'} values={values} />
         ),
+        sortType: alphanumericSort,
       },
       {
         Header: 'Parent Company',
-        accessor: 'fldCHnO5AgJL6lOlP',
+        accessor: 'fldw832i7sKHSioYO',
         id: 'parentName',
         Cell: ({
           value,
@@ -50,13 +63,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           <Box textAlign="center" _hover={{ textDecor: 'underline' }}>
             {value ? (
               <Link as={NextLink} href={`/?id=${parentRecord}`}>
-                {value[0]}
+                {value}
               </Link>
             ) : (
               '--'
             )}
           </Box>
         ),
+        disableSortBy: true
       },
       {
         accessor: 'fldyzMDmZLns6BNxS',
@@ -67,16 +81,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
         Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
+        disableSortBy: true
       },
       {
         Header: 'Stock Ticker',
         accessor: 'fldxUScw6juEHQ4Bn',
         id: 'stock',
         Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
-      },
-      {
-        accessor: 'fldjEW6owmKk8OMlX',
-        id: 'primarySector',
+        disableSortBy: true
       },
       {
         Header: 'Sector',
@@ -86,6 +98,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value, setAllFilters }) => {
           return value ? <SectorTagList sectors={value} setAllFilters={setAllFilters} /> : '--';
         },
+        disableSortBy: true
       },
       {
         Header: 'Subsectors',
@@ -239,7 +252,6 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'other',
           'parentRecord',
           'politicalSpending',
-          'primarySector',
           'responsibility',
           'responsiveness',
           'revenueOnly',
