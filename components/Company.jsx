@@ -254,7 +254,7 @@ const Company = ({ name, values }) => {
                       {parentRecord ? (
                         <Text _hover={{ textDecoration: 'underline' }}>
                           <Link as={NextLink} href={`/?id=${parentRecord}`}>
-                            {parentName[0]}
+                            {parentName}
                           </Link>
                         </Text>
                       ) : (
