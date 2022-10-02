@@ -62,30 +62,20 @@ const Source = ({ source, name, website = '' }) => {
 
   if (isURL(source)) {
     return (
-      <Link
-        href={source}
-        isExternal
-        className="source"
-        textDecoration="underline"
-        fontSize="sm"
-        fontStyle="italic" as="span" ml="6px"
-      >
-        {name}
+      <Link href={source} isExternal className="source">
+        <Text textDecoration="underline" fontSize="sm" fontStyle="italic" ml="6px" as="span">
+          {name}
+        </Text>
       </Link>
     );
   }
 
   if (name === 'Corrections' && source === 'See website') {
     return (
-      <Link
-        href={website}
-        isExternal
-        textDecoration="underline"
-        fontSize="sm"
-        fontStyle="italic"
-        className="source" as="span" ml="6px"
-      >
-        {name}
+      <Link href={website} isExternal className="source">
+        <Text textDecoration="underline" fontSize="sm" fontStyle="italic" ml="6px" as="span">
+          {name}
+        </Text>
       </Link>
     );
   }
