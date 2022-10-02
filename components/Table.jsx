@@ -389,7 +389,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           </Flex>
         </Show>
       </GridItem>
-      <GridItem overflow="scroll" pb={['50px', '0']}>
+      <GridItem overflow="hidden" pb={['50px', '0']} _hover={{ overflow: 'scroll' }}>
         <TableUI
           getTableProps={getTableProps}
           headerGroups={headerGroups}
