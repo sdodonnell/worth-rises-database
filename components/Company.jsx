@@ -87,7 +87,7 @@ const Source = ({ source, name, website = '' }) => {
   );
 };
 
-const Company = ({ name, values, toggleRowSelected, toggleAllRowsSelected, forceOpen = false }) => {
+const Company = ({ name, values, forceOpen = false }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
@@ -101,12 +101,6 @@ const Company = ({ name, values, toggleRowSelected, toggleAllRowsSelected, force
     onClose(e);
 
     router.push(`/`, undefined, { shallow: true });
-    toggleAllRowsSelected(false);
-  };
-
-  const swapSelectedRows = (rowToDeselect, rowToSelect) => {
-    toggleRowSelected(rowToDeselect, false);
-    toggleRowSelected(rowToSelect, true);
   };
 
   const {
@@ -260,9 +254,8 @@ const Company = ({ name, values, toggleRowSelected, toggleAllRowsSelected, force
                     <Box>
                       <Header text="Parent Company" />
                       {parentRecord ? (
-                        <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                        <Link as={NextLink} href={`/?id=${parentRecord}&link=1`} shallow>
                           <Text
-                            onClick={() => swapSelectedRows(rowId, parentRecord)}
                             _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
                           >
                             {parentName}
@@ -390,7 +383,7 @@ const Company = ({ name, values, toggleRowSelected, toggleAllRowsSelected, force
                       <React.Fragment key={`${name}_${sectorName}`}>
                         <Text fontSize="md">{sectorName}</Text>
                         <UnorderedList marginInlineStart="2em">
-                          {sectorMapping?.[sectorName].map((subsectorName) => {
+                          {sectorMapping?.[sectorName]?.map((subsectorName) => {
                             if (subsectors.includes(subsectorName)) {
                               return (
                                 <ListItem key={`${name}_${subsectorName}`}>
@@ -413,8 +406,8 @@ const Company = ({ name, values, toggleRowSelected, toggleAllRowsSelected, force
                           key={`${name}_${childName}`}
                           _hover={{ textDecor: 'underline', cursor: 'pointer' }}
                         >
-                          <Link as={NextLink} href={`/?id=${childRecords[i]}`}>
-                            <Text onClick={() => swapSelectedRows(rowId, childRecords[i])}>
+                          <Link as={NextLink} href={`/?id=${childRecords[i]}&link=1`} shallow>
+                            <Text>
                               {childName}
                             </Text>
                           </Link>

@@ -29,6 +29,7 @@ import Filters from './Filters';
 import { HEADER_TEXT, INTRO_TEXT } from './utils/copyUtils';
 import SectorTagList from './SectorTagList';
 import FilterModal from './FilterModal';
+import ShadowTable from './ShadowTable';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   const alphanumericSort = useCallback((rowA, rowB, id, desc) => {
@@ -52,13 +53,8 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         getHeaderProps: () => ({
           textAlign: 'center',
         }),
-        Cell: ({ value, row: { values }, toggleRowSelected, toggleAllRowsSelected }) => (
-          <Company
-            name={value?.trim() || '--'}
-            values={values}
-            toggleRowSelected={toggleRowSelected}
-            toggleAllRowsSelected={toggleAllRowsSelected}
-          />
+        Cell: ({ value, row: { values } }) => (
+          <Company name={value?.trim() || '--'} values={values} />
         ),
         sortType: alphanumericSort,
       },
@@ -71,16 +67,10 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           row: {
             values: { parentRecord },
           },
-          toggleRowSelected,
         }) =>
           value ? (
-            <Link as={NextLink} href={`/?id=${parentRecord}`}>
-              <Text
-                onClick={() => toggleRowSelected(parentRecord, true)}
-                _hover={{ textDecor: 'underline', cursor: 'pointer' }}
-              >
-                {value}
-              </Text>
+            <Link as={NextLink} href={`/?id=${parentRecord}&link=1`} shallow>
+              <Text _hover={{ textDecor: 'underline', cursor: 'pointer' }}>{value}</Text>
             </Link>
           ) : (
             <Text textAlign="center">--</Text>
@@ -249,7 +239,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     []
   );
 
-  const getRowId = useCallback((row, relativeIndex, parent) => {
+  const getRowId = useCallback((row) => {
     return row.rowId;
   }, []);
 
@@ -318,20 +308,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     setGlobalFilter,
     setAllFilters,
     state: { pageIndex, pageSize },
-    toggleAllRowsSelected,
-    toggleRowSelected,
-    selectedFlatRows,
   } = tableInstance;
-
-  const [activeHiddenCompany, setActiveHiddenCompany] = useState(null);
-
-  useEffect(() => {
-    if (selectedFlatRows.length) {
-      setActiveHiddenCompany(selectedFlatRows[0]);
-    } else {
-      setActiveHiddenCompany(null);
-    }
-  }, [selectedFlatRows]);
 
   const toast = useToast();
 
@@ -495,17 +472,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             </Link>
           </Text>
         </Flex>
-        {activeHiddenCompany && (
-          <VisuallyHidden>
-            <Company
-              name={activeHiddenCompany.values.company}
-              values={activeHiddenCompany.values}
-              toggleRowSelected={toggleRowSelected}
-              toggleAllRowsSelected={toggleAllRowsSelected}
-              forceOpen
-            />
-          </VisuallyHidden>
-        )}
+        <ShadowTable data={data} columns={columns} />
       </GridItem>
     </Grid>
   );
