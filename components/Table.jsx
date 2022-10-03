@@ -77,6 +77,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         id: 'parentRecord',
       },
       {
+        accessor: 'fldZGLF7h7Hq1B1Q2',
+        id: 'childRecords'
+      },
+      {
+        accessor: 'fldDFNClyvPGXieqQ',
+        id: 'childNames'
+      },
+      {
         Header: 'Ownership Investor',
         accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
@@ -236,6 +244,8 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         hiddenColumns: [
           'acquired',
           'active',
+          'childRecords',
+          'childNames',
           'corrections',
           'detentionInvolvement',
           'detentionSource',

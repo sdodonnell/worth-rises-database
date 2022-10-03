@@ -106,6 +106,8 @@ const Company = ({ name, values }) => {
   const {
     acquired = 'N/A',
     active,
+    childRecords,
+    childNames,
     corrections = '',
     detentionInvolvement,
     detentionSource = '',
@@ -213,7 +215,7 @@ const Company = ({ name, values }) => {
           <ModalBody pb="72px" pt="18px" overflowX="hidden">
             <Grid
               templateAreas={[mobileTemplate, desktopTemplate]}
-              templateRows={['auto', '200px 290px']}
+              templateRows={['auto', '200px minmax(300px, auto)']}
               templateColumns={['auto', 'repeat(4, 1fr)']}
               gap="28px"
             >
@@ -371,7 +373,7 @@ const Company = ({ name, values }) => {
                   </GridItem>
                 </Grid>
               </GridItem>
-              <GridItem gridArea="c" display="flex" flexDir="column" justifyContent="space-between">
+              <GridItem gridArea="c" display="flex" flexDir="column" gap="26px">
                 <Box>
                   <Header text="Sector" />
                   {sectors.map((sectorName) => {
@@ -393,6 +395,23 @@ const Company = ({ name, values }) => {
                     );
                   })}
                 </Box>
+                {childRecords && (
+                  <Box>
+                    <Header text="Child Companies" />
+                    <UnorderedList>
+                      {childNames.map((childName, i) => (
+                        <ListItem
+                          key={`${name}_${childName}`}
+                          _hover={{ textDecor: 'underline', cursor: 'pointer' }}
+                        >
+                          <Link as={NextLink} href={`/?id=${childRecords[i]}`}>
+                            {childName}
+                          </Link>
+                        </ListItem>
+                      ))}
+                    </UnorderedList>
+                  </Box>
+                )}
               </GridItem>
               <GridItem gridArea="d" display="flex" flexDir="column" gap={['12px', '30px']}>
                 <Flex flexDirection="column" justifyContent="space-between">
