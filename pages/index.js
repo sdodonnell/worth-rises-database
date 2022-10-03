@@ -32,7 +32,7 @@ const setVisitedCookie = () => {
 };
 
 const App = () => {
-  const initialDataState = new Array(25).fill({});
+  const initialDataState = Array.from({ length: 25 }, (_, i) => ({ rowId: i }));
   const isFirstTime = getVisitedCookie();
 
   const { data, isLoading, isError, isLoadingSlowly } = useEntries();

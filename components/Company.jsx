@@ -87,7 +87,7 @@ const Source = ({ source, name, website = '' }) => {
   );
 };
 
-const Company = ({ name, values }) => {
+const Company = ({ name, values, toggleRowSelected, toggleAllRowsSelected, forceOpen = false }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
@@ -101,6 +101,12 @@ const Company = ({ name, values }) => {
     onClose(e);
 
     router.push(`/`, undefined, { shallow: true });
+    toggleAllRowsSelected(false);
+  };
+
+  const swapSelectedRows = (rowToDeselect, rowToSelect) => {
+    toggleRowSelected(rowToDeselect, false);
+    toggleRowSelected(rowToSelect, true);
   };
 
   const {
@@ -118,7 +124,7 @@ const Company = ({ name, values }) => {
     financials = '',
     fiscalYear,
     harmScore = 'N/A',
-    id,
+    rowId,
     laborInvolvement,
     laborSource = '',
     notes,
@@ -154,9 +160,9 @@ const Company = ({ name, values }) => {
 
   useEffect(() => {
     const safeId = decodeURIComponent(router.query.id);
-    if (!isOpen && safeId === id) {
+    if (forceOpen && !isOpen && safeId === rowId) {
       onOpen();
-    } else if (isOpen && safeId !== id) {
+    } else if (isOpen && safeId !== rowId) {
       onClose();
     }
   }, [router.query.id]);
@@ -166,7 +172,7 @@ const Company = ({ name, values }) => {
       <Text
         fontWeight="bold"
         _hover={{ textDecor: 'underline', cursor: 'pointer' }}
-        onClick={(e) => handleModalOpen(e, id, onOpen)}
+        onClick={(e) => handleModalOpen(e, rowId, onOpen)}
       >
         {name}
       </Text>
@@ -254,11 +260,14 @@ const Company = ({ name, values }) => {
                     <Box>
                       <Header text="Parent Company" />
                       {parentRecord ? (
-                        <Text _hover={{ textDecoration: 'underline' }}>
-                          <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                        <Link as={NextLink} href={`/?id=${parentRecord}`}>
+                          <Text
+                            onClick={() => swapSelectedRows(rowId, parentRecord)}
+                            _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
+                          >
                             {parentName}
-                          </Link>
-                        </Text>
+                          </Text>
+                        </Link>
                       ) : (
                         <Text>{parentName}</Text>
                       )}
@@ -405,7 +414,9 @@ const Company = ({ name, values }) => {
                           _hover={{ textDecor: 'underline', cursor: 'pointer' }}
                         >
                           <Link as={NextLink} href={`/?id=${childRecords[i]}`}>
-                            {childName}
+                            <Text onClick={() => swapSelectedRows(rowId, childRecords[i])}>
+                              {childName}
+                            </Text>
                           </Link>
                         </ListItem>
                       ))}
@@ -479,7 +490,7 @@ const Company = ({ name, values }) => {
                   </Text>
                 </Box>
               </GridItem>
-              <GridItem gridArea="e" height={['300px', 'auto']}>
+              <GridItem gridArea="e" height={['300px', 'auto']} maxHeight={['none', '400px']}>
                 {stock ? (
                   <TradingViewWidget stockTicker={stock} />
                 ) : (

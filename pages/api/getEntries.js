@@ -48,7 +48,7 @@ const parseSectors = (records) => {
 const cleanRecords = (records) => {
   return records.map((record) => ({
     ...record.fields,
-    id: record.id,
+    rowId: record.id,
   }));
 };
 

@@ -1,6 +1,13 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import * as NextLink from 'next/link';
-import { useTable, usePagination, useGlobalFilter, useFilters, useSortBy } from 'react-table';
+import {
+  useTable,
+  usePagination,
+  useGlobalFilter,
+  useFilters,
+  useSortBy,
+  useRowSelect,
+} from 'react-table';
 import {
   Box,
   Flex,
@@ -12,6 +19,7 @@ import {
   Show,
   Text,
   useToast,
+  VisuallyHidden,
 } from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
@@ -21,7 +29,6 @@ import Filters from './Filters';
 import { HEADER_TEXT, INTRO_TEXT } from './utils/copyUtils';
 import SectorTagList from './SectorTagList';
 import FilterModal from './FilterModal';
-import { useCallback } from 'react';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   const alphanumericSort = useCallback((rowA, rowB, id, desc) => {
@@ -45,8 +52,13 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         getHeaderProps: () => ({
           textAlign: 'center',
         }),
-        Cell: ({ value, row: { values } }) => (
-          <Company name={value?.trim() || '--'} values={values} />
+        Cell: ({ value, row: { values }, toggleRowSelected, toggleAllRowsSelected }) => (
+          <Company
+            name={value?.trim() || '--'}
+            values={values}
+            toggleRowSelected={toggleRowSelected}
+            toggleAllRowsSelected={toggleAllRowsSelected}
+          />
         ),
         sortType: alphanumericSort,
       },
@@ -59,18 +71,21 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           row: {
             values: { parentRecord },
           },
-        }) => (
-          <Box textAlign="center" _hover={{ textDecor: 'underline' }}>
-            {value ? (
-              <Link as={NextLink} href={`/?id=${parentRecord}`}>
+          toggleRowSelected,
+        }) =>
+          value ? (
+            <Link as={NextLink} href={`/?id=${parentRecord}`}>
+              <Text
+                onClick={() => toggleRowSelected(parentRecord, true)}
+                _hover={{ textDecor: 'underline', cursor: 'pointer' }}
+              >
                 {value}
-              </Link>
-            ) : (
-              '--'
-            )}
-          </Box>
-        ),
-        disableSortBy: true
+              </Text>
+            </Link>
+          ) : (
+            <Text textAlign="center">--</Text>
+          ),
+        disableSortBy: true,
       },
       {
         accessor: 'fldyzMDmZLns6BNxS',
@@ -78,25 +93,25 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         accessor: 'fldZGLF7h7Hq1B1Q2',
-        id: 'childRecords'
+        id: 'childRecords',
       },
       {
         accessor: 'fldDFNClyvPGXieqQ',
-        id: 'childNames'
+        id: 'childNames',
       },
       {
         Header: 'Ownership Investor',
         accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
         Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
-        disableSortBy: true
+        disableSortBy: true,
       },
       {
         Header: 'Stock Ticker',
         accessor: 'fldxUScw6juEHQ4Bn',
         id: 'stock',
         Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
-        disableSortBy: true
+        disableSortBy: true,
       },
       {
         Header: 'Sector',
@@ -106,7 +121,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value, setAllFilters }) => {
           return value ? <SectorTagList sectors={value} setAllFilters={setAllFilters} /> : '--';
         },
-        disableSortBy: true
+        disableSortBy: true,
       },
       {
         Header: 'Subsectors',
@@ -227,12 +242,16 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         id: 'other',
       },
       {
-        accessor: 'id',
-        id: 'id',
+        accessor: 'rowId',
+        id: 'rowId',
       },
     ],
     []
   );
+
+  const getRowId = useCallback((row, relativeIndex, parent) => {
+    return row.rowId;
+  }, []);
 
   const tableInstance = useTable(
     {
@@ -255,7 +274,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'exposure',
           'financials',
           'fiscalYear',
-          'id',
+          'rowId',
           'laborInvolvement',
           'laborSource',
           'notes',
@@ -274,11 +293,13 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         ],
         sortBy: [{ id: 'harmScore', desc: true }, { id: 'company' }],
       },
+      getRowId,
     },
     useGlobalFilter,
     useFilters,
     useSortBy,
-    usePagination
+    usePagination,
+    useRowSelect
   );
 
   const {
@@ -296,8 +317,21 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     setPageSize,
     setGlobalFilter,
     setAllFilters,
-    state: { pageIndex, pageSize, globalFilter },
+    state: { pageIndex, pageSize },
+    toggleAllRowsSelected,
+    toggleRowSelected,
+    selectedFlatRows,
   } = tableInstance;
+
+  const [activeHiddenCompany, setActiveHiddenCompany] = useState(null);
+
+  useEffect(() => {
+    if (selectedFlatRows.length) {
+      setActiveHiddenCompany(selectedFlatRows[0]);
+    } else {
+      setActiveHiddenCompany(null);
+    }
+  }, [selectedFlatRows]);
 
   const toast = useToast();
 
@@ -461,6 +495,17 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             </Link>
           </Text>
         </Flex>
+        {activeHiddenCompany && (
+          <VisuallyHidden>
+            <Company
+              name={activeHiddenCompany.values.company}
+              values={activeHiddenCompany.values}
+              toggleRowSelected={toggleRowSelected}
+              toggleAllRowsSelected={toggleAllRowsSelected}
+              forceOpen
+            />
+          </VisuallyHidden>
+        )}
       </GridItem>
     </Grid>
   );
