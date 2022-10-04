@@ -16,3 +16,7 @@ export const EXPOSURE_TEXT = `
   • Tier 3 (Large Privately-Owned): Privately-owned corporations with $200 million or more in estimated annual revenues that likely require corporate financing for growth.
   • Tier 4 (Small Privately-Owned): Privately-owned corporations with less than $200 million in estimated annual revenues. 
 `
+
+export const WELCOME_HEADER_TEXT = 'Welcome to The Prison Industry Corporate Database';
+
+export const WELCOME_SUBHEAD_TEXT = 'The prison industry is comprised of over 4,000 corporations that profit off of incarceration. These corporations have a vested financial interest in expanding the reach of our carceral system and worsening the incredible harm it causes at the expense of public safety. It’s time we learn their names and get to know them.'
