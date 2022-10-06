@@ -414,7 +414,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                 </Box>
                 {childRecords && (
                   <Box>
-                    <Header text="Child Companies" />
+                    <Header text="Related Companies" />
                     <UnorderedList>
                       {childNames.map((childName, i) => (
                         <ListItem
