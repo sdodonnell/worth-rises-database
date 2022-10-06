@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import * as NextLink from 'next/link';
 import {
   useTable,
@@ -19,7 +19,6 @@ import {
   Show,
   Text,
   useToast,
-  VisuallyHidden,
 } from '@chakra-ui/react';
 import TableUI from './TableUI';
 import Pagination from './Pagination';
@@ -30,6 +29,7 @@ import { HEADER_TEXT, INTRO_TEXT } from './utils/copyUtils';
 import SectorTagList from './SectorTagList';
 import FilterModal from './FilterModal';
 import ShadowTable from './ShadowTable';
+import CompanyList from './CompanyList';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   const alphanumericSort = useCallback((rowA, rowB, id, desc) => {
@@ -60,26 +60,19 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Parent Company',
-        accessor: 'fldw832i7sKHSioYO',
-        id: 'parentName',
+        accessor: 'fldCHnO5AgJL6lOlP',
+        id: 'parentNames',
         Cell: ({
           value,
           row: {
-            values: { parentRecord },
+            values: { parentRecords },
           },
-        }) =>
-          value ? (
-            <Link as={NextLink} href={`/?id=${parentRecord}&link=1`} shallow>
-              <Text _hover={{ textDecor: 'underline', cursor: 'pointer' }}>{value}</Text>
-            </Link>
-          ) : (
-            <Text textAlign="center">--</Text>
-          ),
+        }) => <CompanyList companyNames={value} companyRecords={parentRecords} />,
         disableSortBy: true,
       },
       {
         accessor: 'fldyzMDmZLns6BNxS',
-        id: 'parentRecord',
+        id: 'parentRecords',
       },
       {
         accessor: 'fldZGLF7h7Hq1B1Q2',
@@ -269,7 +262,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'laborSource',
           'notes',
           'other',
-          'parentRecord',
+          'parentRecords',
           'politicalSpending',
           'responsibility',
           'responsiveness',

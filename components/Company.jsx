@@ -124,8 +124,8 @@ const Company = ({ name, values, forceOpen = false }) => {
     notes,
     other = '',
     owner = 'N/A',
-    parentName = 'N/A',
-    parentRecord,
+    parentNames = 'N/A',
+    parentRecords,
     politicalSpending = 'N/A',
     responsibility,
     responsiveness,
@@ -215,7 +215,7 @@ const Company = ({ name, values, forceOpen = false }) => {
           <ModalBody pb="72px" pt="18px" overflowX="hidden">
             <Grid
               templateAreas={[mobileTemplate, desktopTemplate]}
-              templateRows={['auto', '200px minmax(300px, auto)']}
+              templateRows={['auto', 'minmax(200px, auto) minmax(300px, auto)']}
               templateColumns={['auto', 'repeat(4, 1fr)']}
               gap="28px"
             >
@@ -231,7 +231,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                   <GridItem
                     display="grid"
                     gridTemplateColumns={['auto', 'repeat(4, 1fr)']}
-                    gridTemplateRows={['auto', '80px 80px']}
+                    gridTemplateRows={['auto', '80px auto']}
                     borderRight={['none', '1px solid black']}
                     gap={['12px', 0]}
                   >
@@ -253,16 +253,31 @@ const Company = ({ name, values, forceOpen = false }) => {
                     </Box>
                     <Box>
                       <Header text="Parent Company" />
-                      {parentRecord ? (
-                        <Link as={NextLink} href={`/?id=${parentRecord}&link=1`} shallow>
-                          <Text
-                            _hover={{ textDecoration: 'underline', cursor: 'pointer' }}
-                          >
-                            {parentName}
-                          </Text>
-                        </Link>
+                      {Array.isArray(parentNames) ? (
+                        <Box>
+                          {parentNames.map((name, i) => {
+                            return (
+                              <Flex>
+                                {i > 0 && (
+                                  <Box
+                                    borderLeft="1px solid black"
+                                    borderBottom="1px solid black"
+                                    width="10px"
+                                    height="10px"
+                                    m={`4px 6px 0 ${i * 4}px`}
+                                  />
+                                )}
+                                <Link as={NextLink} href={`/?id=${parentRecords[i]}&link=1`} shallow>
+                                  <Text _hover={{ textDecoration: 'underline', cursor: 'pointer' }}>
+                                    {name}
+                                  </Text>
+                                </Link>
+                              </Flex>
+                            );
+                          })}
+                        </Box>
                       ) : (
-                        <Text>{parentName}</Text>
+                        <Text>{parentNames}</Text>
                       )}
                     </Box>
                     <Box>
@@ -407,9 +422,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                           _hover={{ textDecor: 'underline', cursor: 'pointer' }}
                         >
                           <Link as={NextLink} href={`/?id=${childRecords[i]}&link=1`} shallow>
-                            <Text>
-                              {childName}
-                            </Text>
+                            <Text>{childName}</Text>
                           </Link>
                         </ListItem>
                       ))}

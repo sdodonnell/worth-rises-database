@@ -11,7 +11,7 @@ const headers = [
   { label: 'Number of Employees', key: 'employees' },
   { label: 'Lead Executive', key: 'executive' },
   { label: 'Ownership Investor', key: 'owner' },
-  { label: 'Parent Company', key: 'parentName' },
+  { label: 'Parent Company', key: 'parentNames' },
   { label: 'Parent Public Exposure', key: 'exposure' },
   { label: 'Stock Ticker', key: 'stock' },
   { label: 'Sector(s)', key: 'sectors' },
