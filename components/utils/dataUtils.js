@@ -6,7 +6,7 @@ export const sectorMapping = {
     'Outpatient Programs',
     'Residential Programs',
   ],
-  'Construction & Maintenance': [
+  'Architecture & Construction': [
     'Architecture & Engineering',
     'Construction',
     'Maintenance Services',
@@ -42,7 +42,7 @@ export const sectorMapping = {
     'Substance Abuse Treatment',
     'Third Party Staffing',
   ],
-  Investor: ['Equity/Debt Investor', 'Construction, Equipment, & Acquisition Financing'],
+  Investors: ['Equity/Debt Investor', 'Construction, Equipment, & Acquisition Financing'],
   'Operations & Management': [
     'Immigration Detention Operator',
     'Private Prison Operator',
