@@ -10,6 +10,7 @@ import {
 } from 'react-table';
 import {
   Box,
+  Button,
   Flex,
   Grid,
   GridItem,
@@ -369,7 +370,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           </Flex>
         </Flex>
         <Show above="sm">
-          <DownloadButton rows={rows} />
+          <Flex gap="20px">
+            <Button size="sm" colorScheme="brand" bgColor="#AE88EB">
+              <Link href="https://worthrises.org/submit-a-corporation" isExternal>
+                Submit a Corporation
+              </Link>
+            </Button>
+            <DownloadButton rows={rows} />
+          </Flex>
         </Show>
       </GridItem>
       <GridItem
