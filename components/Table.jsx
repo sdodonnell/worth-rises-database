@@ -371,8 +371,17 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         </Flex>
         <Show above="sm">
           <Flex gap="20px">
-            <Button size="sm" colorScheme="brand" bgColor="#AE88EB">
-              <Link href="https://worthrises.org/submit-a-corporation" isExternal>
+            <Button
+              size="sm"
+              colorScheme="brand"
+              bgColor="rgb(174, 136, 235)"
+              _hover={{ bgColor: 'rgba(174, 136, 235, 0.8)' }}
+            >
+              <Link
+                href="https://worthrises.org/submitacorporation"
+                isExternal
+                _hover={{ textDecor: 'none' }}
+              >
                 Submit a Corporation
               </Link>
             </Button>
@@ -393,7 +402,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         <Show above="sm">
           <Flex flexDir="column" gap="36px" overflow="hidden">
             <Box>
-              <Text fontSize="sm" fontWeight="light" color="black">
+              <Text fontSize="sm" color="black">
                 {INTRO_TEXT}
               </Text>
               <Link

@@ -293,7 +293,7 @@ const Filters = ({ setAllFilters, setSearchTerm, disableFilters }) => {
                 render={({ field: { value, onChange } }) => (
                   <Checkbox
                     id="includeMissingHarmScore"
-                    size="sm"
+                    size="md"
                     isChecked={value}
                     borderColor="black"
                     onChange={(e) => onChange(e.target.checked)}
