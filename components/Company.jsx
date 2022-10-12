@@ -255,9 +255,9 @@ const Company = ({ name, values, forceOpen = false }) => {
                       <Header text="Parent Company" />
                       {Array.isArray(parentNames) ? (
                         <Box>
-                          {parentNames.map((name, i) => {
+                          {parentNames.map((parentName, i) => {
                             return (
-                              <Flex>
+                              <Flex key={`${name}_${parentName}`}>
                                 {i > 0 && (
                                   <Box
                                     borderLeft="1px solid black"
@@ -269,7 +269,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                                 )}
                                 <Link as={NextLink} href={`/?id=${parentRecords[i]}&link=1`} shallow>
                                   <Text _hover={{ textDecoration: 'underline', cursor: 'pointer' }}>
-                                    {name}
+                                    {parentName}
                                   </Text>
                                 </Link>
                               </Flex>
