@@ -142,8 +142,6 @@ const Company = ({ name, values, forceOpen = false }) => {
     yearFounded = 'N/A',
   } = values;
 
-  const investorAndParentRecords = investorRecords.concat(parentRecords);
-  const investorAndParentNames = investorNames.concat(parentNames);
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
   const hasSources = detentionSource || corrections || laborSource || other || financials;
 
@@ -257,9 +255,9 @@ const Company = ({ name, values, forceOpen = false }) => {
                     </Box>
                     <Box>
                       <Header text="Parent Company" />
-                      {investorAndParentRecords.length > 0 ? (
+                      {parentRecords.length > 0 ? (
                         <Box>
-                          {investorAndParentNames.map((parentName, i) => {
+                          {parentNames.map((parentName, i) => {
                             return (
                               <Flex key={`${name}_${parentName}`}>
                                 {i > 0 && (
@@ -273,7 +271,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                                 )}
                                 <Link
                                   as={NextLink}
-                                  href={`/?id=${investorAndParentRecords[i]}&link=1`}
+                                  href={`/?id=${parentRecords[i]}&link=1`}
                                   shallow
                                 >
                                   <Text _hover={{ textDecoration: 'underline', cursor: 'pointer' }}>
@@ -290,7 +288,28 @@ const Company = ({ name, values, forceOpen = false }) => {
                     </Box>
                     <Box>
                       <Header text="Ownership Investor" />
-                      <Text>{owner}</Text>
+                      {investorRecords.length > 0 ? (
+                        <Box>
+                          {investorNames.map((investorName, i) => (
+                            <Link
+                              key={`${name}_${investorName}`}
+                              as={NextLink}
+                              href={`/?id=${investorRecords[i]}&link=1`}
+                              shallow
+                            >
+                              <Text
+                                _hover={{ textDecor: 'underline', cursor: 'pointer' }}
+                                as="span"
+                              >
+                                {investorName}
+                                {i < investorNames.length - 1 ? '; ' : ''}
+                              </Text>
+                            </Link>
+                          ))}
+                        </Box>
+                      ) : (
+                        <Text>N/A</Text>
+                      )}{' '}
                     </Box>
                     <Box>
                       <Header text="Last Acquired" />
