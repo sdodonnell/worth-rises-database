@@ -118,14 +118,16 @@ const Company = ({ name, values, forceOpen = false }) => {
     financials = '',
     fiscalYear,
     harmScore = 'N/A',
+    investorNames = [],
+    investorRecords = [],
     rowId,
     laborInvolvement,
     laborSource = '',
     notes,
     other = '',
     owner = 'N/A',
-    parentNames = 'N/A',
-    parentRecords,
+    parentNames = [],
+    parentRecords = [],
     politicalSpending = 'N/A',
     responsibility,
     responsiveness,
@@ -140,6 +142,8 @@ const Company = ({ name, values, forceOpen = false }) => {
     yearFounded = 'N/A',
   } = values;
 
+  const investorAndParentRecords = investorRecords.concat(parentRecords);
+  const investorAndParentNames = investorNames.concat(parentNames);
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
   const hasSources = detentionSource || corrections || laborSource || other || financials;
 
@@ -253,9 +257,9 @@ const Company = ({ name, values, forceOpen = false }) => {
                     </Box>
                     <Box>
                       <Header text="Parent Company" />
-                      {Array.isArray(parentNames) ? (
+                      {investorAndParentRecords.length > 0 ? (
                         <Box>
-                          {parentNames.map((parentName, i) => {
+                          {investorAndParentNames.map((parentName, i) => {
                             return (
                               <Flex key={`${name}_${parentName}`}>
                                 {i > 0 && (
@@ -267,7 +271,11 @@ const Company = ({ name, values, forceOpen = false }) => {
                                     m={`4px 6px 0 ${i * 4}px`}
                                   />
                                 )}
-                                <Link as={NextLink} href={`/?id=${parentRecords[i]}&link=1`} shallow>
+                                <Link
+                                  as={NextLink}
+                                  href={`/?id=${investorAndParentRecords[i]}&link=1`}
+                                  shallow
+                                >
                                   <Text _hover={{ textDecoration: 'underline', cursor: 'pointer' }}>
                                     {parentName}
                                   </Text>
@@ -277,7 +285,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                           })}
                         </Box>
                       ) : (
-                        <Text>{parentNames}</Text>
+                        <Text>N/A</Text>
                       )}
                     </Box>
                     <Box>
