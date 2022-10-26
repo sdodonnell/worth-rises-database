@@ -118,14 +118,16 @@ const Company = ({ name, values, forceOpen = false }) => {
     financials = '',
     fiscalYear,
     harmScore = 'N/A',
+    investorNames = [],
+    investorRecords = [],
     rowId,
     laborInvolvement,
     laborSource = '',
     notes,
     other = '',
     owner = 'N/A',
-    parentNames = 'N/A',
-    parentRecords,
+    parentNames = [],
+    parentRecords = [],
     politicalSpending = 'N/A',
     responsibility,
     responsiveness,
@@ -253,7 +255,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                     </Box>
                     <Box>
                       <Header text="Parent Company" />
-                      {Array.isArray(parentNames) ? (
+                      {parentRecords.length > 0 ? (
                         <Box>
                           {parentNames.map((parentName, i) => {
                             return (
@@ -267,7 +269,11 @@ const Company = ({ name, values, forceOpen = false }) => {
                                     m={`4px 6px 0 ${i * 4}px`}
                                   />
                                 )}
-                                <Link as={NextLink} href={`/?id=${parentRecords[i]}&link=1`} shallow>
+                                <Link
+                                  as={NextLink}
+                                  href={`/?id=${parentRecords[i]}&link=1`}
+                                  shallow
+                                >
                                   <Text _hover={{ textDecoration: 'underline', cursor: 'pointer' }}>
                                     {parentName}
                                   </Text>
@@ -277,12 +283,33 @@ const Company = ({ name, values, forceOpen = false }) => {
                           })}
                         </Box>
                       ) : (
-                        <Text>{parentNames}</Text>
+                        <Text>N/A</Text>
                       )}
                     </Box>
                     <Box>
                       <Header text="Ownership Investor" />
-                      <Text>{owner}</Text>
+                      {investorRecords.length > 0 ? (
+                        <Box>
+                          {investorNames.map((investorName, i) => (
+                            <Link
+                              key={`${name}_${investorName}`}
+                              as={NextLink}
+                              href={`/?id=${investorRecords[i]}&link=1`}
+                              shallow
+                            >
+                              <Text
+                                _hover={{ textDecor: 'underline', cursor: 'pointer' }}
+                                as="span"
+                              >
+                                {investorName}
+                                {i < investorNames.length - 1 ? '; ' : ''}
+                              </Text>
+                            </Link>
+                          ))}
+                        </Box>
+                      ) : (
+                        <Text>N/A</Text>
+                      )}{' '}
                     </Box>
                     <Box>
                       <Header text="Last Acquired" />

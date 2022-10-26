@@ -37,8 +37,23 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     const a = rowA.values[id]?.toLowerCase();
     const b = rowB.values[id]?.toLowerCase();
 
-    if (!a || !b || !id) {
-      return;
+    if (!a) {
+      return desc ? -1 : 1;
+    } else if (!b) {
+      return desc ? 1 : -1;
+    }
+
+    return a.localeCompare(b);
+  }, []);
+
+  const alphanumericArraySort = useCallback((rowA, rowB, id, desc) => {
+    const a = rowA.values[id]?.join(',').toLowerCase();
+    const b = rowB.values[id]?.join(',').toLowerCase();
+
+    if (!a) {
+      return desc ? -1 : 1;
+    } else if (!b) {
+      return desc ? 1 : -1;
     }
 
     return a.localeCompare(b);
@@ -69,7 +84,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
             values: { parentRecords },
           },
         }) => <CompanyList companyNames={value} companyRecords={parentRecords} />,
-        disableSortBy: true,
+        sortType: alphanumericArraySort,
       },
       {
         accessor: 'fldyzMDmZLns6BNxS',
@@ -84,18 +99,31 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         id: 'childNames',
       },
       {
-        Header: 'Ownership Investor',
-        accessor: 'fldnf3TVZdV0HDlJL',
         id: 'owner',
-        Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
-        disableSortBy: true,
+        accessor: 'fldnf3TVZdV0HDlJL',
+      },
+      {
+        id: 'investorRecords',
+        accessor: 'fldXnSHANQgk2mE5V',
+      },
+      {
+        Header: 'Ownership Investor',
+        id: 'investorNames',
+        accessor: 'fldhjaHdWivOZDrw7',
+        Cell: ({
+          value,
+          row: {
+            values: { investorRecords },
+          },
+        }) => <CompanyList companyNames={value} companyRecords={investorRecords} />,
+        sortType: alphanumericArraySort
       },
       {
         Header: 'Stock Ticker',
         accessor: 'fldxUScw6juEHQ4Bn',
         id: 'stock',
         Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
-        disableSortBy: true,
+        sortType: alphanumericSort,
       },
       {
         Header: 'Sector',
@@ -105,7 +133,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         Cell: ({ value, setAllFilters }) => {
           return value ? <SectorTagList sectors={value} setAllFilters={setAllFilters} /> : '--';
         },
-        disableSortBy: true,
+        sortType: alphanumericArraySort
       },
       {
         Header: 'Subsectors',
@@ -258,17 +286,19 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
           'exposure',
           'financials',
           'fiscalYear',
-          'rowId',
+          'investorRecords',
           'laborInvolvement',
           'laborSource',
           'notes',
           'other',
+          'owner',
           'parentRecords',
           'politicalSpending',
           'responsibility',
           'responsiveness',
           'revenueOnly',
           'revenues',
+          'rowId',
           'salience',
           'state',
           'subsectors',
