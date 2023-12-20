@@ -369,13 +369,13 @@ const Company = ({ name, values, forceOpen = false }) => {
                         overflow="hidden"
                       >
                         <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                          Salience: {salience}
+                          Salience: {salience || '0'}
                         </Text>
                         <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                          Responsibility: {responsibility}
+                          Responsibility: {responsibility || '0'}
                         </Text>
                         <Text fontSize="sm" px="5px">
-                          Responsive: {responsiveness}
+                          Responsive: {responsiveness || '0'}
                         </Text>
                       </GridItem>
                     </Grid>

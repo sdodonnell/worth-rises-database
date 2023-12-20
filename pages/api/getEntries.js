@@ -1,23 +1,24 @@
 import Airtable from 'airtable';
 import uniq from 'lodash/uniq';
-// TODO: move field/record ids into single file for resuability
-const PRIMARY_SECTOR_ID = 'fldjEW6owmKk8OMlX';
-const OTHER_SECTORS_ID = 'fldTcs1OaGwdUsHiW';
-const PRIMARY_SUBSECTOR_ID = 'fld2YdygbDUIbFxv4';
-const OTHER_SUBSECTORS_ID = 'fldH1GqbAoe33w0GK';
+import {
+  PRIMARY_SECTOR_ID,
+  OTHER_SECTORS_ID,
+  PRIMARY_SUBSECTOR_ID,
+  OTHER_SUBSECTORS_ID,
+} from '../../utils';
 
 export default async (req, res) => {
   res.setHeader('Cache-Control', 's-maxage=86400');
 
   try {
-    const base = new Airtable({ apiKey: process.env.API_KEY }).base('appuZlplPKjKPkFBR');
+    const base = new Airtable({ apiKey: process.env.API_KEY }).base(process.env.BASE_ID);
     let values = await checkAirtable(base);
 
     if (!values) {
       values = [];
     }
 
-    const flattenedValues = values.flat()
+    const flattenedValues = values.flat();
     res.status(200).json(flattenedValues);
   } catch (error) {
     res.status(500).json({ error });
@@ -56,9 +57,9 @@ const checkAirtable = (base) => {
   const results = [];
 
   return new Promise((resolve, reject) => {
-    base('tblgyzaJvuz4Udat3')
+    base(process.env.SHEET_ID)
       .select({
-        view: 'All companies',
+        view: 'All corporations',
         returnFieldsByFieldId: true,
       })
       .eachPage(
