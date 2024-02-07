@@ -143,7 +143,7 @@ const Company = ({ name, values, forceOpen = false }) => {
   } = values;
 
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
-  const hasSources = detentionSource || corrections || laborSource || other || financials;
+  const hasSources = website || detentionSource || corrections || laborSource || other || financials;
 
   const desktopTemplate = `"a a a a"
                            "c d e e"
@@ -559,6 +559,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                     <Text fontSize="sm" fontStyle="italic" as="span">
                       Sources:
                     </Text>
+                    <Source source={website} name="Company website" website={website} />
                     <Source source={corrections} name="Corrections" website={website} />
                     <Source source={laborSource} name="Prison Labor" />
                     <Source source={detentionSource} name="Immigration Detention" />
