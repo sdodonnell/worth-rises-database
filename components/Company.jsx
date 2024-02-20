@@ -559,7 +559,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                     <Text fontSize="sm" fontStyle="italic" as="span">
                       Sources:
                     </Text>
-                    <Source source={website} name="Company website" website={website} />
+                    <Source source={website} name="Website" website={website} />
                     <Source source={corrections} name="Corrections" website={website} />
                     <Source source={laborSource} name="Prison Labor" />
                     <Source source={detentionSource} name="Immigration Detention" />
