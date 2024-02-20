@@ -143,7 +143,7 @@ const Company = ({ name, values, forceOpen = false }) => {
   } = values;
 
   const employeeCount = employees === 'N/A' ? 'N/A' : Number(employees).toLocaleString('en-US');
-  const hasSources = detentionSource || corrections || laborSource || other || financials;
+  const hasSources = website || detentionSource || corrections || laborSource || other || financials;
 
   const desktopTemplate = `"a a a a"
                            "c d e e"
@@ -369,13 +369,13 @@ const Company = ({ name, values, forceOpen = false }) => {
                         overflow="hidden"
                       >
                         <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                          Salience: {salience}
+                          Salience: {salience || '0'}
                         </Text>
                         <Text fontSize="sm" borderRight="1px solid black" px="5px">
-                          Responsibility: {responsibility}
+                          Responsibility: {responsibility || '0'}
                         </Text>
                         <Text fontSize="sm" px="5px">
-                          Responsive: {responsiveness}
+                          Responsive: {responsiveness || '0'}
                         </Text>
                       </GridItem>
                     </Grid>
@@ -559,6 +559,7 @@ const Company = ({ name, values, forceOpen = false }) => {
                     <Text fontSize="sm" fontStyle="italic" as="span">
                       Sources:
                     </Text>
+                    <Source source={website} name="Company website" website={website} />
                     <Source source={corrections} name="Corrections" website={website} />
                     <Source source={laborSource} name="Prison Labor" />
                     <Source source={detentionSource} name="Immigration Detention" />

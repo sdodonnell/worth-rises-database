@@ -31,6 +31,7 @@ import SectorTagList from './SectorTagList';
 import FilterModal from './FilterModal';
 import ShadowTable from './ShadowTable';
 import CompanyList from './CompanyList';
+import * as IDS from '../utils';
 
 const Table = ({ data, isLoading, isError, isCacheMiss }) => {
   const alphanumericSort = useCallback((rowA, rowB, id, desc) => {
@@ -64,7 +65,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
     () => [
       {
         Header: 'Corporate Name',
-        accessor: 'fld8eXd7ySetKd4X3',
+        accessor: IDS.COMPANY_ID,
         id: 'company',
         getHeaderProps: () => ({
           textAlign: 'center',
@@ -76,7 +77,7 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Parent Company',
-        accessor: 'fldCHnO5AgJL6lOlP',
+        accessor: IDS.PARENT_NAMES_ID,
         id: 'parentNames',
         Cell: ({
           value,
@@ -87,29 +88,29 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
         sortType: alphanumericArraySort,
       },
       {
-        accessor: 'fldyzMDmZLns6BNxS',
+        accessor: IDS.PARENT_RECORDS_ID,
         id: 'parentRecords',
       },
       {
-        accessor: 'fldZGLF7h7Hq1B1Q2',
+        accessor: IDS.CHILD_RECORDS_ID,
         id: 'childRecords',
       },
       {
-        accessor: 'fldDFNClyvPGXieqQ',
+        accessor: IDS.CHILD_NAMES_ID,
         id: 'childNames',
       },
       {
         id: 'owner',
-        accessor: 'fldnf3TVZdV0HDlJL',
+        accessor: IDS.OWNER_ID,
       },
       {
         id: 'investorRecords',
-        accessor: 'fldXnSHANQgk2mE5V',
+        accessor: IDS.INVESTOR_RECORDS_ID,
       },
       {
         Header: 'Ownership Investor',
         id: 'investorNames',
-        accessor: 'fldhjaHdWivOZDrw7',
+        accessor: IDS.INVESTOR_NAMES_ID,
         Cell: ({
           value,
           row: {
@@ -120,14 +121,14 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Stock Ticker',
-        accessor: 'fldxUScw6juEHQ4Bn',
+        accessor: IDS.STOCK_TICKER_ID,
         id: 'stock',
         Cell: ({ value }) => <Box textAlign="center">{value ? String(value) : '--'}</Box>,
         sortType: alphanumericSort,
       },
       {
         Header: 'Sector',
-        accessor: 'fldTcs1OaGwdUsHiW',
+        accessor: IDS.SECTORS_ID,
         id: 'sectors',
         filter: 'includesSome',
         Cell: ({ value, setAllFilters }) => {
@@ -137,13 +138,13 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Subsectors',
-        accessor: 'fldH1GqbAoe33w0GK',
+        accessor: IDS.SUBSECTORS_ID,
         id: 'subsectors',
         filter: 'includesSome',
       },
       {
         Header: 'Harm Score',
-        accessor: 'fldvURpMuHYQno2Ov',
+        accessor: IDS.HARM_SCORE_ID,
         id: 'harmScore',
         filter: 'includesValue',
         Cell: ({ value }) => (
@@ -154,107 +155,107 @@ const Table = ({ data, isLoading, isError, isCacheMiss }) => {
       },
       {
         Header: 'Divestment Target',
-        accessor: 'fldkvqcyO7SQLSWQD',
+        accessor: IDS.DIVESTMENT_ID,
         id: 'divestment',
       },
       {
         Header: 'Prison Labor',
-        accessor: 'fldwPeONqYRZGmZCi',
+        accessor: IDS.LABOR_INVOLVEMENT_ID,
         id: 'laborInvolvement',
       },
       {
         Header: 'Immigration Detention',
-        accessor: 'fldCwqMsXdV3icjcV',
+        accessor: IDS.DETENTION_INVOLVEMENT_ID,
         id: 'detentionInvolvement',
       },
       // Hidden columns; only necessary for company profile modal
       {
-        accessor: 'fld0y2NV1JILitqDo',
+        accessor: IDS.SALIENCE_ID,
         id: 'salience',
       },
       {
-        accessor: 'fldy2XjDq3zdH2Lru',
+        accessor: IDS.RESPONSIBILITY_ID,
         id: 'responsibility',
       },
       {
-        accessor: 'fldxxAWkjIXDjaEVH',
+        accessor: IDS.RESPONSIVENESS_ID,
         id: 'responsiveness',
       },
       {
         Header: 'Active?',
-        accessor: 'fldsfpUZ0ffXdPWRn',
+        accessor: IDS.ACTIVE_ID,
         id: 'active',
       },
       {
-        accessor: 'fldtzfIjlWilLHerb',
+        accessor: IDS.YEAR_FOUNDED_ID,
         id: 'yearFounded',
       },
       {
-        accessor: 'fldziq1j5ISHdl39I',
+        accessor: IDS.ACQUIRED_ID,
         id: 'acquired',
       },
       {
-        accessor: 'fldxvbSVSA45rk6U0',
+        accessor: IDS.EMPOLOYEES_ID,
         id: 'employees',
       },
       {
-        accessor: 'fldfq1uEOvvHPGtvV',
+        accessor: IDS.REVENUE_ONLY_ID,
         id: 'revenueOnly',
       },
       {
-        accessor: 'fldEheyoZ5BIhvxTg',
+        accessor: IDS.EXPOSURE_ID,
         id: 'exposure',
       },
       {
-        accessor: 'fldNEb9oxXo2iRE7j',
+        accessor: IDS.EXECUTIVE_ID,
         id: 'executive',
       },
       {
-        accessor: 'flddJDntfysxbxzES',
+        accessor: IDS.REVENUES_ID,
         id: 'revenues',
       },
       {
-        accessor: 'fldX8YGq5L0tj8pnW',
+        accessor: IDS.STATE_ID,
         id: 'state',
       },
       {
-        accessor: 'fldO5boHTuMns429O',
+        accessor: IDS.FISCAL_YEAR_ID,
         id: 'fiscalYear',
       },
       {
-        accessor: 'fldost1x5rtMTzGgb',
+        accessor: IDS.POLITICAL_SPENDING_ID,
         id: 'politicalSpending',
       },
       {
-        accessor: 'fldj3HcrNuA52r2Wj',
+        accessor: IDS.NOTES_ID,
         id: 'notes',
       },
       {
-        accessor: 'fldUm9IdFDzIylngB',
+        accessor: IDS.WEBSITE_ID,
         id: 'website',
       },
       {
-        accessor: 'fldrWMXPLVrKTedlx',
+        accessor: IDS.CORRECTIONS_ID,
         id: 'corrections',
       },
       {
-        accessor: 'fld0ZQ2ffWfx9vP6e',
+        accessor: IDS.DETENTION_SOURCE_ID,
         id: 'detentionSource',
       },
       {
-        accessor: 'fldH3cErjmanHljuM',
+        accessor: IDS.LABOR_SOURCE_ID,
         id: 'laborSource',
       },
       {
-        accessor: 'fldL5Uu9CFlIGLynB',
+        accessor: IDS.FINANCIALS_ID,
         id: 'financials',
       },
       {
-        accessor: 'fldfd54TBvL7YnGL7',
+        accessor: IDS.OTHER_ID,
         id: 'other',
       },
       {
-        accessor: 'rowId',
+        accessor: IDS.ROWID_ID,
         id: 'rowId',
       },
     ],
