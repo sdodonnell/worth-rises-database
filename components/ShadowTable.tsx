@@ -25,7 +25,7 @@ const ShadowTable = ({ data, columns }) => {
 
   useEffect(() => {
     if (router.query.id && router.query.link) {
-      const safeId = decodeURIComponent(router.query.id);
+      const safeId = decodeURIComponent(router.query.id as string);
       setAllFilters([{ id: 'rowId', value: safeId }]);
       setIsRowSelected(true);
     } else {

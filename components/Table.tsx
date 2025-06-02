@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import * as NextLink from 'next/link';
+import NextLink from 'next/link';
 import {
   useTable,
   usePagination,
