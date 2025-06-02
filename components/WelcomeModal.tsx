@@ -12,12 +12,17 @@ import {
 import { useEffect } from 'react';
 import { WELCOME_HEADER_TEXT, WELCOME_SUBHEAD_TEXT } from './utils/copyUtils';
 
-const WelcomeModal = ({ isFirstTime, setVisitedCookie }) => {
+type Props = {
+  isFirstTime?: boolean;
+  setVisitedCookie?: () => void;
+};
+
+const WelcomeModal = ({ isFirstTime = false, setVisitedCookie }: Props) => {
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleClose = () => {
-    setVisitedCookie();
+    setVisitedCookie?.();
     onClose();
   };
 

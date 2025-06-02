@@ -6,8 +6,9 @@ import {
   PRIMARY_SUBSECTOR_ID,
   OTHER_SUBSECTORS_ID,
 } from '../../utils';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   res.setHeader('Cache-Control', 's-maxage=86400');
 
   try {
@@ -53,7 +54,7 @@ const cleanRecords = (records) => {
   }));
 };
 
-const checkAirtable = (base) => {
+const checkAirtable = async (base: Airtable.Base): Promise<any[]> => {
   const results = [];
 
   return new Promise((resolve, reject) => {
